@@ -1,0 +1,1 @@
+<span style="font-size:44px"><center><a href="login.php">Login</a>|<a href="signup.php">Signup</a></center></span>
