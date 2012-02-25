@@ -1,6 +1,6 @@
 <?php
 
-require_once ('mysql_connection.php');
+require_once ('include/mysql_connection.php');
 $dateTime = new DateTime("now", new DateTimeZone('Australia/Brisbane'));
 
 //$query = 'insert into edge_users values ('.$_POST["swipe"].',"'.$_POST["name"].'","'.$_POST["interests"].'")';

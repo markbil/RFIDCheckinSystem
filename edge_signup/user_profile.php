@@ -1,5 +1,5 @@
 <?php
-require_once ('mysql_connection.php');
+require_once ('include/include/mysql_connection.php');
 
 global $user_details;
 $user_details = array(

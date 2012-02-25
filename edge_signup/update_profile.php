@@ -1,6 +1,6 @@
 <?php
 
-require_once ('mysql_connection.php');
+require_once ('include/mysql_connection.php');
 
 if(!isset($_POST["swipe"]) || !isset($_POST["password"]))
 	header("Location: login.php?fail=true");
@@ -68,7 +68,7 @@ while($row = mysql_fetch_array($result))
 
 
 
-/*require_once ('mysql_connection.php');
+/*require_once ('include/mysql_connection.php');
 
 $result = mysql_query("SELECT * FROM edge_users WHERE swipe_id = ".$_POST['swipe']." AND password = '".$_POST["password"]."'");
 $swipe_id = "NONE";

@@ -1,6 +1,6 @@
 <?php 
 
-require_once ('mysql_connection.php');
+require_once ('include/mysql_connection.php');
 
 if(isset($_GET["query"])) {
 	$q = $_GET["query"];
