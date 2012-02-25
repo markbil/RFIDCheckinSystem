@@ -5,42 +5,35 @@
 <title>Edge Signup</title>
 </head>
 <body>
-
-<div style="width:400px; margin-left:auto; margin-right:auto; border-color:#000; border-style:outset; border-width:1px">
-<center>Login</center>
-<?php if(isset($_GET["fail"])) echo "Incorrect Login Details</br>";?>
-<table width="100%">
-
-
-<form name="signup" method="post" action="update_profile.php">
-
-<tr >
-<td align="right" width="50%">
-Swipe Card
-</td>
-<td align="left" width="50%">
-<input type="text" name="swipe" value="" />
-</td>
-</tr>
-
-<tr>
-<td align="right" width="50%">
-Password
-</td>
-<td align="left" width="50%">
-<input type="password" name="password" />
-</td>
-</tr>
-
-
-
-<tr>
-<td colspan="2" align="center">
-<input type="submit" value="Login" />
-</td>
-</tr>
-</form>
-</table>
-</div>
-</body>
+	<div
+		style="width: 400px; margin-left: auto; margin-right: auto; border-color: #000; border-style: outset; border-width: 1px">
+		<center>Login</center>		
+		<?php if(isset($_GET["fail"])) echo "Incorrect Login Details</br>";?>
+			<form name="signup" method="post" action="user_profile.php?mode=update">
+				<table width="100%">
+					<tr >
+						<td align="right" width="50%">
+						Swipe Card
+						</td>
+						<td align="left" width="50%">
+						<input type="text" name="swipe" value="" />
+						</td>
+					</tr>
+					<tr>
+						<td align="right" width="50%">
+						Password
+						</td>
+						<td align="left" width="50%">
+						<input type="password" name="password" />
+						</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+					<input type="submit" value="Login" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	</body>
 </html>
