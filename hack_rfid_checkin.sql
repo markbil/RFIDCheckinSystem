@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.9
+-- version 3.4.10.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 13, 2012 at 08:27 AM
+-- Generation Time: Mar 04, 2012 at 11:49 AM
 -- Server version: 5.5.20
 -- PHP Version: 5.3.10
 
@@ -330,30 +330,23 @@ CREATE TABLE IF NOT EXISTS `edge_users` (
   `lastname` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `edge_users`
 --
 
 INSERT INTO `edge_users` (`ID`, `username`, `password`, `firstname`, `lastname`, `email`) VALUES
-(1, 'Mark2', 'Mark2', '', '', ''),
 (2, 'markbil', 'Mark', 'Mark', 'Bilandzic', 'mabil@web.de'),
-(3, 'Mark testuser', '', '', '', ''),
-(5, 'Stormageddon', 'DrWho', '', '', ''),
-(6, 'Alessandro', 'Alessandro', '', '', ''),
-(7, 'Marin', 'Marin', '', '', ''),
 (8, 'Mark', 'Mark', 'test', 'test', ''),
-(9, 'Max', 'Max', '', '', ''),
-(10, 'Marija', 'Marija', '', '', ''),
-(22, 'Jim', 'wwwwwwww', '', '', ''),
-(23, 'Open', 'juice', '', '', ''),
-(24, 'Monkey', 'Pink', 'Magic', 'Sage', 'qwer@loop.com'),
-(25, 'Lulu', 'uueueuue', '', '', ''),
-(26, 'Jimbob', '321312312312', '', '', ''),
-(27, 'Kerrry', '', '', '', ''),
+(24, 'Monkey', 'Pink', 'Magic', 'Monnkkey', 'qwery@loop.com'),
 (28, 'Jim', 'frodo', 'Jeremiah', 'Down', 'www@sss.com'),
-(29, 'Hal', 'dave', 'Hal', '2000', 'hal@2001.space.com');
+(29, 'Hal', 'dave', 'Hal', '2000', 'hal@2001.space.com'),
+(30, 'DirkGently', 'douglas', 'Dirk', 'Gently', ''),
+(31, 'LadyGaga', 'pokerface', 'Lady', 'Gaga', 'crazy@gaga.com'),
+(32, 'darkknight', 'batman', '', '', ''),
+(33, 'Kendone', 'colours', '', '', ''),
+(34, 'tiger', 'eyeofthetiger', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -406,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `identification_media` (
   `ThirdPartyID` varchar(45) NOT NULL,
   `Type` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `identification_media`
@@ -444,7 +437,12 @@ INSERT INTO `identification_media` (`ID`, `ThirdPartyID`, `Type`) VALUES
 (31, '2222234555', 1),
 (32, '34348', 1),
 (33, '123456', 1),
-(34, '2001', 1);
+(34, '2001', 1),
+(35, '05408544', 1),
+(36, '05408545', 1),
+(37, '05408546', 1),
+(38, '05408547', 1),
+(39, '05408548', 1);
 
 -- --------------------------------------------------------
 
@@ -523,7 +521,7 @@ CREATE TABLE IF NOT EXISTS `people` (
   `edge_users_id` int(11) NOT NULL,
   `identification_id` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `people`
@@ -535,7 +533,12 @@ INSERT INTO `people` (`ID`, `edge_users_id`, `identification_id`) VALUES
 (3, 26, 31),
 (4, 27, 32),
 (5, 28, 33),
-(6, 29, 34);
+(6, 29, 34),
+(7, 30, 35),
+(8, 31, 36),
+(9, 32, 37),
+(10, 33, 38),
+(11, 34, 39);
 
 -- --------------------------------------------------------
 
@@ -548,7 +551,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `Name` varchar(40) NOT NULL,
   `Description` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `projects`
@@ -556,14 +559,18 @@ CREATE TABLE IF NOT EXISTS `projects` (
 
 INSERT INTO `projects` (`ID`, `Name`, `Description`) VALUES
 (1, 'RFID Checkin System', 'Develop a system whereby Edge Users can check into the centre using an RFID tag.'),
-(2, 'I Do Not Like It', 'I want that one that one and that 1'),
+(2, 'I Do Not Like It', 'I want that one that one and that One'),
 (3, 'Mouse Trap', 'Reinvent a mouse trap\r\nMonster Trucks - yeah Monster Trucks'),
 (5, 'Smegel', 'A floating blue line'),
 (6, 'Lily', 'Eats Cheese\r\nSings and dances'),
 (7, 'Angus', 'Eating hamburgers\r\nTraining Blobs'),
-(8, 'The Big Bazooka', 'A giant gun that likes to blow up'),
+(8, 'The Big Bazooka', 'A giant gun that likes to blow up and automatically fires'),
 (9, 'Fly in the ointment', 'Take a fly for a ride in the Big Red Car with headgear'),
-(10, 'Electric Glasses', 'Create glasses that can  turn on and off');
+(10, 'Electric Glasses', 'Create glasses that can  turn on and off'),
+(11, 'Balloon Fountain', 'Create a fountain made out of ballons'),
+(12, 'Jumping Beans', 'Have a bean jump on a flea'),
+(13, 'Bubbles', 'Bouncing Bubbles'),
+(14, '3D Printer', 'Make a 3D Printer');
 
 -- --------------------------------------------------------
 
@@ -576,7 +583,7 @@ CREATE TABLE IF NOT EXISTS `projects_edge_users` (
   `edge_users_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
 
 --
 -- Dumping data for table `projects_edge_users`
@@ -585,7 +592,34 @@ CREATE TABLE IF NOT EXISTS `projects_edge_users` (
 INSERT INTO `projects_edge_users` (`ID`, `edge_users_id`, `project_id`) VALUES
 (1, 24, 2),
 (2, 28, 2),
-(3, 24, 3);
+(3, 24, 3),
+(4, 2, 24),
+(7, 2, 7),
+(16, 29, 7),
+(17, 8, 7),
+(18, 8, 3),
+(20, 29, 2),
+(21, 2, 1),
+(22, 29, 1),
+(23, 30, 2),
+(24, 2, 9),
+(25, 24, 9),
+(29, 8, 10),
+(30, 24, 10),
+(31, 28, 7),
+(32, 30, 7),
+(33, 28, 10),
+(34, 24, 11),
+(36, 31, 11),
+(37, 8, 11),
+(41, 24, 12),
+(42, 28, 12),
+(43, 29, 12),
+(45, 30, 6),
+(46, 28, 6),
+(47, 31, 6),
+(48, 24, 13),
+(49, 30, 13);
 
 -- --------------------------------------------------------
 
