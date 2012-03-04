@@ -3,13 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script type="text/javascript" src="jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="jquery.autocomplete.js"></script>
+<script type="text/javascript" src="include/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="include/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="include/project_profiles.js"></script>
 
 <link rel="StyleSheet" href="style.css" type="text/css" />
-<link rel="StyleSheet" href="styles.css" type="text/css" />
-
-<title>Edge projects</title>
+<title>Edge Projects</title>
 
 <?php
 require_once ('include/common.php');
@@ -60,7 +59,7 @@ if(!empty($project_id)) $mode="update";
  	} else {
  		// Update Database
  		$query = 'UPDATE projects SET Name="'. $name . '",' .
- 		                                                	'Description="' . $description . '" WHERE ID=' . $project_id;
+ 		                  'Description="' . $description . '" WHERE ID=' . $project_id;
  		$result = mysql_query ($query);
  		if (!$result) {
  			die('Invalid query UPDATE projects: ' . mysql_error());
@@ -94,17 +93,19 @@ if(!empty($project_id)) $mode="update";
  }
 
 ?>
+
 </head>
 <body>
-	<div id="form" style="width: 500px; margin-left: auto; margin-right: auto;">
-	
+	<div id="form"
+		style="width: 500px; margin-left: auto; margin-right: auto;">
+
 		<?php
 		if($mode == 'create' || $mode == 'update') {
 			print '<form name="signup" method="post" action="project_profiles.php?mode=' . $mode . '">';
 			print '<input name="is_submit" type="hidden" value="true" />';
 		}
 		if($mode == 'update') {
-			print '<input name="project_id" type="hidden" value="'. $project_id .'" />';
+			print '<input id="project_id" name="project_id" type="hidden" value="'. $project_id .'" />';
 		}
 		print '<fieldset>';
 		if ($mode == 'list') {
@@ -112,12 +113,16 @@ if(!empty($project_id)) $mode="update";
 		} else {
 			print '<legend>Project Profile</legend>';
 		}
-		if(empty($project_id)&& $mode == 'update') echo "<p>NO PROJECT SELECTED";
+		if(empty($project_id)&& $mode == 'update') echo "<p>NO PROJECT SELECTED</p>";
 
 		if($mode=='update' || $mode=='create') {
 			print '<table cellspacing="0" cellpadding="0" width="100%">';
 			print '<thead>';
-			print'<th colspan="2">General Info</th>';
+			if ($mode=='create')
+				print'<th colspan="2">Create Project</th>';
+			else
+				print'<th colspan="2">Modify Project</th>';
+
 			print '</thead>';
 			print '<tr>';
 			print'<td align="left">Project Name:</td>';
@@ -136,6 +141,16 @@ if(!empty($project_id)) $mode="update";
 			print '</textarea>';
 			print '</td>';
 			print '</tr>';
+			if ($mode!='create') {
+				print '<tr>';
+				print'<td valign="top" align="left">Collaborators:</td>';
+				print '<td>';
+				print '<div style="min-height:200px;overflow-y:scroll;" id="user_listing">';
+				display_project_user_list($project_id);
+				print '</div>';
+				print '</td>';
+				print '</tr>';
+			}
 			print '</table>';
 		} else if ($mode=='list') {
 			// Get list from database
@@ -145,10 +160,8 @@ if(!empty($project_id)) $mode="update";
 			print '<thead>';
 			print'<th style="width:30%">Name</th>';
 			print '<th>Description</th>';
-			print '<th></th>';
-			print '<th></th>';
 			print '</thead>';
-			
+
 			foreach ($projects as $id=>$attributes) {
 				print '<tr valign="top">';
 				print '<td>';
@@ -158,16 +171,17 @@ if(!empty($project_id)) $mode="update";
 				print $attributes['description'];
 				print '</td>';
 				print '<td>';
-				print '<a href="project_profiles.php?id=' .$id . '" title="Modify Project \'' . $attributes['name'] . '\'">EDIT</a>';
+				print '<a href="project_profiles.php?id=' .$id . '" title="Modify Project \'' . $attributes['name'] . '\'"><input type="button" name="edit"	value="Edit" /></a>';
 				print '</td>';
-				print '<td>';
-				print '<a href="project_users.php?id=' .$id . '" title="Add User To Project \'' . $attributes['name'] . '\'">ADD USER</a>';
-				print '</td>';
+			//	print '<td>';
+			//	print '<a href="project_users.php?id=' .$id . '" title="Add User To Project \'' . $attributes['name'] . '\'"><input type="button" name="add_user"	value="Add User" /></a>';
+				//print '</td>';
 				print '</tr>';
 			}
 			print '<tr valign="top">';
-			print '<td align="right" colspan="3">';
-			print '<a href="project_profiles.php?mode=create" title="Create A New Project">NEW</a>';
+			print '<td align="right" colspan="4">';
+			print '<hr/>';
+			print '<a href="project_profiles.php?mode=create" title="Create A New Project"><input type="button" name="new_project"	value="Create Project" /></a>';
 			print '</td>';
 			print '</table>';
 		}
@@ -175,13 +189,13 @@ if(!empty($project_id)) $mode="update";
 		print '<hr />';
 		if ($mode == 'create' || $mode == 'update') {
 			print '<input type="submit" value="';
-			if($mode=='create') echo  'Create'; else echo 'Update';
+			if($mode=='create') echo  'Create'; else echo 'Return To List';
 			print '" />';
-			print '<a href="project_profiles.php"><input type="button" name="cancel" value="Cancel" />';
-			print '</a>';
-				print '</form>';
+			//print '<a href="project_profiles.php"><input type="button" name="cancel" value="Cancel" />';
+			//print '</a>';
+			print '</form>';
 		}
-			print '</fieldset>';
+		print '</fieldset>';
 		?>
 	</div>
 </body>

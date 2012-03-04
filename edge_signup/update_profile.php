@@ -91,8 +91,8 @@ if(  $swipe_id == "NONE")
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script type="text/javascript" src="jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="jquery.autocomplete.js"></script>
+<script type="text/javascript" src="include/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="include/query.autocomplete.js"></script>
 
 <LINK REL=StyleSheet HREF="style.css" TYPE="text/css" />
 <LINK REL=StyleSheet HREF="styles.css" TYPE="text/css" />

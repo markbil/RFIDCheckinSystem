@@ -61,6 +61,7 @@ while ($row = mysql_fetch_assoc($result)) {
     echo "CheckinID[" . $row['Identification_idIdentification']. "]\n";
 }
  */
-header("Location: login.php");
+
+header("Location: user_profile.php?mode=update");
 
 ?>

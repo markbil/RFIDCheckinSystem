@@ -3,25 +3,38 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script type="text/javascript" src="jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="jquery.autocomplete.js"></script>
+<script type="text/javascript" src="include/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="include/jquery.autocomplete.js"></script>
 
 <link rel="StyleSheet" href="style.css" type="text/css" />
-<link rel="StyleSheet" href="styles.css" type="text/css" />
+<!-- <link rel="StyleSheet" href="styles.css" type="text/css" /> -->
 
 <title>Edge Projects And Users</title>
 
 <script type="text/javascript">
 	function getUsers(projectID) {
-			$.post("include/common.php", {queryString: ""+projectID+""}, 
+			$.post("include/common.php", {queryString: "list_project_users" + '=' + projectID }, 
 					function(data){
 						if(data.length >0) {
-							//$('#suggestions').show();
 							$('#user_listing').html(data);
 						}
+							
 					}
-				);		
+				);
 	}
+	
+	function addUsers() {
+		var project_sel=document.getElementById("project_listing");
+		projectID=project_sel.value;
+		$.post("include/common.php", {queryString: "add_project_users" + '=' + projectID }, 
+				function(data){
+					if(data.length >0) {
+						$('#user_listing').html(data);
+					}
+						
+				}
+			);
+}
 	</script>
 
 <?php
@@ -33,7 +46,7 @@ $name = null;	//Project Name
 $description=null;	// Project Description
 $submit=false;
 
-var_dump($_POST);
+//var_dump($_POST);
 
  if(isset($_GET["mode"])) {
  	$mode=$_GET['mode'];
@@ -106,7 +119,9 @@ if(!empty($project_id)) $mode="update";
 	<div id="form" style="width: 500px; margin-left: auto; margin-right: auto;">
 	
 		<?php
-		//var_dump($_POST);
+		var_dump($_POST);
+		var_dump($_GET);
+		var_dump($project_id);
 		if($mode == 'create' || $mode == 'update') {
 			print '<form name="signup" method="post" action="project_users.php?mode=' . $mode . '">';
 			print '<input name="is_submit" type="hidden" value="true" />';
@@ -121,7 +136,7 @@ if(!empty($project_id)) $mode="update";
 		if($mode=='update' || $mode=='create') {
 			// Get list from database
 			$projects=getProjectsList();
-			$project_users=getProjectsUsers($project_id);
+			$project_users=getProjectUsers($project_id);
 			$users=getUsersList();
 			
 			print '<table cellspacing="0" cellpadding="0" width="100%">';
@@ -131,38 +146,35 @@ if(!empty($project_id)) $mode="update";
 			print '<th></th>';
 			print '</thead>';
 			print '<tr>';
-			print '<td>';
-			print '<select name="project_listing" size="5">';
+			print '<td valign="top">';
+			print '<select id="project_listing" size="5" style="min-height:200px;">';
+			$loop=0;
+			$project_first_id=null;
+			$selected = 'selected="selected" ';
 			foreach ($projects as $id=>$attributes) {
+				$loop++;
+				if ($loop==1) $project_first_id=$id;
+				
 				print '<option value="' . $id . '" title="'. $attributes['description'] .'" ';
-				if ($id==$project_id) print  'selected="selected" ';
-				print 'id="project_id" onclick="getUsers(this.value)" >';
+				if ($loop == 1) print  $selected;
+				print 'id="project_' . $id . '" onclick="getUsers(this.value)" >';
 				print $attributes['name'];
 				print '</option>';
 			}
 			print '</select>';
 			print '</td>';
-			print '<td>';
-			//print '<select name="user_listing" size="5" style="width:100%">';
-			print '<div style="max-height:105px;overflow-y:scroll;" id="user_listing">';
-			foreach ($users as $id=>$attributes) {
-				//print '<option value="' . $id . '" title="'. $attributes['firstname'] . ' ' . $attributes['lastname']  .'">';
-				print '<input type="checkbox" name="user_' . $id . '" '.  ' value="' . $id . '" ';
-				if (array_key_exists($id, $project_users)) print 'checked="checked" ';
-				print '</>';
-				print $attributes['username'];
-				print '<br/>';
-				//print '</option>';
-			}
+			print '<td valign="top">';
+			print '<div style="min-height:200px;overflow-y:scroll;" id="user_listing">';
+			display_project_user_list($project_first_id);
+			
 			print '</div>';
-			//print '</select>';
 			print '</td>';
 
 			print '</tr>';
 			print '<tr valign="top">';
 			print '<td align="right" colspan="3">';
-			print '<a href="project_profiles.php?mode=list" title="List Projects">Show Projects</a>&nbsp;';
-			print '<a href="project_profiles.php?mode=create" title="Create A New Project">NEW Project</a>';
+			print '<a href="project_profiles.php?mode=list" title="List Projects"><input type="button" name="view_project"	value="Show Project" /></a>&nbsp;';
+			print '<a href="project_profiles.php?mode=create" title="Create A New Project"><input type="button" name="new_project"	value="Create Project" /></a>';
 			print '</td>';
 			print '</table>';
 		}
