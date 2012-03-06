@@ -5,7 +5,7 @@
 DEFINE ('DB_USER', 'root');
 DEFINE ('DB_PASSWORD', '');
 DEFINE ('DB_HOST', 'localhost');
-DEFINE ('DB_NAME', 'meetmee_checkin');
+DEFINE ('DB_NAME', 'meetmee_hack_rfid_checkin');
 
 
 // Make the connnection and then select the database.
