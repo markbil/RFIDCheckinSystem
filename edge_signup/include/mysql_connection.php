@@ -6,11 +6,6 @@ DEFINE ('DB_PASSWORD', '');
 DEFINE ('DB_HOST', 'localhost');
 DEFINE ('DB_NAME', 'meetmee_checkin3');
 
-//connection to meetmee.javaprovider mysql database
-//DEFINE ('DB_USER', 'meetmee_mark');
-//DEFINE ('DB_PASSWORD', 'meetmee2011');
-//DEFINE ('DB_HOST', 'localhost');
-//DEFINE ('DB_NAME', 'meetmee_checkin');
 
 
 // Make the connnection and then select the database.
