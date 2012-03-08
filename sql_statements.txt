@@ -1,7 +1,18 @@
 //Checkin user using RFID as checkin method (identification_media_type_id = 1) and RFID card-nr 5456678
 INSERT INTO check_in (MainLocation, SubLocation, Check_In_Time, identification_media_type_id, edge_users_id) VALUES ('The Edge', 'Lab 2', 2012-01-31 17:03:36, 1, 5456678);
 
-// get all checked-in users with user_details and checkin details (user id, firstname, lastname, identification_media_type and id, timestamp, sublimation)\
+
+//get all expertise keywords
+SELECT expertise, COUNT(expertise) AS frequency FROM expertise_table GROUP BY expertise ORDER BY frequency DESC
+
+//get all interest keywords
+SELECT interest, COUNT(interest) AS frequency FROM interest_table GROUP BY interest ORDER BY frequency DESC
+
+//get all interest keywords
+SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC
+
+
+// get all checked-in users with user_details and checkin details (user id, firstname, lastname, identification_media_type and id, timestamp, sublimation)
 SELECT eu.id AS edge_user_id, eu.firstname, eu.lastname, imt.name AS imt_name, im.ThirdPartyID AS im_id, check_in.check_in_time AS checkin_timestamp, check_in.sublocation AS checkin_sublocation FROM (((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON check_in.identification_media_type_id = imt.id AND check_in.identification_media_thirdpartyid = im.thirdpartyid
 
 // get all expertise keywords from a particular checked_in user (im.thirdpartyid)
