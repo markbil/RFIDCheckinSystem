@@ -8,13 +8,13 @@ $dateTime = new DateTime("now", new DateTimeZone('Australia/Brisbane'));
 $mainlocation = 'The Edge';
 $sublocation = $_GET["sublocation"];
 $checkintime = $dateTime->format("Y-m-d H:i:s");
-$imt_id = 1; // 1 = RFID
-$im_thirdpartyid = $_GET["rfid"]; // unique RFID number
+$im_type = 1; // 1 = RFID
+$im_thirdpartyid = $_GET["thirdpartyid"]; // unique RFID number
 
+$sql_get_im_id = "SELECT id FROM identification_media im WHERE im.thirdpartyid = ".$im_thirdpartyid." AND im.type = " . $im_type;
 
-
-if($_GET["rfid"] != "") {
-	$query = 'INSERT INTO check_in (MainLocation, SubLocation, Check_In_Time, identification_media_type_id, identification_media_thirdpartyid) VALUES (\''.$mainlocation.'\', \''.$sublocation.'\', \''.$checkintime.'\','.$imt_id .','.$im_thirdpartyid.')';
+if($_GET["thirdpartyid"] != "") {
+	$query = 'INSERT INTO check_in (MainLocation, SubLocation, Check_In_Time, identification_media_id) VALUES (\''.$mainlocation.'\', \''.$sublocation.'\', \''.$checkintime.'\',('.$sql_get_im_id.'))';
 	
 	echo $query;
 	echo "</br>";
