@@ -5,7 +5,7 @@ require_once ('edge_signup/include/mysql_connection.php');
 
 $dateTime = new DateTime("now", new DateTimeZone('Australia/Brisbane'));
 
-$mainlocation = 'The Edge';
+$mainlocation = 99; // 99 = The Edge;
 $sublocation = $_GET["sublocation"];
 $checkintime = $dateTime->format("Y-m-d H:i:s");
 $im_type = 1; // 1 = RFID
