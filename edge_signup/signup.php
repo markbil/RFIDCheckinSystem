@@ -8,24 +8,24 @@
 
 	<div style="width: 400px; margin-left: auto; margin-right: auto;">
 		<fieldset>
-			<legend>Edge Signup</legend>
+			<legend>The Edge - Signup for the Checkin System</legend>
 			<table>
 			<?php if(isset($_GET["fail"])) echo "Please Fill In All Fields</br>";?>
 				<form name="signup" method="post" action="singup_submit.php">
 					<tr>
-						<td>Swipe Card:</td>
+						<td>RFID-card number: </br>(to be filled out by VSO/Edge staff)</td>
 						<td><input type="text" name="swipe"
 							value="&lt;?php /*if (isset($_GET['swipe_id'])) echo $_GET['swipe_id']; else echo &quot;&quot;;*/?&gt;" />
 						</td>
 					</tr>
 
 					<tr>
-						<td>Name?</td>
+						<td>Select a Username:</td>
 						<td><input type="text" name="name" /></td>
 					</tr>
 
 					<tr>
-						<td>Password</td>
+						<td>Select a Password:</td>
 						<td><input type="password" name="password" /></td>
 					</tr>
 
