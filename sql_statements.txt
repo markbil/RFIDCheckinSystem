@@ -12,7 +12,7 @@ SELECT interest, COUNT(interest) AS frequency FROM interest_table GROUP BY inter
 SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC
 
 
-// get all checked-in users with user_details and checkin details (user id, firstname, lastname, identification_media_type and id, timestamp, sublimation)
+// get all checked-in users with user_details and checkin details (user id, firstname, lastname, identification_media_type and id, timestamp, sublocation)
 SELECT eu.id AS edge_user_id, eu.firstname, eu.lastname, imt.name AS imt_name, im.ThirdPartyID AS im_id, check_in.check_in_time AS checkin_timestamp, check_in.sublocation AS checkin_sublocation FROM (((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON check_in.identification_media_id = im.id
 
 
