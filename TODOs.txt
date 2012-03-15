@@ -24,4 +24,8 @@ TODO Checkin System:
 - QR-code to login.php (if we provide a JQuery mobile version of the profile website?)
 - feedback / questions at checkin@edge.org.au
 
-6) JQuery mobile website version of the profile website
+6) JQuery mobile website version of the profile website?
+
+7) 3D print a case for the RFID reader
+
+8) create an MySQL Views / API for developers to read from the checkin-DB 
