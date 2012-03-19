@@ -1,5 +1,15 @@
 TODO Checkin System:
 
+---HIGH PRIORITY---
+4) create Processing/JAVA script for VSO's to read an RFID card number and assign it to a user, i.e.
+- VSO opens Processing/Java Program.
+- touches a new (unassigned) RFID card to the ID20 reader (connected to the PC's USB port)
+- Processing/Java Program spits out the RFID card number
+- VSO copy pastes this number into signup.php
+- user fills out username/password
+- VSO labels RFID-card and hands over to user
+
+
 1) change login.php: users should be using their username/pw to login, not swipe-id/pw.
 
 2) error handling at signup.php: what happens if…
@@ -10,13 +20,8 @@ TODO Checkin System:
 3) update-profile.php:
 - right now swipe-id cannot be changed (text field not editable), but what happens if user looses his RFID card. => my suggestion for the 1st rollout: write us an email and we change it in the DB.. later we might think about an administration userinterface for such purposes…
 
-4) create Processing/JAVA script for VSO's to read an RFID card number and assign it to a user, i.e.
-- VSO opens Processing/Java Program.
-- touches a new (unassigned) RFID card to the ID20 reader (connected to the PC's USB port)
-- Processing/Java Program spits out the RFID card number
-- VSO copy pastes this number into signup.php
-- user fills out username/password
-- VSO labels RFID-card and hands over to user
+
+---MEDIUM PRIORITY---
 
 5) create word-template for RFID-card label
 - username
@@ -27,5 +32,8 @@ TODO Checkin System:
 6) JQuery mobile website version of the profile website?
 
 7) 3D print a case for the RFID reader
+
+
+---LOW PRIORITY---
 
 8) create an MySQL Views / API for developers to read from the checkin-DB 
