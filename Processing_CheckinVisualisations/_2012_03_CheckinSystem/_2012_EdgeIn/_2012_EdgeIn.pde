@@ -21,8 +21,8 @@ void setup() {
 //paperSketch = new PaperSketchApp(this); 
 //  projectExplorer = new ProjectExplorerApp(this); 
 //checkinSystem = new CheckinSystemApp(this);
-  checkinsOverview = new CheckinsOverviewApp(this);
-//  rfidReaderApp = new RFIDReaderApp(this);
+//  checkinsOverview = new CheckinsOverviewApp(this);
+  rfidReaderApp = new RFIDReaderApp(this);
 } 
 
 
@@ -31,8 +31,8 @@ void draw() {
 //  paperSketch.draw(); 
 //  projectExplorer.draw(); 
 // checkinSystem.draw();
-  checkinsOverview.draw();
-//  rfidReaderApp.draw();
+//  checkinsOverview.draw();
+  rfidReaderApp.draw();
   
   cleanupCursors(); 
   drawTuioCursors();
