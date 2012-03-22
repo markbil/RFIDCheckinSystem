@@ -104,3 +104,9 @@ SELECT DAYOFMONTH(checkin_timestamp) AS dayofmonth_index, DAYNAME(checkin_timest
 //VIEW: "view_number_distinctusercheckins_today_perhour" = number of distinct users who have checked-in at a particular hour today
 SET time_zone = '+10:00';
 SELECT HOUR(checkin_timestamp) AS hour, DATE(checkin_timestamp) AS date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins WHERE DATE(checkin_timestamp) = DATE((SELECT NOW())) GROUP BY hour ORDER BY hour;	
+
+//VIEW: "view_number_totalusercheckins_peryearmonth" = number of total users who have checked-in per year and month
+SELECT (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) AS yearmonth_index, MONTHNAME(checkin_timestamp) AS month_name, YEAR(checkin_timestamp) as year, COUNT(edge_user_id) AS total_usercheckins FROM view_list_distinctusercheckins_perdate GROUP BY (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) ORDER BY (EXTRACT(YEAR_MONTH FROM checkin_timestamp))
+
+//VIEW: "view_number_totalusercheckins_peryearweek" = number of total users who have checked-in per year and week
+SELECT YEARWEEK(checkin_timestamp,7) AS yearweek_index, WEEK(checkin_timestamp,7) AS weekofyear, YEAR(checkin_timestamp) as year, COUNT(edge_user_id) AS total_usercheckins FROM view_list_distinctusercheckins_perdate GROUP BY YEARWEEK(checkin_timestamp,7) ORDER BY YEARWEEK(checkin_timestamp,7)
