@@ -33,13 +33,6 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   UNIQUE KEY `acces token_UNIQUE` (`accesToken`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `app_users`
---
-
-INSERT INTO `app_users` (`FB_ID`, `accesToken`, `LastCheckin`) VALUES
-('1236128', 'AAACOahlvPXUBAGGZAHJkJj65u0DZBLepcTBef73iO2GX6zM2WXIm3fw3GOCM4j3XcQiRoyr0KnZCqn2XPp7h5UOEQubOhoZD', NULL),
-('531587817', 'AAACOahlvPXUBAH1ina47HSv4i3KEmA2FDTobRNcTLh4ZCpG6blqtSJvBb3Qo8xiP41lLOjEixEreKZCssu36ybv8PCQcgZD', NULL);
 
 -- --------------------------------------------------------
 
@@ -660,42 +653,15 @@ INSERT INTO `questions_table` (`ID`, `edge_users_id`, `question`) VALUES
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_checkins` AS select `eu`.`ID` AS `edge_user_id`,`eu`.`firstname` AS `firstname`,`eu`.`lastname` AS `lastname`,`eu`.`occupation` AS `occupation`,`eu`.`statusmessage` AS `statusmessage`,`imt`.`Name` AS `imt_name`,`im`.`ThirdPartyID` AS `im_id`,`meetmee_checkin3`.`check_in`.`Check_In_Time` AS `checkin_timestamp`,(select timestampdiff(MONTH,`meetmee_checkin3`.`check_in`.`Check_In_Time`,(select now() AS `NOW()`)) AS `TIMESTAMPDIFF(MONTH, check_in.check_in_time, (SELECT NOW()))`) AS `months_since_checkin`,(select timestampdiff(DAY,`meetmee_checkin3`.`check_in`.`Check_In_Time`,(select now() AS `NOW()`)) AS `TIMESTAMPDIFF(DAY, check_in.check_in_time, (SELECT NOW()))`) AS `days_since_checkin`,(select timestampdiff(HOUR,`meetmee_checkin3`.`check_in`.`Check_In_Time`,(select now() AS `NOW()`)) AS `TIMESTAMPDIFF(HOUR, check_in.check_in_time, (SELECT NOW()))`) AS `hours_since_checkin`,(select timestampdiff(MINUTE,`meetmee_checkin3`.`check_in`.`Check_In_Time`,(select now() AS `NOW()`)) AS `TIMESTAMPDIFF(MINUTE, check_in.check_in_time, (SELECT NOW()))`) AS `minutes_since_checkin`,`meetmee_checkin3`.`check_in`.`SubLocation` AS `checkin_sublocation` from ((((`meetmee_checkin3`.`identification_media` `im` join `meetmee_checkin3`.`identification_media_type` `imt` on((`im`.`Type` = `imt`.`ID`))) join `meetmee_checkin3`.`people` on((`meetmee_checkin3`.`people`.`identification_id` = `im`.`ID`))) join `meetmee_checkin3`.`edge_users` `eu` on((`eu`.`ID` = `meetmee_checkin3`.`people`.`edge_users_id`))) join `meetmee_checkin3`.`check_in` on((`meetmee_checkin3`.`check_in`.`identification_media_id` = `im`.`ID`))) order by `meetmee_checkin3`.`check_in`.`Check_In_Time` desc;
 
+
 --
--- Dumping data for table `view_checkins`
+-- Table structure for table `view_list_distinctusercheckins_perdate`
 --
 
-INSERT INTO `view_checkins` (`edge_user_id`, `firstname`, `lastname`, `occupation`, `statusmessage`, `imt_name`, `im_id`, `checkin_timestamp`, `months_since_checkin`, `days_since_checkin`, `hours_since_checkin`, `minutes_since_checkin`, `checkin_sublocation`) VALUES
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-22 15:40:01', 0, 0, 0, 27, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-22 15:39:57', 0, 0, 0, 27, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-22 15:39:55', 0, 0, 0, 27, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-22 15:39:52', 0, 0, 0, 27, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-22 15:39:50', 0, 0, 0, 27, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-22 15:39:47', 0, 0, 0, 27, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-22 15:39:44', 0, 0, 0, 27, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-22 13:10:49', 0, 0, 2, 176, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-21 17:40:48', 0, 0, 22, 1346, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-21 17:40:45', 0, 0, 22, 1346, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-21 14:28:05', 0, 1, 25, 1539, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-21 08:53:48', 0, 1, 31, 1873, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-21 08:53:36', 0, 1, 31, 1874, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-21 08:53:31', 0, 1, 31, 1874, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-20 08:53:34', 0, 2, 55, 3314, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-19 14:28:07', 0, 3, 73, 4419, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-15 19:05:09', 0, 6, 165, 9902, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-15 19:05:05', 0, 6, 165, 9902, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-15 19:04:52', 0, 6, 165, 9902, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-13 08:53:42', 0, 9, 223, 13393, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-12 08:53:38', 0, 10, 247, 14834, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-06 14:28:11', 0, 16, 385, 23139, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-05 14:28:09', 0, 17, 409, 24579, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-03 08:53:55', 0, 19, 463, 27793, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-02-10 19:04:44', 1, 40, 981, 58862, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-02-02 17:40:52', 1, 48, 1174, 70466, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-01-15 19:04:59', 2, 66, 1605, 96302, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2011-03-22 13:11:01', 12, 366, 8786, 527216, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2011-03-22 11:10:56', 12, 366, 8788, 527336, 0);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_list_distinctusercheckins_perdate` AS select `view_checkins`.`edge_user_id` AS `edge_user_id`,`view_checkins`.`firstname` AS `firstname`,`view_checkins`.`lastname` AS `lastname`,`view_checkins`.`occupation` AS `occupation`,`view_checkins`.`statusmessage` AS `statusmessage`,`view_checkins`.`imt_name` AS `imt_name`,`view_checkins`.`im_id` AS `im_id`,`view_checkins`.`checkin_timestamp` AS `checkin_timestamp`,`view_checkins`.`months_since_checkin` AS `months_since_checkin`,`view_checkins`.`days_since_checkin` AS `days_since_checkin`,`view_checkins`.`hours_since_checkin` AS `hours_since_checkin`,`view_checkins`.`minutes_since_checkin` AS `minutes_since_checkin`,`view_checkins`.`checkin_sublocation` AS `checkin_sublocation` from `meetmee_checkin3`.`view_checkins` group by `view_checkins`.`edge_user_id`,cast(`view_checkins`.`checkin_timestamp` as date);
 
--- --------------------------------------------------------
+
+
 
 --
 -- Table structure for table `view_highscorelist_distinctusercheckinsperday_thismonth`
@@ -703,15 +669,15 @@ INSERT INTO `view_checkins` (`edge_user_id`, `firstname`, `lastname`, `occupatio
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_highscorelist_distinctusercheckinsperday_thismonth` AS select `view_list_distinctusercheckins_perdate`.`edge_user_id` AS `edge_user_id`,`view_list_distinctusercheckins_perdate`.`firstname` AS `firstname`,`view_list_distinctusercheckins_perdate`.`lastname` AS `lastname`,monthname(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`) AS `thismonth_name`,count(0) AS `distinct_checkindays` from `meetmee_checkin3`.`view_list_distinctusercheckins_perdate` where (extract(year_month from `view_list_distinctusercheckins_perdate`.`checkin_timestamp`) = extract(year_month from (select now() AS `NOW()`))) group by `view_list_distinctusercheckins_perdate`.`edge_user_id` order by count(0) desc;
 
+
+
+
+
+-- --------------------------------------------------------
+
 --
 -- Dumping data for table `view_highscorelist_distinctusercheckinsperday_thismonth`
 --
-
-INSERT INTO `view_highscorelist_distinctusercheckinsperday_thismonth` (`edge_user_id`, `firstname`, `lastname`, `thismonth_name`, `distinct_checkindays`) VALUES
-(32, 'Batman', '', 'March', 6),
-(34, 'Superman', '', 'March', 5),
-(28, 'Jeremiah', 'Down', 'March', 5),
-(24, 'Spiderman', 'Monnkkey', 'March', 2);
 
 -- --------------------------------------------------------
 
@@ -725,11 +691,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_highscorelist_distinctusercheckinsperday_thisweek`
 --
 
-INSERT INTO `view_highscorelist_distinctusercheckinsperday_thisweek` (`edge_user_id`, `firstname`, `lastname`, `weekofyear`, `distinct_checkindays`) VALUES
-(34, 'Superman', '', 201212, 4),
-(24, 'Spiderman', 'Monnkkey', 201212, 2),
-(28, 'Jeremiah', 'Down', 201212, 2),
-(32, 'Batman', '', 201212, 2);
 
 -- --------------------------------------------------------
 
@@ -743,12 +704,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_highscorelist_distinctusercheckinsperday_thisyear`
 --
 
-INSERT INTO `view_highscorelist_distinctusercheckinsperday_thisyear` (`edge_user_id`, `firstname`, `lastname`, `thisyear`, `distinct_checkindays`) VALUES
-(28, 'Jeremiah', 'Down', 2012, 6),
-(32, 'Batman', '', 2012, 6),
-(34, 'Superman', '', 2012, 5),
-(24, 'Spiderman', 'Monnkkey', 2012, 4);
-
 -- --------------------------------------------------------
 
 --
@@ -761,50 +716,13 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_highscorelist_distinctusercheckins_all`
 --
 
-INSERT INTO `view_highscorelist_distinctusercheckins_all` (`edge_user_id`, `firstname`, `lastname`, `distinct_checkindays`) VALUES
-(28, 'Jeremiah', 'Down', 7),
-(32, 'Batman', '', 6),
-(34, 'Superman', '', 6),
-(24, 'Spiderman', 'Monnkkey', 4);
-
 -- --------------------------------------------------------
 
---
--- Table structure for table `view_list_distinctusercheckins_perdate`
---
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_list_distinctusercheckins_perdate` AS select `view_checkins`.`edge_user_id` AS `edge_user_id`,`view_checkins`.`firstname` AS `firstname`,`view_checkins`.`lastname` AS `lastname`,`view_checkins`.`occupation` AS `occupation`,`view_checkins`.`statusmessage` AS `statusmessage`,`view_checkins`.`imt_name` AS `imt_name`,`view_checkins`.`im_id` AS `im_id`,`view_checkins`.`checkin_timestamp` AS `checkin_timestamp`,`view_checkins`.`months_since_checkin` AS `months_since_checkin`,`view_checkins`.`days_since_checkin` AS `days_since_checkin`,`view_checkins`.`hours_since_checkin` AS `hours_since_checkin`,`view_checkins`.`minutes_since_checkin` AS `minutes_since_checkin`,`view_checkins`.`checkin_sublocation` AS `checkin_sublocation` from `meetmee_checkin3`.`view_checkins` group by `view_checkins`.`edge_user_id`,cast(`view_checkins`.`checkin_timestamp` as date);
 
 --
 -- Dumping data for table `view_list_distinctusercheckins_perdate`
 --
 
-INSERT INTO `view_list_distinctusercheckins_perdate` (`edge_user_id`, `firstname`, `lastname`, `occupation`, `statusmessage`, `imt_name`, `im_id`, `checkin_timestamp`, `months_since_checkin`, `days_since_checkin`, `hours_since_checkin`, `minutes_since_checkin`, `checkin_sublocation`) VALUES
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-01-15 19:04:59', 2, 66, 1605, 96302, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-02-02 17:40:52', 1, 48, 1174, 70466, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-21 14:28:05', 0, 1, 25, 1539, 0),
-(24, 'Spiderman', 'Monnkkey', 'Student in Monkeystudies', 'Programming Monkey-Microcontrollers', 'RFID', '4500B8D75B71', '2012-03-22 15:39:52', 0, 0, 0, 27, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2011-03-22 11:10:56', 12, 366, 8788, 527336, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-02-10 19:04:44', 1, 40, 981, 58862, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-05 14:28:09', 0, 17, 409, 24579, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-06 14:28:11', 0, 16, 385, 23139, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-15 19:04:52', 0, 6, 165, 9902, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-21 08:53:36', 0, 1, 31, 1874, 0),
-(28, 'Jeremiah', 'Down', 'Programmer / Visual Artist', 'Developing a User Interface in Processing', 'RFID', '4500B8DF290B', '2012-03-22 15:40:01', 0, 0, 0, 27, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-03 08:53:55', 0, 19, 463, 27793, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-12 08:53:38', 0, 10, 247, 14834, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-13 08:53:42', 0, 9, 223, 13394, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-15 19:05:05', 0, 6, 165, 9902, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-21 17:40:45', 0, 0, 22, 1346, 0),
-(32, 'Batman', '', '', '', 'RFID', '4500B8C00D30', '2012-03-22 15:39:55', 0, 0, 0, 27, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2011-03-22 13:11:01', 12, 366, 8786, 527216, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-15 19:05:09', 0, 6, 165, 9902, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-19 14:28:07', 0, 3, 73, 4419, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-20 08:53:34', 0, 2, 55, 3314, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-21 17:40:48', 0, 0, 22, 1346, 0),
-(34, 'Superman', '', '', '', 'RFID', '4500B8C293AC', '2012-03-22 15:39:57', 0, 0, 0, 27, 0);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `view_number_distinctusercheckins_all`
@@ -816,9 +734,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_number_distinctusercheckins_all`
 --
 
-INSERT INTO `view_number_distinctusercheckins_all` (`distinct_usercheckins`) VALUES
-(4);
-
 -- --------------------------------------------------------
 
 --
@@ -827,27 +742,7 @@ INSERT INTO `view_number_distinctusercheckins_all` (`distinct_usercheckins`) VAL
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_number_distinctusercheckins_perdate` AS select cast(`view_checkins`.`checkin_timestamp` as date) AS `checkin_date`,count(distinct `view_checkins`.`edge_user_id`) AS `distinct_usercheckins` from `meetmee_checkin3`.`view_checkins` group by cast(`view_checkins`.`checkin_timestamp` as date) order by cast(`view_checkins`.`checkin_timestamp` as date) desc;
 
---
--- Dumping data for table `view_number_distinctusercheckins_perdate`
---
 
-INSERT INTO `view_number_distinctusercheckins_perdate` (`checkin_date`, `distinct_usercheckins`) VALUES
-('2012-03-22', 4),
-('2012-03-21', 4),
-('2012-03-20', 1),
-('2012-03-19', 1),
-('2012-03-15', 3),
-('2012-03-13', 1),
-('2012-03-12', 1),
-('2012-03-06', 1),
-('2012-03-05', 1),
-('2012-03-03', 1),
-('2012-02-10', 1),
-('2012-02-02', 1),
-('2012-01-15', 1),
-('2011-03-22', 2);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `view_number_distinctusercheckins_perhour`
@@ -859,16 +754,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_number_distinctusercheckins_perhour`
 --
 
-INSERT INTO `view_number_distinctusercheckins_perhour` (`hour`, `distinct_usercheckins`) VALUES
-(8, 4),
-(11, 1),
-(13, 2),
-(14, 3),
-(15, 4),
-(17, 3),
-(19, 4);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `view_number_distinctusercheckins_permonth`
@@ -880,10 +765,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_number_distinctusercheckins_permonth`
 --
 
-INSERT INTO `view_number_distinctusercheckins_permonth` (`month_index`, `month_name`, `distinct_usercheckins`) VALUES
-(1, 'January', 1),
-(2, 'February', 2),
-(3, 'March', 4);
 
 -- --------------------------------------------------------
 
@@ -897,38 +778,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Dumping data for table `view_number_distinctusercheckins_perweekday`
 --
 
-INSERT INTO `view_number_distinctusercheckins_perweekday` (`weekday_index`, `weekday_name`, `distinct_usercheckins`) VALUES
-(0, 'Monday', 3),
-(1, 'Tuesday', 3),
-(2, 'Wednesday', 4),
-(3, 'Thursday', 4),
-(4, 'Friday', 1),
-(5, 'Saturday', 1),
-(6, 'Sunday', 1);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `view_number_distinctusercheckins_thismonth_perday`
 --
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_number_distinctusercheckins_thismonth_perday` AS select dayofmonth(`view_checkins`.`checkin_timestamp`) AS `dayofmonth_index`,dayname(`view_checkins`.`checkin_timestamp`) AS `weekday_name`,cast(`view_checkins`.`checkin_timestamp` as date) AS `date`,count(distinct `view_checkins`.`edge_user_id`) AS `distinct_usercheckins` from `meetmee_checkin3`.`view_checkins` where (extract(year_month from `view_checkins`.`checkin_timestamp`) = extract(year_month from (select now() AS `NOW()`))) group by dayofmonth(`view_checkins`.`checkin_timestamp`) order by dayofmonth(`view_checkins`.`checkin_timestamp`);
-
---
--- Dumping data for table `view_number_distinctusercheckins_thismonth_perday`
---
-
-INSERT INTO `view_number_distinctusercheckins_thismonth_perday` (`dayofmonth_index`, `weekday_name`, `date`, `distinct_usercheckins`) VALUES
-(3, 'Saturday', '2012-03-03', 1),
-(5, 'Monday', '2012-03-05', 1),
-(6, 'Tuesday', '2012-03-06', 1),
-(12, 'Monday', '2012-03-12', 1),
-(13, 'Tuesday', '2012-03-13', 1),
-(15, 'Thursday', '2012-03-15', 3),
-(19, 'Monday', '2012-03-19', 1),
-(20, 'Tuesday', '2012-03-20', 1),
-(21, 'Wednesday', '2012-03-21', 4),
-(22, 'Thursday', '2012-03-22', 4);
 
 -- --------------------------------------------------------
 
@@ -938,16 +793,6 @@ INSERT INTO `view_number_distinctusercheckins_thismonth_perday` (`dayofmonth_ind
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_number_distinctusercheckins_thisweek_perday` AS select weekday(`view_checkins`.`checkin_timestamp`) AS `weekday_index`,dayname(`view_checkins`.`checkin_timestamp`) AS `weekday_name`,cast(`view_checkins`.`checkin_timestamp` as date) AS `date`,count(distinct `view_checkins`.`edge_user_id`) AS `distinct_usercheckins` from `meetmee_checkin3`.`view_checkins` where (yearweek(`view_checkins`.`checkin_timestamp`,7) = yearweek((select now() AS `NOW()`),7)) group by weekday(`view_checkins`.`checkin_timestamp`) order by weekday(`view_checkins`.`checkin_timestamp`);
 
---
--- Dumping data for table `view_number_distinctusercheckins_thisweek_perday`
---
-
-INSERT INTO `view_number_distinctusercheckins_thisweek_perday` (`weekday_index`, `weekday_name`, `date`, `distinct_usercheckins`) VALUES
-(0, 'Monday', '2012-03-19', 1),
-(1, 'Tuesday', '2012-03-20', 1),
-(2, 'Wednesday', '2012-03-21', 4),
-(3, 'Thursday', '2012-03-22', 4);
-
 -- --------------------------------------------------------
 
 --
@@ -956,15 +801,6 @@ INSERT INTO `view_number_distinctusercheckins_thisweek_perday` (`weekday_index`,
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_number_distinctusercheckins_today_perhour` AS select hour(`view_checkins`.`checkin_timestamp`) AS `hour`,cast(`view_checkins`.`checkin_timestamp` as date) AS `date`,count(distinct `view_checkins`.`edge_user_id`) AS `distinct_usercheckins` from `meetmee_checkin3`.`view_checkins` where (cast(`view_checkins`.`checkin_timestamp` as date) = cast((select now() AS `NOW()`) as date)) group by hour(`view_checkins`.`checkin_timestamp`) order by hour(`view_checkins`.`checkin_timestamp`);
 
---
--- Dumping data for table `view_number_distinctusercheckins_today_perhour`
---
-
-INSERT INTO `view_number_distinctusercheckins_today_perhour` (`hour`, `date`, `distinct_usercheckins`) VALUES
-(13, '2012-03-22', 1),
-(15, '2012-03-22', 4);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `view_number_totalusercheckins_peryearmonth`
@@ -972,17 +808,6 @@ INSERT INTO `view_number_distinctusercheckins_today_perhour` (`hour`, `date`, `d
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_number_totalusercheckins_peryearmonth` AS select extract(year_month from `view_list_distinctusercheckins_perdate`.`checkin_timestamp`) AS `yearmonth_index`,monthname(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`) AS `month_name`,year(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`) AS `year`,count(`view_list_distinctusercheckins_perdate`.`edge_user_id`) AS `total_usercheckins` from `meetmee_checkin3`.`view_list_distinctusercheckins_perdate` group by extract(year_month from `view_list_distinctusercheckins_perdate`.`checkin_timestamp`) order by extract(year_month from `view_list_distinctusercheckins_perdate`.`checkin_timestamp`);
 
---
--- Dumping data for table `view_number_totalusercheckins_peryearmonth`
---
-
-INSERT INTO `view_number_totalusercheckins_peryearmonth` (`yearmonth_index`, `month_name`, `year`, `total_usercheckins`) VALUES
-(201103, 'March', 2011, 2),
-(201201, 'January', 2012, 1),
-(201202, 'February', 2012, 2),
-(201203, 'March', 2012, 18);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `view_number_totalusercheckins_peryearweek`
@@ -990,16 +815,3 @@ INSERT INTO `view_number_totalusercheckins_peryearmonth` (`yearmonth_index`, `mo
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `meetmee_checkin3`.`view_number_totalusercheckins_peryearweek` AS select yearweek(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`,7) AS `yearweek_index`,week(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`,7) AS `weekofyear`,year(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`) AS `year`,count(`view_list_distinctusercheckins_perdate`.`edge_user_id`) AS `total_usercheckins` from `meetmee_checkin3`.`view_list_distinctusercheckins_perdate` group by yearweek(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`,7) order by yearweek(`view_list_distinctusercheckins_perdate`.`checkin_timestamp`,7);
 
---
--- Dumping data for table `view_number_totalusercheckins_peryearweek`
---
-
-INSERT INTO `view_number_totalusercheckins_peryearweek` (`yearweek_index`, `weekofyear`, `year`, `total_usercheckins`) VALUES
-(201112, 12, 2011, 2),
-(201202, 2, 2012, 1),
-(201205, 5, 2012, 1),
-(201206, 6, 2012, 1),
-(201209, 9, 2012, 1),
-(201210, 10, 2012, 2),
-(201211, 11, 2012, 5),
-(201212, 12, 2012, 10);
