@@ -8,12 +8,12 @@ $dateTime = new DateTime("now", new DateTimeZone('Australia/Brisbane'));
 $mainlocation = 99; // 99 = The Edge;
 $sublocation = $_GET["sublocation"];
 $checkintime = $dateTime->format("Y-m-d H:i:s");
-$im_type = 1; // 1 = RFID
+$im_type = $_GET["im_type"]; // 1 = RFID
 $im_thirdpartyid = $_GET["thirdpartyid"]; // unique RFID number
 
 $sql_get_im_id = "SELECT id FROM identification_media im WHERE im.thirdpartyid = '".$im_thirdpartyid."' AND im.type = " . $im_type;
 
-	if($_GET["thirdpartyid"] != "") {
+	if(($_GET["thirdpartyid"] != "") && ($_GET["im_type"] != "")) {
 		$query = 'INSERT INTO check_in (MainLocation, SubLocation, Check_In_Time, identification_media_id) VALUES (\''.$mainlocation.'\', \''.$sublocation.'\', \''.$checkintime.'\',('.$sql_get_im_id.'))';
 		
 		echo $query;
@@ -48,8 +48,8 @@ $sql_get_im_id = "SELECT id FROM identification_media im WHERE im.thirdpartyid =
 
 		
 	} else{
-		echo "RFID parameter not set! </br>
-		Checkin call must have following format: .../checkin_submit_manual.php?thirdpartyid=xxx&sublocation=yyy";
+		echo "one or more ID parameters not set! </br>
+		Checkin call must have following format: .../checkin_submit_manual.php?im_type=x&thirdpartyid=xxxxx&sublocation=yyy";
 	}
 
 
