@@ -1,4 +1,4 @@
-//sql_statements.txt
+//sql_statements.txtx
 
 //get all expertise keywords
 SELECT expertise, COUNT(expertise) AS frequency FROM expertise_table GROUP BY expertise ORDER BY frequency DESC
