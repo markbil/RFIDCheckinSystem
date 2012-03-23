@@ -93,7 +93,7 @@ void serialEvent (Serial myPort) {
           rfidReaderApp.setWritingToDB(true);
    
           //PERFOM CHECKIN TO DB
-          String checkin_url = "http://" + host_server + "/TheEdge_VisitorProfiles/checkin_submit_manual.php?thirdpartyid=" + inString;
+          String checkin_url = "http://" + host_server + "/TheEdge_VisitorProfiles/checkin_submit_manual.php?im_type=1&thirdpartyid=" + inString;
           String checkin_result[] = loadStrings(checkin_url);
           
           
