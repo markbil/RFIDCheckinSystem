@@ -2,7 +2,6 @@ TODO Checkin System:
 
 ---HIGH PRIORITY---
 
-
 1) change login.php: users should be using their username/pw to login, not swipe-id/pw.
 
 2) error handling at signup.php: what happens if…
@@ -10,8 +9,14 @@ TODO Checkin System:
  - Edge staff enters an RFID card number that was already assigned to another Edge visitor?
 - signup.php: add "repeat password field", only accept signup if both passwords match
 
-3) update-profile.php:
-- right now swipe-id cannot be changed (text field not editable), but what happens if user looses his RFID card. => my suggestion for the 1st rollout: write us an email and we change it in the DB.. later we might think about an administration userinterface for such purposes…
+3) include two checkboxes (mutually exclusive, i.e. you can select one OR the other OR none of them (default is none)):
+- I am happy to be approached by other users
+- Don't talk to me, I busy doing my own stuff
+
+the checkboxes connect to the "dontdisturb" field in the "edge_users" table (as of meetmee_checkin6.sql):
+happy to talk to others = 0
+don't talk to me = 1
+no box checked (default) = NULL (default value in the DB, so nothing needs to be passed)
 
 
 ---MEDIUM PRIORITY---
@@ -31,6 +36,8 @@ TODO Checkin System:
 
 8) create an MySQL Views / API for developers to read from the checkin-DB 
 
+9) update-profile.php:
+- right now swipe-id cannot be changed (text field not editable), but what happens if user looses his RFID card. => my suggestion for the 1st rollout: write us an email and we change it in the DB.. later we might think about an administration userinterface for such purposes…
 
 
 ---LOG---
