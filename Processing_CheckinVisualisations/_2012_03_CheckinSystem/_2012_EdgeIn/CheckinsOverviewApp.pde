@@ -39,7 +39,7 @@ class CheckinsOverviewApp {
     String user     = "root";
     String pass     = "";
     String database = "meetmee_checkin6";
-    int threadwaittime = 10000; //ms before each DB-fetch
+    int threadwaittime = 2000; //ms before each DB-fetch
     
     
     	
