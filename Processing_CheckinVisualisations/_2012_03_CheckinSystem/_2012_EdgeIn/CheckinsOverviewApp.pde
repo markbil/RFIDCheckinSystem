@@ -17,9 +17,9 @@ class CheckinsOverviewApp {
     //get all interest keywords
     String questions_all = "SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC";
     
-    String users_checkedin = "SELECT * FROM view_checkins";
+    //String users_checkedin = "SELECT * FROM view_checkins";
     //all check-ins and user details within the last x months/days/hours/minutes. only the most recent checkin per edge_user in the given timeperiod is returned
-    //String users_checkedin = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE months_since_checkin < 7 GROUP BY edge_user_id ORDER BY checkin_timestamp_mostrecent";
+    String users_checkedin = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE months_since_checkin < 7 GROUP BY edge_user_id ORDER BY checkin_timestamp";
     
     // get all expertise keywords from a particular checked_in user (im.thirdpartyid)
     String expertise_user_checkedin = "SELECT et.expertise FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN expertise_table et ON et.edge_users_id = eu.id) WHERE eu.id = "; //+ 28
@@ -90,7 +90,18 @@ class CheckinsOverviewApp {
               String lastname = dbconnection.getString("lastname");
               String occupation = dbconnection.getString("occupation");
               String statusmessage = dbconnection.getString("statusmessage");
-              String timestamp = dbconnection.getString("checkin_timestamp");
+              //String timestamp = dbconnection.getString("checkin_timestamp");
+              String timestamp = "";
+              int months_since_checkin = dbconnection.getInt("months_since_checkin");
+              int days_since_checkin = dbconnection.getInt("days_since_checkin");
+              int hours_since_checkin = dbconnection.getInt("hours_since_checkin");
+              int minutes_since_checkin = dbconnection.getInt("minutes_since_checkin");
+              
+              if(months_since_checkin > 0) timestamp = months_since_checkin + " months";
+              else if(days_since_checkin > 0) timestamp = days_since_checkin + " days";
+              else if(hours_since_checkin > 0) timestamp = hours_since_checkin + " hours";
+              else if(minutes_since_checkin > 0) timestamp = minutes_since_checkin + " minutes";
+              
               String sublocation = dbconnection.getString("checkin_sublocation");
               println(firstname + " \t " + lastname + " \t " + timestamp + " \t " + sublocation);
               
@@ -211,7 +222,14 @@ class UserCard extends GUI {
         statusmessage_lb.textColor = color(127, 127, 0);  
         addWidget(statusmessage_lb);     
         
-        Label timestamp_lb = new Label("Checked in " + timestamp + " at " + sublocation);
+        Label timestamp_lb;
+        println ("sublocation: " + sublocation);
+        if(sublocation == null){
+          timestamp_lb = new Label("Checked in " + timestamp + " ago");
+        } else{
+          timestamp_lb = new Label("Checked in " + timestamp + " ago at " + sublocation);
+        }
+        
         timestamp_lb.setTranslation(0, 100);
         timestamp_lb.setFont(font_usersubtitle); 
         timestamp_lb.textColor = color(127, 127, 0);  
