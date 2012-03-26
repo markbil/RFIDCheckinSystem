@@ -17,8 +17,9 @@ class CheckinsOverviewApp {
     //get all interest keywords
     String questions_all = "SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC";
     
-    // get all checked-in users with user_details and checkin details (user id, firstname, lastname, identification_media_type and id, timestamp, sublimation)
-    String users_checkedin = "SELECT eu.id AS edge_user_id, eu.firstname, eu.lastname, eu.occupation, eu.statusmessage, imt.name AS imt_name, im.ThirdPartyID AS im_id, check_in.check_in_time AS checkin_timestamp, check_in.sublocation AS checkin_sublocation FROM (((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON check_in.identification_media_id = im.id";
+    String users_checkedin = "SELECT * FROM view_checkins";
+    //all check-ins and user details within the last x months/days/hours/minutes. only the most recent checkin per edge_user in the given timeperiod is returned
+    //String users_checkedin = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE months_since_checkin < 7 GROUP BY edge_user_id ORDER BY checkin_timestamp_mostrecent";
     
     // get all expertise keywords from a particular checked_in user (im.thirdpartyid)
     String expertise_user_checkedin = "SELECT et.expertise FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN expertise_table et ON et.edge_users_id = eu.id) WHERE eu.id = "; //+ 28
@@ -37,8 +38,8 @@ class CheckinsOverviewApp {
     //mysql-account
     String user     = "root";
     String pass     = "";
-    String database = "meetmee_checkin3";
-    int threadwaittime = 20000; //ms before each DB-fetch
+    String database = "meetmee_checkin6";
+    int threadwaittime = 10000; //ms before each DB-fetch
     
     
     	
