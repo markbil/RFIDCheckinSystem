@@ -22,7 +22,7 @@ class Label extends Widget {
     int fontSize = getFontSize();
     
     if(alignment != -99)
-      textAlign(alignment, CENTER); 	
+      textAlign(alignment, TOP); 	
     else
       textAlign(CENTER, CENTER);
       
