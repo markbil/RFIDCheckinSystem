@@ -1,6 +1,6 @@
 class Label extends Widget {
 
-  String alignment;
+  int alignment = -99;
   
   Label(String textString) {
     super(new Point(0.0, 0.0)); 
@@ -8,7 +8,7 @@ class Label extends Widget {
     setTextString(textString);
   }
 
-  Label(String textString, String alignment) {
+  Label(String textString, int alignment) {
     super(new Point(0.0, 0.0)); 
     this.alignment = alignment;
     setTextMargin(2.0); 
@@ -21,8 +21,8 @@ class Label extends Widget {
     fill(textColor);
     int fontSize = getFontSize();
     
-    if(alignment == "left")
-      textAlign(LEFT, CENTER); 	
+    if(alignment != -99)
+      textAlign(alignment, CENTER); 	
     else
       textAlign(CENTER, CENTER);
       
