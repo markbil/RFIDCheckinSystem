@@ -18,6 +18,8 @@ happy to talk to others = 0
 don't talk to me = 1
 no box checked (default) = NULL (default value in the DB, so nothing needs to be passed)
 
+4) for each skill/expertise text field: create a drop down list that enables the user to select his expertise level (1 beginner - 5 expert) for each skill,
+and connect to DB field: expertise_table->level
 
 ---MEDIUM PRIORITY---
 
