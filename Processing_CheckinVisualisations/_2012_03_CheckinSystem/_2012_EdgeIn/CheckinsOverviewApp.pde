@@ -218,7 +218,6 @@ class UserCard extends GUI {
         addWidget(statusmessage_lb);     
         
         Label timestamp_lb;
-        println ("sublocation: " + sublocation);
         if(sublocation == null){
           timestamp_lb = new Label("Checked in " + timestamp + " ago", LEFT);
         } else{
@@ -300,6 +299,14 @@ class UserCard extends GUI {
   String[] getQuestions(){
     return this.questions;
   }  
+
+ void drawWidget() {
+    fill(255);
+    stroke(0);
+    rect(-10, -10, 380, height);   // w and h are fields inherited from GUI
+    super.drawWidget();
+ }
+
 
   
 //  float shear = 0.0;
