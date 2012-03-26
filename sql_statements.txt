@@ -32,20 +32,16 @@ SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, i
 	minutes_since_checkin < 11	//checkins in the last 10 minutes
 
 
-// get all expertise keywords from a particular checked_in user (im.thirdpartyid)
-SELECT et.expertise FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN expertise_table et ON et.edge_users_id = eu.id) WHERE eu.id =  28
 
-	//alternatively use edge_user_id to filter a particular user
-	WHERE eu.id = 28 instead of
-	WHERE im.thirdpartyid = 5408543
+// get all expertise keywords from a particular user (edge_users.id)
+	String expertise_user_checkedin = "SELECT expertise FROM expertise_table WHERE edge_users_id = "; //+ 28
 
-
-// get all interest keywords from a particular checked_in user
-SELECT it.interest FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN interest_table it ON it.edge_users_id = eu.id) WHERE im.thirdpartyid = 123456
-
+// get all interest keywords from a particular user
+	String interests_user_checkedin = "SELECT interest FROM interest_table WHERE edge_users_id = ";
 
 // get all questions from a particular checked_in user
-SELECT qt.question FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN questions_table qt ON qt.edge_users_id = eu.id) WHERE im.thirdpartyid = 123456
+	String questions_user_checkedin = "SELECT question FROM questions_table WHERE edge_users_id = ";
+
 
 
 //HIGHSCORE LISTS--------: list of users with total number of checkins on distinct days over a particular period of time, e.g. this week, this month, this year
@@ -114,3 +110,17 @@ SELECT (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) AS yearmonth_index, MONTHNAM
 
 //VIEW: "view_number_totalusercheckins_peryearweek" = number of total users who have checked-in per year and week
 SELECT YEARWEEK(checkin_timestamp,7) AS yearweek_index, WEEK(checkin_timestamp,7) AS weekofyear, YEAR(checkin_timestamp) as year, COUNT(edge_user_id) AS total_usercheckins FROM view_list_distinctusercheckins_perdate GROUP BY YEARWEEK(checkin_timestamp,7) ORDER BY YEARWEEK(checkin_timestamp,7)
+
+
+
+------DEPRECATED queries--------------
+
+// get all expertise keywords from a particular checked_in user (im.thirdpartyid)
+	SELECT et.expertise FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN expertise_table et ON et.edge_users_id = eu.id) WHERE eu.id =  28
+		//alternatively use edge_user_id to filter a particular user
+		WHERE eu.id = 28 instead of
+		WHERE im.thirdpartyid = 5408543
+// get all interest keywords from a particular checked_in user
+	SELECT it.interest FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN interest_table it ON it.edge_users_id = eu.id) WHERE im.thirdpartyid = 123456
+// get all questions from a particular checked_in user
+	SELECT qt.question FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN questions_table qt ON qt.edge_users_id = eu.id) WHERE im.thirdpartyid = 123456
