@@ -102,15 +102,21 @@ class Widget {
 
   java.awt.Polygon createBoundingBox(String label, float margin) {
 
-    textFont(getFont(), fontSize);
+    if(getFont() != null) textFont(getFont(), fontSize);
     java.awt.Polygon  bb = new java.awt.Polygon();
-    bb.addPoint((int)(-textWidth(label)/margin), (int)(-fontSize/margin)); 
-    bb.addPoint((int)( textWidth(label)/margin), (int)(-fontSize/margin)); 
-    bb.addPoint((int)( textWidth(label)/margin), (int)( fontSize/margin)); 
-    bb.addPoint((int)(-textWidth(label)/margin), (int)( fontSize/margin));
-
-    radius = (textWidth(label)/margin + fontSize/margin) / 4; 
+    if (bb != null) {
+      bb.addPoint((int)(-textWidth(label)/margin), (int)(-fontSize/margin)); 
+      bb.addPoint((int)( textWidth(label)/margin), (int)(-fontSize/margin)); 
+      bb.addPoint((int)( textWidth(label)/margin), (int)( fontSize/margin)); 
+      bb.addPoint((int)(-textWidth(label)/margin), (int)( fontSize/margin));
+    }else{
+      println("help!!! out of memory!");
+    }        
+    if(label != null){
+      radius = (textWidth(label)/margin + fontSize/margin) / 4; 
+    }
     return bb;
+
   }
 
 
