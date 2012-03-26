@@ -199,19 +199,19 @@ class UserCard extends GUI {
     
 
     
-        Label name_lb = new Label(firstname + " " + lastname, "left"); 
+        Label name_lb = new Label(firstname + " " + lastname, LEFT); 
         name_lb.setTranslation(0, 0);
         name_lb.setFont(font_username); 
         name_lb.textColor = color(0, 10, 20);  
         addWidget(name_lb);
         
-        Label occupation_lb = new Label(occupation, "left");
+        Label occupation_lb = new Label(occupation, LEFT);
         occupation_lb.setTranslation(0, 40);
         occupation_lb.setFont(font_usersubtitle); 
         occupation_lb.textColor = color(127, 127, 0);  
         addWidget(occupation_lb);
      
-        Label statusmessage_lb = new Label(statusmessage, "left");
+        Label statusmessage_lb = new Label(statusmessage, LEFT);
         statusmessage_lb.setTranslation(0, 70);
         statusmessage_lb.setFont(font_usersubtitle); 
         statusmessage_lb.textColor = color(127, 127, 0);  
@@ -220,9 +220,9 @@ class UserCard extends GUI {
         Label timestamp_lb;
         println ("sublocation: " + sublocation);
         if(sublocation == null){
-          timestamp_lb = new Label("Checked in " + timestamp + " ago", "left");
+          timestamp_lb = new Label("Checked in " + timestamp + " ago", LEFT);
         } else{
-          timestamp_lb = new Label("Checked in " + timestamp + " ago at " + sublocation, "left");
+          timestamp_lb = new Label("Checked in " + timestamp + " ago at " + sublocation, LEFT);
         }
         
         timestamp_lb.setTranslation(0, 100);
@@ -231,22 +231,36 @@ class UserCard extends GUI {
         addWidget(timestamp_lb);     
     
 //        float exp_angle = (-PI/expertise.length);
+        int gap = 20;
+        int vertical_offset = 160;
+        Label expertise_headline_lb = new Label("Areas of expertise:", LEFT);
+        expertise_headline_lb.setTranslation(0, vertical_offset - gap);
+        expertise_headline_lb.setFont(font_userdescription); 
+        expertise_headline_lb.textColor = color(127, 0, 0);
+        addWidget(expertise_headline_lb);   
         for (int i = 0; i < expertise.length; i++) {       
-            Label expertise_lb = new Label(expertise[i], "left");
-            expertise_lb.setTranslation(0, 150 + 20*i);
+            Label expertise_lb = new Label(expertise[i], LEFT);
+            expertise_lb.setTranslation(0, vertical_offset + gap*i);
             expertise_lb.setFont(font_userdescription); 
-            expertise_lb.textColor = color(127, 0, 0);  
+            expertise_lb.textColor = color(127, 127, 127);  
             //expertise_lb.setRotation(PI/2 - exp_angle * i);
             addWidget(expertise_lb);     
         }
         
+        
+        
+          Label interests_headline_lb = new Label("wants to know more about:", RIGHT);
+          interests_headline_lb.setTranslation(350, vertical_offset - gap);
+          interests_headline_lb.setFont(font_userdescription); 
+          interests_headline_lb.textColor = color(127, 0, 0);  
 //        float int_angle = (PI/interests.length);
+          addWidget(interests_headline_lb);  
         for (int i = 0; i < interests.length; i++) {       
-            Label interests_lb = new Label(interests[i], "left");
+            Label interests_lb = new Label(interests[i], RIGHT);
             //interests_lb.setTranslation(cos(PI/4-int_angle*i)*100, sin(PI/4-int_angle*i)*100);
-            interests_lb.setTranslation(100, 150 + 20*i);
+            interests_lb.setTranslation(350, vertical_offset + gap*i);
             interests_lb.setFont(font_userdescription); 
-            interests_lb.textColor = color(127, 0, 0);
+            interests_lb.textColor = color(127, 127, 127);
             //interests_lb.setRotation(-PI/2 + int_angle * i);  
             addWidget(interests_lb);     
         }
