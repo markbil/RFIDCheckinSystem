@@ -21,19 +21,14 @@ class CheckinsOverviewApp {
     //all check-ins and user details within the last x months/days/hours/minutes. only the most recent checkin per edge_user in the given timeperiod is returned
     String users_checkedin = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE months_since_checkin < 7 GROUP BY edge_user_id ORDER BY checkin_timestamp";
     
-    // get all expertise keywords from a particular checked_in user (im.thirdpartyid)
-    String expertise_user_checkedin = "SELECT et.expertise FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN expertise_table et ON et.edge_users_id = eu.id) WHERE eu.id = "; //+ 28
+    // get all expertise keywords from a particular user (edge_users.id)
+    String expertise_user_checkedin = "SELECT expertise FROM expertise_table WHERE edge_users_id = "; //+ 28
     
-    //...alternatively use edge_user_id to filter a particular user
-    //WHERE eu.id = 28 instead of
-    //WHERE im.thirdpartyid = 5408543
-    //WHERE im.thirdpartyid = 123456
-    
-    // get all interest keywords from a particular checked_in user
-    String interests_user_checkedin = "SELECT it.interest FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN interest_table it ON it.edge_users_id = eu.id) WHERE eu.id = ";
+    // get all interest keywords from a particular user
+    String interests_user_checkedin = "SELECT interest FROM interest_table WHERE edge_users_id = ";
     
     // get all questions from a particular checked_in user
-    String questions_user_checkedin = "SELECT qt.question FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN questions_table qt ON qt.edge_users_id = eu.id) WHERE eu.id = ";
+    String questions_user_checkedin = "SELECT question FROM questions_table WHERE edge_users_id = ";
 
     //mysql-account
     String user     = "root";
@@ -184,7 +179,7 @@ class UserCard extends GUI {
     //setFont
   PFont font_username = loadFont("Serif-28.vlw");
   PFont font_usersubtitle = loadFont("Serif-20.vlw");
-  PFont font_userdescription = loadFont("Serif-20.vlw");
+  PFont font_userdescription = loadFont("Serif-16.vlw");
   
   
   UserCard(String firstname, String lastname, String occupation, String statusmessage, String timestamp, String sublocation, String[] expertise, String[] interests, String[] questions) {
@@ -204,19 +199,19 @@ class UserCard extends GUI {
     
 
     
-        Label name_lb = new Label(firstname + " " + lastname); 
+        Label name_lb = new Label(firstname + " " + lastname, "left"); 
         name_lb.setTranslation(0, 0);
         name_lb.setFont(font_username); 
         name_lb.textColor = color(0, 10, 20);  
         addWidget(name_lb);
         
-        Label occupation_lb = new Label(occupation);
+        Label occupation_lb = new Label(occupation, "left");
         occupation_lb.setTranslation(0, 40);
         occupation_lb.setFont(font_usersubtitle); 
         occupation_lb.textColor = color(127, 127, 0);  
         addWidget(occupation_lb);
      
-        Label statusmessage_lb = new Label(statusmessage);
+        Label statusmessage_lb = new Label(statusmessage, "left");
         statusmessage_lb.setTranslation(0, 70);
         statusmessage_lb.setFont(font_usersubtitle); 
         statusmessage_lb.textColor = color(127, 127, 0);  
@@ -225,9 +220,9 @@ class UserCard extends GUI {
         Label timestamp_lb;
         println ("sublocation: " + sublocation);
         if(sublocation == null){
-          timestamp_lb = new Label("Checked in " + timestamp + " ago");
+          timestamp_lb = new Label("Checked in " + timestamp + " ago", "left");
         } else{
-          timestamp_lb = new Label("Checked in " + timestamp + " ago at " + sublocation);
+          timestamp_lb = new Label("Checked in " + timestamp + " ago at " + sublocation, "left");
         }
         
         timestamp_lb.setTranslation(0, 100);
@@ -235,22 +230,22 @@ class UserCard extends GUI {
         timestamp_lb.textColor = color(127, 127, 0);  
         addWidget(timestamp_lb);     
     
-        float exp_angle = (-PI/expertise.length);
+//        float exp_angle = (-PI/expertise.length);
         for (int i = 0; i < expertise.length; i++) {       
-            Label expertise_lb = new Label(expertise[i]);
-            expertise_lb.setTranslation(-250, 40*i);
-            expertise_lb.setFont(font_usersubtitle); 
+            Label expertise_lb = new Label(expertise[i], "left");
+            expertise_lb.setTranslation(0, 150 + 20*i);
+            expertise_lb.setFont(font_userdescription); 
             expertise_lb.textColor = color(127, 0, 0);  
             //expertise_lb.setRotation(PI/2 - exp_angle * i);
             addWidget(expertise_lb);     
         }
         
-        float int_angle = (PI/interests.length);
+//        float int_angle = (PI/interests.length);
         for (int i = 0; i < interests.length; i++) {       
-            Label interests_lb = new Label(interests[i]);
+            Label interests_lb = new Label(interests[i], "left");
             //interests_lb.setTranslation(cos(PI/4-int_angle*i)*100, sin(PI/4-int_angle*i)*100);
-            interests_lb.setTranslation(250, i*40);
-            interests_lb.setFont(font_usersubtitle); 
+            interests_lb.setTranslation(100, 150 + 20*i);
+            interests_lb.setFont(font_userdescription); 
             interests_lb.textColor = color(127, 0, 0);
             //interests_lb.setRotation(-PI/2 + int_angle * i);  
             addWidget(interests_lb);     
