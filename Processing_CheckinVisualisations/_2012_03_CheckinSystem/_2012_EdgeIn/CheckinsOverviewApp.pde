@@ -43,6 +43,7 @@ class CheckinsOverviewApp {
     
     PApplet applet;
   
+    //an array of locally synchronised usercards
     UserCard[] userCard; 
 
   CheckinsOverviewApp(PApplet applet) {
@@ -300,10 +301,23 @@ class UserCard extends GUI {
     return this.questions;
   }  
 
+
+ float shear = 0.0;
+ 
  void drawWidget() {
     fill(255);
     stroke(0);
-    rect(-10, -10, 380, height);   // w and h are fields inherited from GUI
+    
+    float width_temp = (float)w;
+    float height_temp = (float)h;
+    println("UserCard width: " + w); //output: "0.0" should be width
+    println("UserCard height: " + h); //output "0.0" should be height
+    
+//    rect(-10, -10, int(width_temp), int(height_temp));   // w and h are fields inherited from GUI
+    rect(-10, -10, 380, height);
+    
+    setTranslation(shear, shear); 
+    shear += PI / 1024;
     super.drawWidget();
  }
 

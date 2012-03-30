@@ -29,18 +29,22 @@ void cleanupCursors() {
 
       if (c.getState() == MTCURSOR_JUST_CREATED) {
         c.setState(MTCURSOR_MOVING);
-        
+
         if (c.target != null ) {
           c.target.addCursor(c); 
           c.target.onTouch();
         }
       }
-    } else {
+    } 
+    else {
       c.visited = true;
     }
 
     if (c.getState() == MTCURSOR_JUST_DELETED) {
       if (c.target != null) {
+        if (! c.hasMoved()) {
+          c.target.onTap();
+        }
         c.target.removeCursor(c);
       }
       toRemove.add(c);
@@ -65,9 +69,9 @@ class Widget {
 
 
   void setContainer(GUI gui) {
-    this.container = gui; 
+    this.container = gui;
   }
-  
+
   private float textMargin = 1.5; 
   void setTextMargin(float textMargin) {
     this.textMargin = textMargin; 
@@ -102,21 +106,20 @@ class Widget {
 
   java.awt.Polygon createBoundingBox(String label, float margin) {
 
-    if(getFont() != null) textFont(getFont(), fontSize);
+    textFont(getFont(), fontSize);
     java.awt.Polygon  bb = new java.awt.Polygon();
-    if (bb != null) {
-      bb.addPoint((int)(-textWidth(label)/margin), (int)(-fontSize/margin)); 
-      bb.addPoint((int)( textWidth(label)/margin), (int)(-fontSize/margin)); 
-      bb.addPoint((int)( textWidth(label)/margin), (int)( fontSize/margin)); 
-      bb.addPoint((int)(-textWidth(label)/margin), (int)( fontSize/margin));
-    }else{
-      println("help!!! out of memory!");
-    }        
-    if(label != null){
-      radius = (textWidth(label)/margin + fontSize/margin) / 4; 
-    }
-    return bb;
+    bb.addPoint((int)(-textWidth(label)/margin), (int)(-fontSize/margin)); 
+    bb.addPoint((int)( textWidth(label)/margin), (int)(-fontSize/margin)); 
+    bb.addPoint((int)( textWidth(label)/margin), (int)( fontSize/margin)); 
+    bb.addPoint((int)(-textWidth(label)/margin), (int)( fontSize/margin));
 
+    radius = (textWidth(label)/margin + fontSize/margin) / 4; 
+    
+    java.awt.Rectangle rect = bb.getBounds(); 
+    w = rect.getWidth(); 
+    h = rect.getHeight(); 
+    
+    return bb;
   }
 
 
@@ -187,8 +190,19 @@ class Widget {
 
     radius = (w + h) / 4.0;     
     autoBB = false;
+    this.w = w; 
+    this.h = h; 
   }
 
+  double w; 
+  double getWidth() {
+    return w; 
+  }
+
+  double h; 
+  double getHeight() {
+    return h; 
+  }
 
   Point screenPosition = new Point(0.0, 0.0);
 
@@ -238,6 +252,22 @@ class Widget {
 
   boolean contains(Point p) {
     return contains((int)p.x, (int)p.y);
+  }
+
+  void drawBoundingBox() {
+    java.awt.geom.PathIterator i = getBoundingBox().getPathIterator(null); 
+
+    beginShape();
+    while (i.isDone () == false) { 
+      float[] points = new float[6];
+      int type = i.currentSegment(points);
+
+      if (type == java.awt.geom.PathIterator.SEG_MOVETO || type == java.awt.geom.PathIterator.SEG_LINETO) {
+        vertex(points[0], points[1]);
+      }
+      i.next();
+    }
+    endShape(CLOSE);
   }
 
   boolean contains(int x, int y) {
@@ -293,9 +323,14 @@ class Widget {
     if (container != null) {
       int index = container.widgets.indexOf(this); 
       container.widgets.remove(index); 
-      container.widgets.add(this); 
+      container.widgets.add(this);
     }
     println("touch: " + this);
+  }
+
+  void onTap() {
+    //override this method to catch Mouse and TUIO events
+    onTouch();
   }
 }
 
