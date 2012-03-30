@@ -25,6 +25,11 @@ and connect to DB field: expertise_table->level
 that opens a new browser window... I am working with the Edge on the content, e.g. users must admit that their content will be visible
 on public screens, projections, etc...
 
+6) add DB fields and checkboxes in profile page for "background". background can be "technology", "art", "music", "DIY",
+
+7) add Feedback form to profile page. "Let us know what you think about this system! Send us your Feedback" => Link to
+pop up html page. writes feedback to DB field feedback!
+
 
 ---MEDIUM PRIORITY---
 
