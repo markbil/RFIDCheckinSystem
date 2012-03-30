@@ -21,6 +21,11 @@ no box checked (default) = NULL (default value in the DB, so nothing needs to be
 4) for each skill/expertise text field: create a drop down list that enables the user to select his expertise level (1 beginner - 5 expert) for each skill,
 and connect to DB field: expertise_table->level
 
+5) add "terms and conditions" check-box at signup.php page. box must be ticked in order to signup. "terms and conditions" label is a link
+that opens a new browser window... I am working with the Edge on the content, e.g. users must admit that their content will be visible
+on public screens, projections, etc...
+
+
 ---MEDIUM PRIORITY---
 
 5) create word-template for RFID-card label
