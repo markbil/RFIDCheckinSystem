@@ -1,42 +1,42 @@
-import de.bezier.data.sql.*;
-
+//import de.bezier.data.sql.*;
+import org.json.*;
 
 class CheckinsOverviewApp {
 
     SimpleThread_checkinsOverviewApp thread_callDB;
-    MySQL dbconnection;
-    MySQL dbconnection_exp;
-    MySQL dbconnection_int;
-    MySQL dbconnection_quest;
-
-  //SQL-QUERIES
-    //get all expertise keywords
-    String expertise_all = "SELECT expertise, COUNT(expertise) AS frequency FROM expertise_table GROUP BY expertise ORDER BY frequency DESC";
-    //get all interest keywords
-    String interests_all = "SELECT interest, COUNT(interest) AS frequency FROM interest_table GROUP BY interest ORDER BY frequency DESC";
-    //get all interest keywords
-    String questions_all = "SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC";
-    
-    //String users_checkedin = "SELECT * FROM view_checkins";
-    //all check-ins and user details within the last x months/days/hours/minutes. only the most recent checkin per edge_user in the given timeperiod is returned
-    String users_checkedin = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE months_since_checkin < 7 GROUP BY edge_user_id ORDER BY checkin_timestamp";
-    
-    // get all expertise keywords from a particular user (edge_users.id)
-    String expertise_user_checkedin = "SELECT expertise FROM expertise_table WHERE edge_users_id = "; //+ 28
-    
-    // get all interest keywords from a particular user
-    String interests_user_checkedin = "SELECT interest FROM interest_table WHERE edge_users_id = ";
-    
-    // get all questions from a particular checked_in user
-    String questions_user_checkedin = "SELECT question FROM questions_table WHERE edge_users_id = ";
-
-    //mysql-account
-    String user     = "root";
-    String pass     = "";
-    String database = "meetmee_checkin6";
+//    MySQL dbconnection;
+//    MySQL dbconnection_exp;
+//    MySQL dbconnection_int;
+//    MySQL dbconnection_quest;
+//
+//  //SQL-QUERIES
+//    //get all expertise keywords
+//    String expertise_all = "SELECT expertise, COUNT(expertise) AS frequency FROM expertise_table GROUP BY expertise ORDER BY frequency DESC";
+//    //get all interest keywords
+//    String interests_all = "SELECT interest, COUNT(interest) AS frequency FROM interest_table GROUP BY interest ORDER BY frequency DESC";
+//    //get all interest keywords
+//    String questions_all = "SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC";
+//    
+//    //String users_checkedin = "SELECT * FROM view_checkins";
+//    //all check-ins and user details within the last x months/days/hours/minutes. only the most recent checkin per edge_user in the given timeperiod is returned
+//    String users_checkedin = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE months_since_checkin < 7 GROUP BY edge_user_id ORDER BY checkin_timestamp";
+//    
+//    // get all expertise keywords from a particular user (edge_users.id)
+//    String expertise_user_checkedin = "SELECT expertise FROM expertise_table WHERE edge_users_id = "; //+ 28
+//    
+//    // get all interest keywords from a particular user
+//    String interests_user_checkedin = "SELECT interest FROM interest_table WHERE edge_users_id = ";
+//    
+//    // get all questions from a particular checked_in user
+//    String questions_user_checkedin = "SELECT question FROM questions_table WHERE edge_users_id = ";
+//
+//    //mysql-account
+//    String user     = "root";
+//    String pass     = "";
+//    String database = "meetmee_checkin6";
     int threadwaittime = 2000; //ms before each DB-fetch
     
-    
+    String baseURL = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all.php";
     	
     // name of the table that will be created
     String table    = "";
@@ -44,7 +44,7 @@ class CheckinsOverviewApp {
     PApplet applet;
   
     //an array of locally synchronised usercards
-    UserCard[] userCard; 
+    UserCard[] userCards; 
 
   CheckinsOverviewApp(PApplet applet) {
     this.applet = applet;
@@ -57,121 +57,212 @@ class CheckinsOverviewApp {
   }
   
   UserCard[] getUserCard(){
-    return this.userCard;
+    return this.userCards;
   }
 
   void draw() {
-    if (thread_callDB.getCount() > 0){
-      for (int i = 0; i < userCard.length; i++) {      
-        userCard[i].draw();
+    if (userCards != null){
+      for (int i = 0; i < userCards.length; i++) {      
+        userCards[i].draw();
       }
     }
   }
   
     //gets user data from all checked-in users and stores them in local array variables
-  UserCard[] getUserData(){
+  void getUserData(){
   
-      UserCard[] uc = new UserCard[0]; 
-      // connect to database of server "localhost"
-      dbconnection = new MySQL( this.applet, host_server, database, user, pass );
-      
-      if ( dbconnection.connect() ){
+//      dbconnection = new MySQL( this.applet, host_server, database, user, pass );
+//      
+//      if ( dbconnection.connect() ){
+//
+//        // now read it back out
+//          dbconnection.query(users_checkedin);
+//          while (dbconnection.next()){
+//            
+//              String edge_user_id = dbconnection.getString("edge_user_id");
+//              String firstname = dbconnection.getString("firstname");
+//              String lastname = dbconnection.getString("lastname");
+//              String occupation = dbconnection.getString("occupation");
+//              String statusmessage = dbconnection.getString("statusmessage");
+//              String checkin_timestamp = dbconnection.getString("checkin_timestamp");
+//              String timepassed = "";
+//              int months_since_checkin = dbconnection.getInt("months_since_checkin");
+//              int days_since_checkin = dbconnection.getInt("days_since_checkin");
+//              int hours_since_checkin = dbconnection.getInt("hours_since_checkin");
+//              int minutes_since_checkin = dbconnection.getInt("minutes_since_checkin");
+//              
+//              if(months_since_checkin > 0) timepassed = months_since_checkin + " months";
+//              else if(days_since_checkin > 0) timepassed = days_since_checkin + " days";
+//              else if(hours_since_checkin > 0) timepassed = hours_since_checkin + " hours";
+//              else if(minutes_since_checkin > 0) timepassed = minutes_since_checkin + " minutes";
+//              
+//              String sublocation = dbconnection.getString("checkin_sublocation");
+//              println(firstname + " \t " + lastname + " \t " + timepassed + " \t " + sublocation);
+//              
+//              String[] expertise_arr={};
+//              String[] interests_arr={};
+//              String[] questions_arr={};
+//              
+//                  dbconnection_exp = new MySQL( this.applet, host_server, database, user, pass ); 
+//                  if ( dbconnection_exp.connect() ){
+//                      dbconnection_exp.query(expertise_user_checkedin + edge_user_id);
+//                      while (dbconnection_exp.next()){
+//                          String expertise = dbconnection_exp.getString("expertise");
+//                          expertise_arr = (String[])(append(expertise_arr, expertise));
+//                      }
+//                    println(expertise_arr);
+//                    dbconnection_exp.close();  
+//                  }
+//                  else{
+//                      println("mysql connection failed: expertise");
+//                  }
+//                  
+//                  dbconnection_int = new MySQL( this.applet, host_server, database, user, pass ); 
+//                  if ( dbconnection_int.connect() ){
+//                      dbconnection_int.query(interests_user_checkedin + edge_user_id);
+//                      while (dbconnection_int.next()){
+//                          String interest = dbconnection_int.getString("interest");
+//                          interests_arr = (String[])(append(interests_arr, interest));
+//                          
+//                      }
+//                        println(interests_arr);
+//                        dbconnection_int.close();
+//                  }
+//                  else{
+//                      println("mysql connection failed: interests");
+//                  }
+//                  
+//                  dbconnection_quest = new MySQL( this.applet, host_server, database, user, pass ); 
+//                  if ( dbconnection_quest.connect() ){
+//                      dbconnection_quest.query(questions_user_checkedin + edge_user_id);
+//                      while (dbconnection_quest.next()){
+//                          String questions = dbconnection_quest.getString("question");
+//                          questions_arr = (String[])(append(questions_arr, questions));
+//                          
+//                      }
+//                        println(questions_arr);
+//                      dbconnection_quest.close();  
+//                  }
+//                  else{
+//                      println("mysql connection failed: questions");
+//                  }
+                  
+                    // parse JSON
+                    String result = join(loadStrings( baseURL ), "");
+                    try {
+                      JSONArray checkins = new JSONArray(result);
+                      int checkins_length = checkins.length();
+                      println("number of users " + checkins_length);
+                      
+//                      nodes = new Node[checkins_length];
+                      
+                      for (int i = 0; i < checkins_length; i++){
 
-        // now read it back out
-          dbconnection.query(users_checkedin);
-          while (dbconnection.next()){
-            
-              String edge_user_id = dbconnection.getString("edge_user_id");
-              String firstname = dbconnection.getString("firstname");
-              String lastname = dbconnection.getString("lastname");
-              String occupation = dbconnection.getString("occupation");
-              String statusmessage = dbconnection.getString("statusmessage");
-              //String timestamp = dbconnection.getString("checkin_timestamp");
-              String timestamp = "";
-              int months_since_checkin = dbconnection.getInt("months_since_checkin");
-              int days_since_checkin = dbconnection.getInt("days_since_checkin");
-              int hours_since_checkin = dbconnection.getInt("hours_since_checkin");
-              int minutes_since_checkin = dbconnection.getInt("minutes_since_checkin");
-              
-              if(months_since_checkin > 0) timestamp = months_since_checkin + " months";
-              else if(days_since_checkin > 0) timestamp = days_since_checkin + " days";
-              else if(hours_since_checkin > 0) timestamp = hours_since_checkin + " hours";
-              else if(minutes_since_checkin > 0) timestamp = minutes_since_checkin + " minutes";
-              
-              String sublocation = dbconnection.getString("checkin_sublocation");
-              println(firstname + " \t " + lastname + " \t " + timestamp + " \t " + sublocation);
-              
-              String[] expertise_arr={};
-              String[] interests_arr={};
-              String[] questions_arr={};
-              
-                  dbconnection_exp = new MySQL( this.applet, host_server, database, user, pass ); 
-                  if ( dbconnection_exp.connect() ){
-                      dbconnection_exp.query(expertise_user_checkedin + edge_user_id);
-                      while (dbconnection_exp.next()){
-                          String expertise = dbconnection_exp.getString("expertise");
-                          expertise_arr = (String[])(append(expertise_arr, expertise));
-                      }
-                    println(expertise_arr);
-                    dbconnection_exp.close();  
-                  }
-                  else{
-                      println("mysql connection failed: expertise");
-                  }
+                        JSONObject checkin = checkins.getJSONObject(i);
+                        
+                        String edge_user_id = checkin.getString("edge_user_id");
+                        String firstname = checkin.getString("firstname");
+                        String lastname = checkin.getString("lastname");
+                        String occupation = checkin.getString("occupation");
+                        String statusmessage = checkin.getString("statusmessage");
+                        String checkin_timestamp = checkin.getString("checkin_timestamp");
+                        String timepassed = "";
+                        int months_since_checkin = checkin.getInt("months_since_checkin");
+                        int days_since_checkin = checkin.getInt("days_since_checkin");
+                        int hours_since_checkin = checkin.getInt("hours_since_checkin");
+                        int minutes_since_checkin = checkin.getInt("minutes_since_checkin");
+                        
+                        if(months_since_checkin > 0) timepassed = months_since_checkin + " months";
+                        else if(days_since_checkin > 0) timepassed = days_since_checkin + " days";
+                        else if(hours_since_checkin > 0) timepassed = hours_since_checkin + " hours";
+                        else if(minutes_since_checkin > 0) timepassed = minutes_since_checkin + " minutes";
+                        
+                        String sublocation = checkin.getString("checkin_sublocation");
+                        println(firstname + " \t " + lastname + " \t " + timepassed + " \t " + sublocation);
+                        
+                        String[] expertise_arr={};
+                        String[] interests_arr={};
+                        String[] questions_arr={};
                   
-                  dbconnection_int = new MySQL( this.applet, host_server, database, user, pass ); 
-                  if ( dbconnection_int.connect() ){
-                      dbconnection_int.query(interests_user_checkedin + edge_user_id);
-                      while (dbconnection_int.next()){
-                          String interest = dbconnection_int.getString("interest");
-                          interests_arr = (String[])(append(interests_arr, interest));
+                        
+                        JSONArray skills = checkin.getJSONArray("expertise");           
+                        for (int j = 0; j < skills.length(); j++){
+                          expertise_arr = (String[])(append(expertise_arr, skills.getString(j)));
+                        }
                           
-                      }
-                        println(interests_arr);
-                        dbconnection_int.close();
-                  }
-                  else{
-                      println("mysql connection failed: interests");
-                  }
-                  
-                  dbconnection_quest = new MySQL( this.applet, host_server, database, user, pass ); 
-                  if ( dbconnection_quest.connect() ){
-                      dbconnection_quest.query(questions_user_checkedin + edge_user_id);
-                      while (dbconnection_quest.next()){
-                          String questions = dbconnection_quest.getString("question");
-                          questions_arr = (String[])(append(questions_arr, questions));
+                        JSONArray interests = checkin.getJSONArray("interests");
+                        for (int j = 0; j < interests.length(); j++){
+                          interests_arr = (String[])(append(interests_arr, interests.getString(j)));
+                        }     
                           
-                      }
-                        println(questions_arr);
-                      dbconnection_quest.close();  
-                  }
-                  else{
-                      println("mysql connection failed: questions");
-                  }
+
+                          //check if user-checkin that has been retrieved form the DB is already being displayed, if yes update userCard, if no add userCard
+                                          
+                          if (userCards != null){ //current local usercard array not empty, e.g. first DB call
+                            boolean edge_user_id_exists = false;
+                            for(int k=0; k < userCards.length; k++){ //iterate through all locally stored userCards
+                              if(edge_user_id.equals(userCards[k].edge_user_id)){ //if a user from the DB call corresponds has already a local userCard...
+                                  if(checkin_timestamp.equals(userCards[k].timestamp)){
+                                    //edge_user_id and checkin_timestamp are the same, i.e. it's the same checkin
+                                    //do nothing. or potentially update fields of locally stored userCard
+                                    edge_user_id_exists = true;  
+                                  
+                                  }
+                                  else{
+                                    //edge_user_id is the same, but checkin_timestamp is an old one.
+                                    //deleted locally stored userCard and insert newUserCard with new timestamp and userinfos
+                                  
+                                  }
+                              }
+                            }
+                            if (edge_user_id_exists == false){
+                              println("new userCard inserted");
+                              UserCard newUserCard = new UserCard(edge_user_id, firstname, lastname, occupation, statusmessage, checkin_timestamp, timepassed, sublocation, expertise_arr, interests_arr, questions_arr);
+                              userCards = (UserCard[])(append(userCards, newUserCard));  
+                            }
+                          } else{ //if current local usercard empty, create new usercard and store in array
+                              println("first userCard inserted");
+                              UserCard newUserCard = new UserCard(edge_user_id, firstname, lastname, occupation, statusmessage, checkin_timestamp, timepassed, sublocation, expertise_arr, interests_arr, questions_arr);
+                              userCards = new UserCard[0];
+                              userCards = (UserCard[])(append(userCards, newUserCard));
+                          }
+
+
+                       }
+                    } catch (JSONException e) 
+                    {
+                      println ("There was an error parsing the JSONObject.");
+                    }
+                    
+
                   
-                  UserCard newUserCard = new UserCard(firstname, lastname, occupation, statusmessage, timestamp, sublocation, expertise_arr, interests_arr, questions_arr);
-                  uc = (UserCard[])(append(uc, newUserCard));
+                  
+                  
+
+
           }
-          dbconnection.close();
+//          dbconnection.close();
  
-      }
-      else{
-          // connection failed !
-          println("mysql connection failed: users_checkedin");
-      }
-      
-    return uc;
-  }
+//      }
+//      else{
+//          // connection failed !
+//          println("mysql connection failed: users_checkedin");
+//      }
+//      
+//    return uc;
+//  }
 
 }
 
 class UserCard extends GUI {
   
+  String edge_user_id;
   String firstname;
   String lastname;
   String occupation;
   String statusmessage;
   String timestamp;
+  String timepassed;
   String sublocation;
   String[] expertise;
   String[] interests;
@@ -183,16 +274,18 @@ class UserCard extends GUI {
   PFont font_userdescription = loadFont("Serif-16.vlw");
   
   
-  UserCard(String firstname, String lastname, String occupation, String statusmessage, String timestamp, String sublocation, String[] expertise, String[] interests, String[] questions) {
+  UserCard(String edge_user_id, String firstname, String lastname, String occupation, String statusmessage, String timestamp, String timepassed, String sublocation, String[] expertise, String[] interests, String[] questions) {
     //ProjectImage image = new ProjectImage(imageUrl); 
     //setBoundaries(200, 100); 
     //addWidget(image); 
     
+    this.edge_user_id = edge_user_id;
     this.firstname = firstname;
     this.lastname = lastname;
     this.statusmessage = statusmessage;
     this.occupation = occupation;
     this.timestamp = timestamp;
+    this.timepassed = timepassed;
     this.sublocation = sublocation;
     this.expertise = expertise;
     this.interests = interests;
@@ -218,17 +311,17 @@ class UserCard extends GUI {
         statusmessage_lb.textColor = color(127, 127, 0);  
         addWidget(statusmessage_lb);     
         
-        Label timestamp_lb;
+        Label timepassed_lb;
         if(sublocation == null){
-          timestamp_lb = new Label("Checked in " + timestamp + " ago", LEFT);
+          timepassed_lb = new Label("Checked in " + timepassed + " ago", LEFT);
         } else{
-          timestamp_lb = new Label("Checked in " + timestamp + " ago at " + sublocation, LEFT);
+          timepassed_lb = new Label("Checked in " + timepassed + " ago at " + sublocation, LEFT);
         }
         
-        timestamp_lb.setTranslation(0, 100);
-        timestamp_lb.setFont(font_usersubtitle); 
-        timestamp_lb.textColor = color(127, 127, 0);  
-        addWidget(timestamp_lb);     
+        timepassed_lb.setTranslation(0, 100);
+        timepassed_lb.setFont(font_usersubtitle); 
+        timepassed_lb.textColor = color(127, 127, 0);  
+        addWidget(timepassed_lb);     
     
 //        float exp_angle = (-PI/expertise.length);
         int gap = 20;
@@ -310,11 +403,10 @@ class UserCard extends GUI {
     
     float width_temp = (float)w;
     float height_temp = (float)h;
-    println("UserCard width: " + w); //output: "0.0" should be width
-    println("UserCard height: " + h); //output "0.0" should be height
-    
+//    println("read, width: " + this.getWidgetWidth());
+//    println("read, height: " + this.getWidgetHeight());
 //    rect(-10, -10, int(width_temp), int(height_temp));   // w and h are fields inherited from GUI
-    rect(-10, -10, 380, height);
+    rect(-10, -10, 380, height);   // w and h are fields inherited from GUI
     
     setTranslation(shear, shear); 
     shear += PI / 1024;
@@ -384,7 +476,11 @@ class SimpleThread_checkinsOverviewApp extends Thread {
       println(id + ": " + count);
       
       
-      checkinsOverviewApp.userCard = checkinsOverviewApp.getUserData();
+      if (count % 4 == 0){
+        //count = 0;
+        //checkinsOverviewApp.userCards = null;
+      }
+      checkinsOverviewApp.getUserData();
       count++;
       // Ok, let's wait for however long we should wait
       try {

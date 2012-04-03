@@ -19,6 +19,7 @@ ArrayList allCursors = new ArrayList();
 
 
 void cleanupCursors() {
+  /*
   ArrayList toRemove = new ArrayList();
   //call this on draw() to update the cursors 
   for (int i = allCursors.size()-1; i >=0; i--) {
@@ -54,6 +55,7 @@ void cleanupCursors() {
   for (int i = 0; i < toRemove.size(); i++) {
     allCursors.remove(toRemove.get(i));
   }
+  */
 }
 
 
