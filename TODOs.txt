@@ -1,7 +1,7 @@
 TODO Checkin System:
 
 ---HIGH PRIORITY---
-
+heloo
 1) change login.php: users should be using their username/pw to login, not swipe-id/pw.
 
 2) error handling at signup.php: what happens if…
