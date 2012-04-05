@@ -44,7 +44,7 @@ class CheckinsOverviewApp {
     PApplet applet;
   
     //an array of locally synchronised usercards
-    UserCard[] userCards; 
+    ArrayList userCards; 
 
   CheckinsOverviewApp(PApplet applet) {
     this.applet = applet;
@@ -56,16 +56,22 @@ class CheckinsOverviewApp {
     thread_callDB.start();
   }
   
-  UserCard[] getUserCard(){
+  ArrayList getUserCard(){
     return this.userCards;
   }
 
   void draw() {
-    if (userCards != null){
-      for (int i = 0; i < userCards.length; i++) {      
-        userCards[i].draw();
+      try {  //Null-Pointerexception could pop up if the thread happens to set userCards = null for synchronisation purposes, e.g. every 4th thread count
+        if (userCards != null){ //make sure not to draw userCards until the thread has populated the local userCards ArrayList with the JSON result from the API
+          for (int i = 0; i < userCards.size(); i++) {      
+            ((UserCard) userCards.get(i)).draw();
+          }
+        }
+      } catch (Exception e) {
+        println(e);
       }
-    }
+
+
   }
   
     //gets user data from all checked-in users and stores them in local array variables
@@ -195,50 +201,42 @@ class CheckinsOverviewApp {
                           interests_arr = (String[])(append(interests_arr, interests.getString(j)));
                         }     
                           
-
-                          //check if user-checkin that has been retrieved form the DB is already being displayed, if yes update userCard, if no add userCard
-                                          
+                        /////STORE retrieved JSON Objects into a locally stored ArrayList of UserCards
+                        
+                        
+                        //check if user-checkin that has been retrieved form the DB is already being displayed, if yes update userCard, if no add userCard                  
                           if (userCards != null){ //current local usercard array not empty, e.g. first DB call
                             boolean edge_user_id_exists = false;
-                            for(int k=0; k < userCards.length; k++){ //iterate through all locally stored userCards
-                              if(edge_user_id.equals(userCards[k].edge_user_id)){ //if a user from the DB call corresponds has already a local userCard...
-                                  if(checkin_timestamp.equals(userCards[k].timestamp)){
-                                    //edge_user_id and checkin_timestamp are the same, i.e. it's the same checkin
+                            for(int k=0; k < userCards.size(); k++){ //iterate through all locally stored userCards
+                              if(edge_user_id.equals(((UserCard)userCards.get(k)).edge_user_id)){ //if a user from the DB call has already a local userCard...
+                                  if(checkin_timestamp.equals(((UserCard)userCards.get(k)).timestamp)){   //if edge_user_id and checkin_timestamp are the same, i.e. it's the same checkin
                                     //do nothing. or potentially update fields of locally stored userCard
                                     edge_user_id_exists = true;  
                                   
                                   }
                                   else{
                                     //edge_user_id is the same, but checkin_timestamp is an old one.
-                                    //deleted locally stored userCard and insert newUserCard with new timestamp and userinfos
-                                  
+                                    //deleted locally stored userCard. new newUserCard is inserted in next if-clause with new timestamp and userinfos
+                                    userCards.remove(k);
                                   }
                               }
                             }
                             if (edge_user_id_exists == false){
                               println("new userCard inserted");
                               UserCard newUserCard = new UserCard(edge_user_id, firstname, lastname, occupation, statusmessage, checkin_timestamp, timepassed, sublocation, expertise_arr, interests_arr, questions_arr);
-                              userCards = (UserCard[])(append(userCards, newUserCard));  
+                              userCards.add(newUserCard);  
                             }
                           } else{ //if current local usercard empty, create new usercard and store in array
                               println("first userCard inserted");
                               UserCard newUserCard = new UserCard(edge_user_id, firstname, lastname, occupation, statusmessage, checkin_timestamp, timepassed, sublocation, expertise_arr, interests_arr, questions_arr);
-                              userCards = new UserCard[0];
-                              userCards = (UserCard[])(append(userCards, newUserCard));
+                              userCards = new ArrayList();
+                              userCards.add(newUserCard);
                           }
-
-
                        }
                     } catch (JSONException e) 
                     {
                       println ("There was an error parsing the JSONObject.");
                     }
-                    
-
-                  
-                  
-                  
-
 
           }
 //          dbconnection.close();
@@ -408,8 +406,8 @@ class UserCard extends GUI {
 //    rect(-10, -10, int(width_temp), int(height_temp));   // w and h are fields inherited from GUI
     rect(-10, -10, 380, height);   // w and h are fields inherited from GUI
     
-    setTranslation(shear, shear); 
-    shear += PI / 1024;
+    //setTranslation(shear, shear); 
+    //shear += PI / 1024;
     super.drawWidget();
  }
 
@@ -478,7 +476,9 @@ class SimpleThread_checkinsOverviewApp extends Thread {
       
       if (count % 4 == 0){
         //count = 0;
-        //checkinsOverviewApp.userCards = null;
+        //refresh userCards ArrayList. this is necessary to delete all userCards from the local userCards ArrayList that not part of
+        //of the returned JSON Arraylist from the API any more, e.g. because they have checked-our or their checkin timestamp was long time ago.
+        checkinsOverviewApp.userCards = null;
       }
       checkinsOverviewApp.getUserData();
       count++;
