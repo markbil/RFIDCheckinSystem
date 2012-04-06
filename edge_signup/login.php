@@ -13,10 +13,10 @@
 				<table width="100%">
 					<tr >
 						<td align="right" width="50%">
-						Swipe Card
+						User Name
 						</td>
 						<td align="left" width="50%">
-						<input type="text" name="swipe" value="" />
+						<input type="text" name="username" value="" />
 						</td>
 					</tr>
 					<tr>

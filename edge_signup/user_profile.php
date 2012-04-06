@@ -16,10 +16,11 @@ $user_details = array(
 
 $mode='list';
 $submit=false;
+$username=null;
 $swipe_id = null;
 $password=null;
 
-function validateUser($swipe_id, $password) {
+function validateMediaID($swipe_id, $password) {
 	// First Get Swipe ID and Password Match
 	$query='SELECT * FROM people ' .
 									'INNER JOIN identification_media ON people.Identification_id = identification_media.ID '.
@@ -34,16 +35,36 @@ function validateUser($swipe_id, $password) {
 	
 }
 
+function validateUserName($user_name, $password) {
+// 	$query='SELECT ID,username,firstname,lastname,email FROM edge_users ' .
+// 					'WHERE username="'.	$user_name. '" AND password="' . $password .'"';
+	$query='SELECT ID,username,firstname,lastname,email,identification_media_id FROM view_edge_users_identification_media ' .
+					'WHERE username="'.	$user_name. '" AND password="' . $password .'"';
+	$result = mysql_query($query);
+		
+// 	error_log('QUERY[' . $query . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+// 	error_log('RESULT[' . var_export($result) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+	
+	if (mysql_num_rows($result) != 1) {
+		header("Location: login.php?fail=true");
+	}
+	setUserProfile($result);
+	
+}
+
 function validateUserId($user_id) {
-	$query='SELECT ID AS edge_users_id,username,firstname,lastname,email FROM edge_users ' .
-					'WHERE ID='.	$user_id;
+// 	$query='SELECT ID AS edge_users_id,username,firstname,lastname,email FROM edge_users ' .
+// 					'WHERE ID='.	$user_id;
 	$query='SELECT * FROM people ' .
-									'INNER JOIN identification_media ON people.Identification_id = identification_media.ID '.
+									'INNER JOIN identification_media ON people.identification_id = identification_media.ID '.
 									'INNER JOIN edge_users ON people.edge_users_id = edge_users.ID ' .
 									'WHERE edge_users.ID='.	$user_id;
 	$result = mysql_query($query);
-		
-	if (mysql_numrows($result) != 1) {
+	
+// 	error_log('validateUserId QUERY[' . $query . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+// 	error_log('validateUserId RESULT[' . var_export($result) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+	
+	if (mysql_num_rows($result) != 1) {
 		header("Location: login.php?fail=true");
 	}
 	setUserProfile($result);
@@ -51,11 +72,13 @@ function validateUserId($user_id) {
 }
 
 function setUserProfile($result) {
+	//error_log('RESULT[' . var_export($result) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+	
 	global $user_details;
 	while($row = mysql_fetch_array($result))
 	{
-		$user_details['id']=$row['edge_users_id'];
-		$user_details['swipe_id']=$row['ThirdPartyID'];
+		$user_details['id']=$row['ID'];
+		$user_details['swipe_id']=$row['identification_media_id'];
 		$user_details['username'] = $row["username"];
 		$user_details['firstname'] = $row["firstname"];
 		$user_details['lastname'] = $row["lastname"];
@@ -94,18 +117,18 @@ if(isset($_POST["user_id"])) {
 	$user_details['id']=$_POST['user_id'];
 }
 
-if(isset($_POST['swipe']) && isset($_POST['password'])) {
-	$swipe_id = trim($_POST["swipe"]);
+if(isset($_POST['username']) && isset($_POST['password'])) {
+	$username = trim($_POST["username"]);
 	$password=trim($_POST["password"]);
 }
 
 if ($mode != "create") {
 	if (empty($user_details['id'])) {
-		if(empty($_POST["swipe"]) || empty($_POST["password"])) {
+		if(empty($_POST["username"]) || empty($_POST["password"])) {
 			//die();
 			header("Location: login.php?fail=true");
 		}
-		validateUser($swipe_id, $password);
+		validateUserName($username, $password);
 	} else {
 		validateUserId($user_details['id']);
 		$mode="update";
@@ -172,8 +195,6 @@ if ($mode != "create") {
 <link rel="StyleSheet" href="styles.css" type="text/css" />
 
 <title>Edge Signup</title>
-
-
 </head>
 <body onload="startup()">
 	<div id="form"
