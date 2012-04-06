@@ -4,7 +4,7 @@ TODO Checkin System:
 
 1) change login.php: users should be using their username/pw to login, not swipe-id/pw.
 
-2) error handling at signup.php: what happens ifâ€¦
+2) error handling at signup.php: what happens ifâ
  - user selects a username that already exists?
  - Edge staff enters an RFID card number that was already assigned to another Edge visitor?
 - signup.php: add "repeat password field", only accept signup if both passwords match
