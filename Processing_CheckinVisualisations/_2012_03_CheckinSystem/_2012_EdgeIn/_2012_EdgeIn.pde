@@ -13,7 +13,7 @@ RFIDReaderApp rfidReaderApp;
 String host_server = "localhost";
 
 void setup() { 
-  size( screen.width/2, screen.height); 
+  size( screen.width, screen.height); 
 //  size( screen.width/2, screen.height/2); 
 //  size( 900, 700); 
   

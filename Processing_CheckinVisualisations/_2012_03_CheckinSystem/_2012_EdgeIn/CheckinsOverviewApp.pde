@@ -380,7 +380,7 @@ class SimpleThread_checkinsOverviewApp extends Thread {
       println(id + ": " + count);
       
       
-      if (count % 100 == 0){
+      if (count % 4 == 0){
         //count = 0;
         //refresh userCards ArrayList. this is necessary to delete all userCards from the local userCards ArrayList that not part of
         //of the returned JSON Arraylist from the API any more, e.g. because they have checked-our or their checkin timestamp was long time ago.
