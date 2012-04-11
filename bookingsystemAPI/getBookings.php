@@ -6,12 +6,12 @@ $client = new SoapClient("http://sl-queensland-web.ungerboeck.com/USI_BK_Service
 $bookingParameters  = array(
 		'OrgCode'   => "10",
 		'EventID'   => "",
-		'FromDate'   => "2011-01-01",
-		'ToDate'   => "2012-12-01",
+		'FromDate'   => "2010-03-27 15:40:01",
+		'ToDate'   => "2012-04-10 15:40:01",
 );
 
 $authentication  = array(
-		'PartnerKey'   => "A456woiuer89asdfAPX8",
+		'PartnerKey'   => "xxxx",
 		'PartnerHash'   => "",
 );
 
