@@ -1,7 +1,7 @@
 TODO Checkin System:
 
 ---HIGH PRIORITY---
-heloo
+
 1) change login.php: users should be using their username/pw to login, not swipe-id/pw.
 
 2) error handling at signup.php: what happens ifâ
@@ -60,3 +60,10 @@ DONE / - Mark 20 March, 2012 [4) create Processing/JAVA script for VSO's to read
 - VSO copy pastes this number into signup.php
 - user fills out username/password
 - VSO labels RFID-card and hands over to user]
+
+
+
+IDEAS:
+- create pie-visualisation: what background (fixed categories) do people have who are in right now? => click on a graph sector and see what is behind.
+- what skills do the regulars at the Edge have (people who have checked in more than once per week on average)
+- after checkin: print out little sheet of who's doing what and where at The Edge.
