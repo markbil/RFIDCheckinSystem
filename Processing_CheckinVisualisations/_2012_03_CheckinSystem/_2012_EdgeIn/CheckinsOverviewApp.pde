@@ -5,7 +5,8 @@ class CheckinsOverviewApp {
     SimpleThread_checkinsOverviewApp thread_callDB;
 
     int threadwaittime = 2000; //ms before each DB-fetch    
-    String baseURL = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all.php";
+//    String baseURL = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all.php";
+    String baseURL = "http://localhost/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php";
     	
     // name of the table that will be created
     String table    = "";
@@ -89,7 +90,7 @@ class CheckinsOverviewApp {
           if(months_since_checkin > 0) timepassed = months_since_checkin + " months";
           else if(days_since_checkin > 0) timepassed = days_since_checkin + " days";
           else if(hours_since_checkin > 0) timepassed = hours_since_checkin + " hours";
-          else if(minutes_since_checkin > 0) timepassed = minutes_since_checkin + " minutes";
+          else if(minutes_since_checkin >= 0) timepassed = minutes_since_checkin + " minutes";
           
           String sublocation = checkin.getString("checkin_sublocation");
           println(firstname + " \t " + lastname + " \t " + timepassed + " \t " + sublocation);
