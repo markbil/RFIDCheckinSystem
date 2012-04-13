@@ -40,11 +40,20 @@
     byte server[] = { 192, 168, 0, 14 }; //ip Address of the server you will connect to
     
     //The location to go to on the server
-    //make sure to keep HTTP/1.0 at the end, this is telling it what type of file it is
-    String location = "/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php HTTP/1.0";
+    //make sure to keep HTTP/1.0 at the end, this is telling it what type of file it is    
+    
+    //String location = "/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php HTTP/1.0";
     
     // if need to change the MAC address (Very Rare)
     byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+
+
+////////////////////////////////////////////////////////////////////////
+//CONFIGURE API SETTINGS
+////////////////////////////////////////////////////////////////////////
+    int im_type = 1; // should be set to 1 on every RFID reader. 1 stands for RFID in the Checkin-DB
+    String thirdpartyid = "9999999"; //actual RFID number. set random number for test purposes...
+    int sublocation = 3; //set location key according to where the RFID reader is installed, e.g. 1 for Window Bays 1.
 
 
 EthernetClient client;
@@ -53,10 +62,26 @@ char inString[32]; // string for incoming serial data
 int stringPos = 0; // string index counter
 boolean startRead = false; // is reading?
 
+//FEEDBACK LEDs
+int yellowpin = A2; //led to register keypad pressses
+int redpin = A3; //led that registers correct password entry
+int greenpin = A4; //led that registers correct password entry
+int speakerPin = A5;
+
+boolean writingToDB = false;
+
 void setup(){
+  
+  pinMode(yellowpin, OUTPUT); //define led pin as output
+  pinMode(greenpin, OUTPUT); //define led pin as output
+  pinMode(redpin, OUTPUT); //define led pin as output
+  pinMode(speakerPin, OUTPUT);
+  
   Ethernet.begin(mac);
   Serial.begin(9600);
   Serial.println("Serial Ready");
+  
+
 }
 
 void loop(){
@@ -78,36 +103,55 @@ void loop(){
 //  }
 
 //////WIEGAND MODE
+  if(!writingToDB){
     if(RFID.isIdAvailable()) {
-        tag = RFID.readId();
-        // In Wiegand Mode, we only get the card code
-        Serial.print("CC = ");
-        Serial.println(tag.id); 
-        
-      String pageValue = connectAndRead(); //connect to the server and read the output
-      Serial.println(pageValue); //print out the findings.
-        
+        writingToDB = true;
+            tag = RFID.readId();
+            // In Wiegand Mode, we only get the card code
+            Serial.print("CC = ");
+            String rfid_tagid = String(tag.id); 
+            Serial.println(rfid_tagid); 
+            
+            String url_base = "/TheEdge_VisitorProfiles/checkin_submit_manual.php?";
+            String url_param1 = "im_type=" + String(im_type);
+            String url_param2 = "&thirdpartyid=" + rfid_tagid;
+            String url_param3 = "&sublocation=" + String(sublocation);
+            String url_httptail = " HTTP/1.0";
+            
+            String url_complete = url_base + url_param1 + url_param2 + url_param3 + url_httptail;
+            Serial.println("url: " + url_complete);
+            
+            blinkPin(yellowpin, 500); //acknowledge that RFID card has been read
+              
+          String pageValue = connectAndRead(url_complete); //connect to the server and read the output
+          Serial.println(pageValue); //print out the findings.
+          
+          delay(2000);
+        writingToDB = false;
     }
+  }
   
 
 }
 
-String connectAndRead(){
+String connectAndRead(String url){
   //connect to the server
-
+  
   Serial.println("connecting...");
 
   //port 80 is typical of a www page
   if (client.connect(server, 80)) {
     Serial.println("connected");
     client.print("GET ");
-    client.println(location);
+    client.println(url);
     client.println();
 
-    //Connected - Read the page
+    blinkPin(greenpin, 500); //flash green LED to confirm successful connection
+//    triggerSpeakerPattern(2);
     return readPage(); //go and read the output
 
   }else{
+    blinkPin(greenpin, 1000); //flash red LED to indicate that connection failed
     return "connection failed";
   }
 
@@ -123,28 +167,38 @@ String readPage(){
 
     if (client.available()) {
       char c = client.read();
-      //Serial.print(c);
+      Serial.print(c);
       
+      //opportunity to store a char[] that occurs in between particular characters
       if (c == '[' ) { //'<' is our begining character
         startRead = true; //Ready to start reading the part 
       }else if(startRead){
 
-        if(c != ','){ //'>' is our ending character
+        if(c != '+'){ //'>' is our ending character
           inString[stringPos] = c;
           stringPos ++;
         }else{
           //got what we need here! We can disconnect now
           startRead = false;
-          client.stop();
-          client.flush();
-          Serial.println("disconnecting.");
-          return inString;
-
         }
 
       }
+    
     }
-
+    else{
+      client.stop();
+      client.flush();
+      Serial.println();
+      Serial.println("disconnecting.");
+      return inString;
+    }
   }
 
+}
+
+void blinkPin(int c, int ms){
+    digitalWrite(c, HIGH);
+    delay(ms);
+    digitalWrite(c, LOW);
+    //delay(ms);
 }
