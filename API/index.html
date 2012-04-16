@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>The Edge - Checkin System API</title>
+</head>
+<body>
+This API provides access to data from the checkin-system at The Edge. The API contains a number of URLs listed below. Each URL returns a JSON file
+with specific data from the checkin database.
+
+// returns hours of a day and number of checkins that distinct users have checked-in at at that hour.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_perhour.php
+
+// returns checkin_dates and the number of checkins that distinct users have checked-in on that date.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_perdate.php
+
+// returns individual months and the number of checkins that distinct users have checked-in in that month.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_peryearmonth.php
+
+// returns days of a week and the number of checkins that distinct users have checked-in at each weekday.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_perweekday.php
+
+// returns days of the current month and the number of checkins that distinct users have checked-in on each day this month.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_thismonth_perday.php
+
+// returns days of the current week and the number of checkins that distinct users have checked-in each day this week.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_thisweek_perday.php
+
+// returns days of the current week and the number of checkins that distinct users have checked-in each day this week.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_thisweek_perday.php
+
+// returns hours of the current day and the number of checkins that distinct users have checked-in each hour today.
+http://localhost/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_today_perhour.php
+
+// returns number of distinct users who have ever checked-in, incl. profile details and areas of expertise and interests
+http://localhost/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php
+
+
+//HIGHSCORE LISTS--------: list of users with total number of checkins on distinct days over a particular period of time, e.g. this week, this month, this year, all
+//Enables statements such as: "Congratulations: You have checked-in on 10 different days this month"
+
+http://localhost/TheEdge_VisitorProfiles/API/view_highscorelist_distinctusercheckins_all.php
+http://localhost/TheEdge_VisitorProfiles/API/view_highscorelist_distinctusercheckins_thisweek.php
+http://localhost/TheEdge_VisitorProfiles/API/view_highscorelist_distinctusercheckins_thismonth.php
+http://localhost/TheEdge_VisitorProfiles/API/view_highscorelist_distinctusercheckins_thisyear.php
+
+
+</body>
+</html>

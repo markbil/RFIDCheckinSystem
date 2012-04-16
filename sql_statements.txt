@@ -92,7 +92,7 @@ SELECT WEEKDAY(checkin_timestamp) AS weekday_index, DAYNAME(checkin_timestamp) A
 //VIEW: "view_number_distinctusercheckins_permonth" = number of distinct users who have checked-in in a particular month of the year
 SELECT MONTH(checkin_timestamp) AS month_index, MONTHNAME(checkin_timestamp) AS month_name, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY month_index ORDER BY month_index
 
-//VIEW: "view_number_distinctusercheckins_perhour" = number of distinct users who have checked-in during a particular hour of the day
+//VIEW: "view_number_distinctusercheckins_perhour" = returns hours of a day and number of checkins that distinct users have checkin at at that our.
 SELECT HOUR(checkin_timestamp) AS hour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour ORDER BY hour
 
 //VIEW: "view_number_distinctusercheckins_thisweek_perday" = number of distinct users who have checked in on a particular day this week
