@@ -4,9 +4,9 @@ class CheckinsOverviewApp {
 
     SimpleThread_checkinsOverviewApp thread_callDB;
 
-    int threadwaittime = 2000; //ms before each DB-fetch    
-//    String baseURL = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all.php";
-    String baseURL = "http://localhost/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php";
+    int threadwaittime = 1500; //ms before each DB-fetch    
+    String baseURL = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all.php";
+//    String baseURL = "http://localhost/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php";
     	
     // name of the table that will be created
     String table    = "";
@@ -179,14 +179,14 @@ class UserCard extends GUI {
     setBoundaries(userCard_width, userCard_height); 
     //addWidget(image); 
     
-    this.edge_user_id = edge_user_id;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.statusmessage = statusmessage;
-    this.occupation = occupation;
-    this.timestamp = timestamp;
-    this.timepassed = timepassed;
-    this.sublocation = sublocation;
+    this.edge_user_id = (edge_user_id != null) ? edge_user_id : "";
+    this.firstname = (firstname != null) ? firstname : "";
+    this.lastname = (lastname != null) ? lastname : "";
+    this.statusmessage = (statusmessage != null) ? statusmessage : "";
+    this.occupation = (occupation != null) ? occupation : "";
+    this.timestamp = (timestamp != null) ? timestamp : "";
+    this.timepassed = (timepassed != null) ? timepassed : "";
+    this.sublocation = (sublocation != null) ? sublocation : "";
     this.expertise = expertise;
     this.interests = interests;
     this.questions = questions;
@@ -232,7 +232,8 @@ class UserCard extends GUI {
         expertise_headline_lb.textColor = color(127, 0, 0);
         addWidget(expertise_headline_lb);   
         for (int i = 0; i < expertise.length; i++) {       
-            Label expertise_lb = new Label(expertise[i], LEFT);
+//            Label expertise_lb = new Label(expertise[i], LEFT);
+            Label expertise_lb = (expertise[i] != null) ? new Label(expertise[i], LEFT)  : new Label("none", LEFT) ;
             expertise_lb.setTranslation(0, vertical_offset + gap*i);
             expertise_lb.setFont(font_userdescription); 
             expertise_lb.textColor = color(127, 127, 127);  
@@ -248,7 +249,8 @@ class UserCard extends GUI {
 //        float int_angle = (PI/interests.length);
           addWidget(interests_headline_lb);  
         for (int i = 0; i < interests.length; i++) {       
-            Label interests_lb = new Label(interests[i], RIGHT);
+//            Label interests_lb = new Label(interests[i], RIGHT);
+            Label interests_lb = (interests[i] != null) ? new Label(interests[i], RIGHT)  : new Label("none", RIGHT) ;
             //interests_lb.setTranslation(cos(PI/4-int_angle*i)*100, sin(PI/4-int_angle*i)*100);
             interests_lb.setTranslation(350, vertical_offset + gap*i);
             interests_lb.setFont(font_userdescription); 
