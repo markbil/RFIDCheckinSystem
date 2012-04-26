@@ -1,0 +1,128 @@
+//sql_statements.txtx
+
+//get all expertise keywords
+SELECT expertise, COUNT(expertise) AS frequency FROM expertise_table GROUP BY expertise ORDER BY frequency DESC
+
+
+//get all interest keywords
+SELECT interest, COUNT(interest) AS frequency FROM interest_table GROUP BY interest ORDER BY frequency DESC
+
+
+//get all interest keywords
+SELECT question, COUNT(question) AS frequency FROM questions_table GROUP BY question ORDER BY frequency DESC
+
+
+//get all check-ins with details of checked-in users and timestamp/time passed since checkin (a VIEW has been created for this purpose.. see query below)
+SELECT * FROM `view_checkins`
+	----
+	//VIEW: view_checkins, time_zone setting is important to get the timestampdiff right, independent of the mysql server's local time
+	SET time_zone = '+10:00';
+	SELECT eu.id AS edge_user_id, eu.firstname, eu.lastname, eu.occupation, eu.statusmessage, imt.name AS imt_name, im.ThirdPartyID AS im_id, check_in.check_in_time AS checkin_timestamp, (SELECT TIMESTAMPDIFF(MONTH, check_in.check_in_time, (SELECT NOW()))) AS months_since_checkin, (SELECT TIMESTAMPDIFF(DAY, check_in.check_in_time, (SELECT NOW()))) AS days_since_checkin, (SELECT TIMESTAMPDIFF(HOUR, check_in.check_in_time, (SELECT NOW()))) AS hours_since_checkin, (SELECT TIMESTAMPDIFF(MINUTE, check_in.check_in_time, (SELECT NOW()))) AS minutes_since_checkin, locations.name AS checkin_sublocation FROM ((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON check_in.identification_media_id = im.id) LEFT JOIN locations ON check_in.sublocation = locations.id ORDER BY checkin_timestamp DESC;
+		//deprecated view_checkins: only with sublocation-id, not joined with locations table...
+		//SELECT eu.id AS edge_user_id, eu.firstname, eu.lastname, eu.occupation, eu.statusmessage, imt.name AS imt_name, im.ThirdPartyID AS im_id, check_in.check_in_time AS checkin_timestamp, (SELECT TIMESTAMPDIFF(MONTH, check_in.check_in_time, (SELECT NOW()))) AS months_since_checkin, (SELECT TIMESTAMPDIFF(DAY, check_in.check_in_time, (SELECT NOW()))) AS days_since_checkin, (SELECT TIMESTAMPDIFF(HOUR, check_in.check_in_time, (SELECT NOW()))) AS hours_since_checkin, (SELECT TIMESTAMPDIFF(MINUTE, check_in.check_in_time, (SELECT NOW()))) AS minutes_since_checkin, check_in.sublocation AS checkin_sublocation FROM (((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON check_in.identification_media_id = im.id ORDER BY checkin_timestamp DESC;
+
+//VIEW: "view_list_distinctusercheckins_all" =   all check-ins and user details, but only the most recent checkin per edge_user is returned
+SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` GROUP BY edge_user_id ORDER BY checkin_timestamp DESC
+
+//all check-ins and user details within the last x months/days/hours/minutes. only the most recent checkin per edge_user in the given timeperiod is returned
+SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, im_id, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` WHERE days_since_checkin < 1 GROUP BY edge_user_id ORDER BY checkin_timestamp DESC
+
+	//OTHER POSSIBLE VARIABLES
+	months_since_checkin < 7	//checkins in the last 6 months
+	days_since_checkin < 1		//only today's checkins
+	hours_since_checkin < 3		//checkins in the last 2 hours
+	minutes_since_checkin < 11	//checkins in the last 10 minutes
+
+
+
+// get all expertise keywords from a particular user (edge_users.id)
+	String expertise_user_checkedin = "SELECT expertise FROM expertise_table WHERE edge_users_id = "; //+ 28
+
+// get all interest keywords from a particular user
+	String interests_user_checkedin = "SELECT interest FROM interest_table WHERE edge_users_id = ";
+
+// get all questions from a particular checked_in user
+	String questions_user_checkedin = "SELECT question FROM questions_table WHERE edge_users_id = ";
+
+
+
+//HIGHSCORE LISTS--------: list of users with total number of checkins on distinct days over a particular period of time, e.g. this week, this month, this year
+//Enables statements such as: "Congratulations: You have checked-in on 10 different days this month"
+
+	//REQUIRED VIEW for all subsequent highscorelists:
+		//VIEW: "view_list_distinctusercheckins_perdate" = list of checkins per user on distinct days
+		SELECT * FROM `view_checkins` GROUP BY edge_user_id, DATE(checkin_timestamp)
+	
+	//VIEW: "view_highscorelist_distinctusercheckins_all"
+	SELECT edge_user_id, firstname, lastname, COUNT(*) AS distinct_checkindays FROM view_list_distinctusercheckins_perdate GROUP BY edge_user_id ORDER BY distinct_checkindays DESC
+	
+	//VIEW: "view_highscorelist_distinctusercheckinsperday_thisweek"
+	SET time_zone = '+10:00';
+	SELECT edge_user_id, firstname, lastname, YEARWEEK(checkin_timestamp,7) AS weekofyear, COUNT(*) AS distinct_checkindays FROM view_list_distinctusercheckins_perdate WHERE YEARWEEK(checkin_timestamp,7) = YEARWEEK((SELECT NOW()),7) GROUP BY edge_user_id ORDER BY distinct_checkindays DESC;
+	
+	//VIEW: "view_highscorelist_distinctusercheckinsperday_thismonth"
+	SET time_zone = '+10:00';
+	SELECT edge_user_id, firstname, lastname, MONTHNAME(checkin_timestamp) AS thismonth_name, COUNT(*) AS distinct_checkindays FROM view_list_distinctusercheckins_perdate WHERE (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) = (EXTRACT(YEAR_MONTH FROM (SELECT NOW()))) GROUP BY edge_user_id ORDER BY distinct_checkindays DESC
+	
+	//VIEW: "view_highscorelist_distinctusercheckinsperday_thisyear"
+	SET time_zone = '+10:00';
+	SELECT edge_user_id, firstname, lastname, YEAR(checkin_timestamp) AS thisyear, COUNT(*) AS distinct_checkindays FROM view_list_distinctusercheckins_perdate WHERE (YEAR(checkin_timestamp)) = (YEAR((SELECT NOW()))) GROUP BY edge_user_id ORDER BY distinct_checkindays DESC
+	
+
+
+//VIEW: "view_number_distinctusercheckins_all" = number of distinct users who have ever checked-in
+SELECT COUNT(DISTINCT edge_user_id) as distinct_usercheckins FROM view_checkins
+
+//number of distinct users who have checked-in in the last x minutes/hours/days/months
+SELECT COUNT(DISTINCT edge_user_id) as distinct_usercheckins FROM view_checkins WHERE days_since_checkin < 5
+	
+	//OTHER POSSIBLE VARIABLES
+	months_since_checkin < 7	//checkins in the last 6 months
+	days_since_checkin < 1		//only today's checkins
+	hours_since_checkin < 3		//checkins in the last 2 hours
+	minutes_since_checkin < 11	//checkins in the last 10 minutes
+	
+	
+//VIEW: "view_number_distinctusercheckins_perdate" = number of distinct users who have checked in on a particular date
+SELECT DATE(checkin_timestamp) AS checkin_date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY checkin_date ORDER BY checkin_date DESC
+
+//VIEW: "view_number_distinctusercheckins_perweekday" = number of distinct users who have checked in on a particular weekday
+SELECT WEEKDAY(checkin_timestamp) AS weekday_index, DAYNAME(checkin_timestamp) AS weekday_name, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY weekday_index ORDER BY weekday_index
+
+//VIEW: "view_number_distinctusercheckins_permonth" = number of distinct users who have checked-in in a particular month of the year
+SELECT MONTH(checkin_timestamp) AS month_index, MONTHNAME(checkin_timestamp) AS month_name, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY month_index ORDER BY month_index
+
+//VIEW: "view_number_distinctusercheckins_perhour" = returns hours of a day and number of checkins that distinct users have checkin at at that our.
+SELECT HOUR(checkin_timestamp) AS hour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour ORDER BY hour
+
+//VIEW: "view_number_distinctusercheckins_thisweek_perday" = number of distinct users who have checked in on a particular day this week
+SET time_zone = '+10:00';
+SELECT WEEKDAY(checkin_timestamp) AS weekday_index, DAYNAME(checkin_timestamp) AS weekday_name, DATE(checkin_timestamp) AS date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins WHERE YEARWEEK(checkin_timestamp,7) = YEARWEEK((SELECT NOW()),7) GROUP BY weekday_index ORDER BY weekday_index;
+
+//VIEW: "view_number_distinctusercheckins_thismonth_perday" = number of distinct users who have checked in on a particular day this month
+SET time_zone = '+10:00';
+SELECT DAYOFMONTH(checkin_timestamp) AS dayofmonth_index, DAYNAME(checkin_timestamp) AS weekday_name, DATE(checkin_timestamp) AS date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins WHERE (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) = (EXTRACT(YEAR_MONTH FROM (SELECT NOW()))) GROUP BY dayofmonth_index ORDER BY dayofmonth_index;
+
+//VIEW: "view_number_distinctusercheckins_today_perhour" = number of distinct users who have checked-in at a particular hour today
+SET time_zone = '+10:00';
+SELECT HOUR(checkin_timestamp) AS hour, DATE(checkin_timestamp) AS date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins WHERE DATE(checkin_timestamp) = DATE((SELECT NOW())) GROUP BY hour ORDER BY hour;	
+
+//VIEW: "view_number_totalusercheckins_peryearmonth" = number of total users who have checked-in per year and month
+SELECT (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) AS yearmonth_index, MONTHNAME(checkin_timestamp) AS month_name, YEAR(checkin_timestamp) as year, COUNT(edge_user_id) AS total_usercheckins FROM view_list_distinctusercheckins_perdate GROUP BY (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) ORDER BY (EXTRACT(YEAR_MONTH FROM checkin_timestamp))
+
+//VIEW: "view_number_totalusercheckins_peryearweek" = number of total users who have checked-in per year and week
+SELECT YEARWEEK(checkin_timestamp,7) AS yearweek_index, WEEK(checkin_timestamp,7) AS weekofyear, YEAR(checkin_timestamp) as year, COUNT(edge_user_id) AS total_usercheckins FROM view_list_distinctusercheckins_perdate GROUP BY YEARWEEK(checkin_timestamp,7) ORDER BY YEARWEEK(checkin_timestamp,7)
+
+
+
+------DEPRECATED queries--------------
+
+// get all expertise keywords from a particular checked_in user (im.thirdpartyid)
+	SELECT et.expertise FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN expertise_table et ON et.edge_users_id = eu.id) WHERE eu.id =  28
+		//alternatively use edge_user_id to filter a particular user
+		WHERE eu.id = 28 instead of
+		WHERE im.thirdpartyid = 5408543
+// get all interest keywords from a particular checked_in user
+	SELECT it.interest FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN interest_table it ON it.edge_users_id = eu.id) WHERE im.thirdpartyid = 123456
+// get all questions from a particular checked_in user
+	SELECT qt.question FROM (((((identification_media im JOIN identification_media_type imt ON im.type = imt.id) JOIN people ON people.identification_id = im.id) JOIN edge_users eu ON eu.id = people.edge_users_id) JOIN check_in ON (check_in.identification_media_id = im.id)) JOIN questions_table qt ON qt.edge_users_id = eu.id) WHERE im.thirdpartyid = 123456
