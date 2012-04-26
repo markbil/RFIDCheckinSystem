@@ -56,7 +56,7 @@ class CheckinsOverviewApp {
           }
         }
       } catch (Exception e) {
-        println(e);
+        println("drawing Usercards: " + e);
       }
 
 
