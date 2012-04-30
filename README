@@ -1,8 +1,48 @@
-This Project is specifically being created for the "The Edge" Digital Culture Centre.
-http://edgeqld.org.au
+This project is an RFID based check-in system. Users can swipe their RFID card to leave a digital footprint of
+their profile information at a particular location. The system requires an infrastructure of RFID cards (one RFID
+card per user), and a set of RFID readers (so-called "Check-in points"). While it is open and fairly flexible for
+deployment in any location, the system has been designed for the use in public libraries and community centres.
+The aim is to augment the physical infrastructure of a place with social information about the people who traverse that place towards
+ice-breaking conversations and making links between people. This idea basis on an understanding of the library
+as a social hub for knowledge and information.
 
-The aim of the project is to have people who access The Edge, having be issued an RFID tag,
-use it when entering The Edge and login to a Mulitouch Table and view details on fellow Edgers as well as there own profile. 
+A first instance of the Check-in sytem is being piloted at "The Edge" (http://edgeqld.org.au), a Digital Culture Centre and
+initiative of the State Library of Queensland.
+
+The project consists of 6 components:
+
+- Database
+All users' profile information and RFID numbers are stored in a MySQL database. The database also keeps track of user checkins, i.e. timestamps and locations
+when each user checks in.
+
+- User Profile Web Interface
+Users can enter and update their profile information through a dedicated web interface. The backend is developed in
+PHP, using the CodeIgniter framework.
+
+- RFID cards
+Each user of the system is provided with an 125kHz RFID card. During the registration process, the ID-number of the
+RFID card is entered into the database and referenced with the user's profile information. Everytime the user swipes
+his RFID card at an RFID Checkin Point, the user is marked as present at the respective Checkin Point in the database.
+
+- Visualisations
+This folder contains different visualisations of the checkin data. The goal is to develop aesthetically pleasing visualisations
+that provide information about the social space of the location where the system is installed. These can e.g. contain
+interests, backgrounds, projects and status messages of the people who are currently checked in. Rather than just using
+textual information we are looking for ways to develop ambient displays, i.e. displays that provide information in the
+periphery of people's attention, e.g. by producing subtle changes in the environment. These can be projections, public displays,
+networked lights. We started developing initial visualisation concepts in Processing, but any programming / InfoViz platform can be used.
+The data can be obtained trough the API in JSON format.
+
+- RFID Checkin Points:
+A Checkin Point is a physical component that consists of an RFID reader and a microcontroller with network access
+to process the RFID user card values and submit a checkin in the user database. For this project we use the SNARC
+(http://www.hsbne.org/projects/SNARC) controller with an onboard ATMEGA328 and Ethernet chip, but the source code is fully compatible
+with an Arduino and Etherneshield. Each checkin point has an ID and marks its location in the database accordingly.
+
+- API
+A restful API provides access to real-time Checkin data in JSON format. The API can be used by graphic designers and 
+visual artists to develop real-time information visualisations of the checkin data.
+
 
 
 
