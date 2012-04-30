@@ -1,0 +1,3 @@
+- print out business cards with contact information (name, email)
+- story where you substitute gaps with information from the database / checkindata
+- install theme-buttons to print out different information (weather, checkindata, etc)
