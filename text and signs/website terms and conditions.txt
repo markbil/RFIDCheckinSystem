@@ -1,0 +1,20 @@
+TERMS AND CONDITIONS
+
+This user account allows you to enter and update your user profile for The Edge's Checkin System. 
+The profile includes e.g. your background, areas of interest, skills or projects you are currently working from.
+There are several "Check-in points" at The Edge, where you can swipe your 
+membership card at. By doing so, you will leave a digital footprint at that checkin location, which contains a 
+timestamp and your profile information. The Checkin system aggregates and visualises this information in
+graphical and textual form using different media in The Edge building, such as projections or public
+and ambient displays, as well as social media sites, e.g. wall posts on The Edge's facebook site and tweets
+via Twitter.
+The aim of the checkin system is to help you identify and connect to interesting others in The Edge community.
+We hope that the system will help you identify and ice-break conversations with other interesting folks at the Edge.
+Please only enter information in your user profile that you feel comfortable sharing across The Edge community. Use and 
+participation in the Checkin system is voluntary. 
+
+This system is part of a PhD research study undertaken at the Urban Informatics Research Lab at QUT by Mark Bilandzic, and 
+developed as an open-source project (https://github.com/markbil/RFIDCheckinSystem). If you have any feedback, comments or
+want to join the project, pease send an e-mail to markbilandzic@gmail.com.
+
+[] Accept the terms and conditions
