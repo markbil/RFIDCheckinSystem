@@ -1,12 +1,11 @@
 /*
- SNARC Checkin Client by Mark Bilandzic, 11 April 2012
+ NetworkedRFIDController Sketch by Mark Bilandzic, 11 April 2012
  
- This sketch is written for the SNARC, designed by Lawrence "Lemming" Dixon http://www.hsbne.org/projects/SNARC.
- It reads an RFID card through an RFID reader that is attached to the SNARC, and calls a URL with the RFID as a parameter.
- Code is fully compatible with an Arduino 1.0+ and attached Ethernet-Shield
+ This sketch reads an RFID card through an RFID reader and makes a GET request to a URL with the RFID numbers as a parameter.
+ The sketch is written for the SNARC (Simple NetworkAble RFID Controller), designed by Lawrence "Lemming" Dixon http://www.hsbne.org/projects/SNARC, however
+ the code is fully compatible with an Arduino 1.0+ and attached Ethernet-Shield.
  
- Code based on:
- 
+ Code is based on:
  - RFID reader code by
      - Martijn The - http://www.martijnthe.nl/ 
      - BARRAGAN - http://people.interaction-ivrea.it/h.barragan 
@@ -22,7 +21,6 @@ RFID-Reader and wiring according to:
  */
 
 
-//ARDUINO 1.0+ ONLY
 #include <Ethernet.h>
 #include <SPI.h>
 #include <SoftwareSerial.h>
@@ -60,11 +58,10 @@ RFID-Reader and wiring according to:
 
 //FEEDBACK LEDs
 // SNARC has two on-board LEDs: green LED = DIGITAL PIN 5, red LED = DIGITAL PIN 6
-
-int yellowpin = 6; //A2; //led to register keypad pressses
-int redpin = A3; //led that registers correct password entry
-int greenpin = 5; //A4; //led that registers correct password entry
-int speakerPin = A5;
+int greenpin = 5;       //flash green LED to confirm successful connection
+int redpin = 6;         //flash red LED to indicate that connection failed
+int yellowpin = 18;     //no function in this sketch, but can be activated instead of buzzer to confirm that RFID card has been read
+int speakerPin = 19;
 
 boolean writingToDB = false;
 
@@ -98,7 +95,8 @@ void loop(){
   if(!writingToDB){
     if(mySerial.available() > 0) {
       writingToDB = true;
-      if((val = mySerial.read()) == 2) {                  // check for header 
+      if((val = mySerial.read()) == 2) {        // check for header 
+      
         bytesread = 0; 
         while (bytesread < 12) {                        // read 10 digit code + 2 digit checksum
           if( mySerial.available() > 0) { 
@@ -150,6 +148,9 @@ void loop(){
           if (code[5] == checksum){
             Serial.println(" -- passed.");
             
+              //blinkPin(yellowpin, 500); // acknowledge that RFID card has been read
+              buzz(speakerPin, 600, 500); // buzz the buzzer on speakerPin at xxxHz for xxx milliseconds
+            
               rfid.toUpperCase();
               Serial.println("RFID: " + rfid);
               
@@ -162,7 +163,7 @@ void loop(){
               String url_complete = url_base + url_param1 + url_param2 + url_param3 + url_httptail;
               Serial.println("url: " + url_complete);
               
-              blinkPin(yellowpin, 500); //acknowledge that RFID card has been read
+
                 
             String pageValue = connectAndRead(url_complete); //connect to the server and read the output
             Serial.println(pageValue); //print out the findings.
@@ -194,7 +195,6 @@ String connectAndRead(String url){
     client.println(url);
     client.println();
 
-    buzz(speakerPin, 600, 500); // buzz the buzzer on pin 4 at 2500Hz for 1000 milliseconds
     blinkPin(greenpin, 500); //flash green LED to confirm successful connection
     return readPage(); //go and read the output
 
