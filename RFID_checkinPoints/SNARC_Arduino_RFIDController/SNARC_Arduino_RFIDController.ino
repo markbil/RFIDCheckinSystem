@@ -3,7 +3,7 @@
  
  This sketch is written for the SNARC, designed by Lawrence "Lemming" Dixon http://www.hsbne.org/projects/SNARC.
  It reads an RFID card through an RFID reader that is attached to the SNARC, and calls a URL with the RFID as a parameter.
- Code is fully compatible with an Arduino and attached Ethernet-Shield or a Netduino.
+ Code is fully compatible with an Arduino 1.0+ and attached Ethernet-Shield
  
  Code based on:
  
@@ -13,6 +13,7 @@
      - HC Gilje - http://hcgilje.wordpress.com/resources/rfid_id12_tagreader/
      - Martijn The - http://www.martijnthe.nl/
 - Arduino Ethernet Client sketch by bildr.org: http://bildr.org/2011/06/arduino-ethernet-client/
+- buzz() function by Rob Faludi: http://www.faludi.com/2007/04/23/buzzer-arduino-example-code/
 
 RFID-Reader and wiring according to:
      - http://www.seeedstudio.com/wiki/Electronic_brick_-_125Khz_RFID_Card_Reader
@@ -193,6 +194,7 @@ String connectAndRead(String url){
     client.println(url);
     client.println();
 
+    buzz(speakerPin, 600, 500); // buzz the buzzer on pin 4 at 2500Hz for 1000 milliseconds
     blinkPin(greenpin, 500); //flash green LED to confirm successful connection
     return readPage(); //go and read the output
 
@@ -247,4 +249,19 @@ void blinkPin(int c, int ms){
     delay(ms);
     digitalWrite(c, LOW);
     //delay(ms);
+}
+
+void buzz(int targetPin, long frequency, long length) {
+  long delayValue = 1000000/frequency/2; // calculate the delay value between transitions
+  //// 1 second's worth of microseconds, divided by the frequency, then split in half since
+  //// there are two phases to each cycle
+  long numCycles = frequency * length/ 1000; // calculate the number of cycles for proper timing
+  //// multiply frequency, which is really cycles per second, by the number of seconds to 
+  //// get the total number of cycles to produce
+ for (long i=0; i < numCycles; i++){ // for the calculated length of time...
+    digitalWrite(targetPin,HIGH); // write the buzzer pin high to push out the diaphram
+    delayMicroseconds(delayValue); // wait for the calculated delay value
+    digitalWrite(targetPin,LOW); // write the buzzer pin low to pull back the diaphram
+    delayMicroseconds(delayValue); // wait againf or the calculated delay value
+  }
 }
