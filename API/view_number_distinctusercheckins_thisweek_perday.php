@@ -1,7 +1,7 @@
 <?php
 
 
-require_once ('../edge_signup/include/mysql_connection.php');
+require_once ('../userprofile/include/mysql_connection.php');
 
  
 $arr = array();
