@@ -14,7 +14,9 @@
 - Arduino Ethernet Client sketch by bildr.org: http://bildr.org/2011/06/arduino-ethernet-client/
 - buzz() function by Rob Faludi: http://www.faludi.com/2007/04/23/buzzer-arduino-example-code/
 
-RFID-Reader and wiring according to:
+Hardware Wiring:
+- Buzzer according to http://www.budurl.com/buzzer
+- RFID-Reader according to...
      - http://www.seeedstudio.com/wiki/Electronic_brick_-_125Khz_RFID_Card_Reader
      - set jumper on the RFID reader to UART mode
      - connect TX of RFID reader to a RX of the Arduino. define SoftSerial accordingly

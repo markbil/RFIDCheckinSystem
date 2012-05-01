@@ -1,3 +1,4 @@
-1) add a buzzer / speaker to confirm RFID checkin
-2) sketch crashes after 3 or more very fast consecutive checkins... fix this..
+
 3) Build a case for the SNARC / RFID terminal
+
+put NetworkedRFIDController on github as a seperate project and blog on kavasmlikon
