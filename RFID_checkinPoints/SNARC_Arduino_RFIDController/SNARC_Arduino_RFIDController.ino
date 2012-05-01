@@ -3,6 +3,7 @@
  
  This sketch is written for the SNARC, designed by Lawrence "Lemming" Dixon http://www.hsbne.org/projects/SNARC.
  It reads an RFID card through an RFID reader that is attached to the SNARC, and calls a URL with the RFID as a parameter.
+ Code is fully compatible with an Arduino and attached Ethernet-Shield or a Netduino.
  
  Code based on:
  
@@ -37,7 +38,7 @@ RFID-Reader and wiring according to:
 ////////////////////////////////////////////////////////////////////////
 //CONFIGURE ETHERNET
 ////////////////////////////////////////////////////////////////////////
-    byte server[] = { 192, 168, 0, 14 }; //ip Address of the server you will connect to
+    byte server[] = { 192, 168, 0, 13 }; //ip Address of the server you will connect to
     byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
     
     EthernetClient client;
@@ -54,10 +55,14 @@ RFID-Reader and wiring according to:
 //    String thirdpartyid = "9999999"; //actual RFID number. set random number for test purposes...
 
 
+
+
 //FEEDBACK LEDs
-int yellowpin = A2; //led to register keypad pressses
+// SNARC has two on-board LEDs: green LED = DIGITAL PIN 5, red LED = DIGITAL PIN 6
+
+int yellowpin = 6; //A2; //led to register keypad pressses
 int redpin = A3; //led that registers correct password entry
-int greenpin = A4; //led that registers correct password entry
+int greenpin = 5; //A4; //led that registers correct password entry
 int speakerPin = A5;
 
 boolean writingToDB = false;
@@ -147,7 +152,7 @@ void loop(){
               rfid.toUpperCase();
               Serial.println("RFID: " + rfid);
               
-              String url_base = "/TheEdge_VisitorProfiles/checkin_submit_manual.php?";
+              String url_base = "/RFIDCheckinSystem/checkin_submit_manual.php?";
               String url_param1 = "im_type=" + String(im_type);
               String url_param2 = "&thirdpartyid=" + rfid;
               String url_param3 = "&sublocation=" + String(sublocation);
@@ -192,7 +197,7 @@ String connectAndRead(String url){
     return readPage(); //go and read the output
 
   }else{
-    blinkPin(greenpin, 1000); //flash red LED to indicate that connection failed
+    blinkPin(redpin, 1000); //flash red LED to indicate that connection failed
     return "connection failed";
   }
 
