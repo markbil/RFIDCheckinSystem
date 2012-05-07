@@ -39,7 +39,7 @@ Hardware Wiring:
 ////////////////////////////////////////////////////////////////////////
 //CONFIGURE ETHERNET
 ////////////////////////////////////////////////////////////////////////
-    byte server[] = { 192, 168, 0, 13 }; //ip Address of the server you will connect to
+    byte server[] = { 192, 168, 0, 20 }; //ip Address of the server you will connect to
     byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
     
     EthernetClient client;
@@ -52,7 +52,7 @@ Hardware Wiring:
 //CONFIGURE API SETTINGS
 ////////////////////////////////////////////////////////////////////////
     int im_type = 1; // should be set to 1 on every RFID reader. 1 stands for RFID in the Checkin-DB
-    int sublocation = 3; //set location key according to where the RFID reader is installed, e.g. 1 for Window Bays 1.
+    int sublocation = 4; //set location key according to where the RFID reader is installed, e.g. 1 for Window Bays 1.
 //    String thirdpartyid = "9999999"; //actual RFID number. set random number for test purposes...
 
 
@@ -60,9 +60,10 @@ Hardware Wiring:
 
 //FEEDBACK LEDs
 // SNARC has two on-board LEDs: green LED = DIGITAL PIN 5, red LED = DIGITAL PIN 6
-int greenpin = 5;       //flash green LED to confirm successful connection
-int redpin = 6;         //flash red LED to indicate that connection failed
-int yellowpin = 18;     //no function in this sketch, but can be activated instead of buzzer to confirm that RFID card has been read
+// alternatively use externally connected LEDs to PIN
+int greenpin = 18;       //flash green LED to confirm successful connection
+int redpin = 17;         //flash red LED to indicate that connection failed
+int yellowpin = 16;     //no function in this sketch, but can be activated instead of buzzer to confirm that RFID card has been read
 int speakerPin = 19;
 
 boolean writingToDB = false;
@@ -151,8 +152,8 @@ void loop(){
             Serial.println(" -- passed.");
             
               //blinkPin(yellowpin, 500); // acknowledge that RFID card has been read
-              buzz(speakerPin, 600, 500); // buzz the buzzer on speakerPin at xxxHz for xxx milliseconds
-            
+              buzz(speakerPin, 800, 500); // acknowledge that RFID card has been read, buzz the buzzer on speakerPin at xxxHz for xxx milliseconds
+              
               rfid.toUpperCase();
               Serial.println("RFID: " + rfid);
               
@@ -197,11 +198,13 @@ String connectAndRead(String url){
     client.println(url);
     client.println();
 
+    buzz(speakerPin, 1000, 200);
     blinkPin(greenpin, 500); //flash green LED to confirm successful connection
     return readPage(); //go and read the output
 
   }else{
-    blinkPin(redpin, 1000); //flash red LED to indicate that connection failed
+    buzz(speakerPin, 500, 200);    
+    blinkPin(redpin, 500); //flash red LED to indicate that connection failed
     return "connection failed";
   }
 
