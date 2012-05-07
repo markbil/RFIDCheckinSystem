@@ -34,20 +34,12 @@ pop up html page. writes feedback to DB field feedback!
 
 ---MEDIUM PRIORITY---
 
-5) create word-template for RFID-card label
-- username
-- URL to login.php
-- QR-code to login.php (if we provide a JQuery mobile version of the profile website?)
-- feedback / questions at checkin@edge.org.au
-
 6) JQuery mobile website version of the profile website?
 
 7) 3D print a case for the RFID reader
 
 
 ---LOW PRIORITY---
-
-8) create an MySQL Views / API for developers to read from the checkin-DB 
 
 9) update-profile.php:
 - right now swipe-id cannot be changed (text field not editable), but what happens if user looses his RFID card. => my suggestion for the 1st rollout: write us an email and we change it in the DB.. later we might think about an administration userinterface for such purposes…
