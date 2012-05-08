@@ -53,8 +53,7 @@ The DATETIME timestamps in the MySQL table 'checkin' are stored in UTC +10 (Bris
 In case this project is to be applied to a different location with a particular local time, following adjustments need to be made:
 
 - checkin_submit_manual.php => change $dateTime variable accordingly
-- MySQL database: 'view_checkins' VIEW needs to be deleted and created again with a statement that sets the timezone accordingly, e.g. [SET time_zone = '+10:00']; this is 
-necessary because the 'view_checkins' VIEW has a MySQL function that compares the checkin time with the local NOW() time of the MySQL server.
+- timezone.php => change $timezone = variable accordingly. this is necessary because some MySQL VIEWs, e.g. the 'view_checkins' VIEW has a MySQL function that compares the checkin time with the local NOW() time of the MySQL server.
 
 With the changes mentioned above, the checkin system can be run from any PHP/MySQL server, independent from its location (i.e. timezone). UNIX_timestamps are not appropriate
 for this project as it envisions to make use of MySQL DATESTAMP functions in the future.
