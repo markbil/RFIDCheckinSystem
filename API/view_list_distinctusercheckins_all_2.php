@@ -6,6 +6,7 @@ require_once ('../userprofile/include/mysql_connection.php');
  
 $arr = array();
 ////VIEW: "view_list_distinctusercheckins_all" = all check-ins and user details, but only the most recent checkin per edge_user is returned
+ 
 $query = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, MAX(checkin_timestamp) AS checkin_timestamp, months_since_checkin, days_since_checkin, hours_since_checkin, minutes_since_checkin, checkin_sublocation FROM `view_checkins` GROUP BY edge_user_id ORDER BY checkin_timestamp DESC";
 
 //USE this statement to filter particular time-spans...
@@ -18,7 +19,7 @@ $query = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, M
 // hours_since_checkin < 3		//checkins in the last 2 hours
 // minutes_since_checkin < 11	//checkins in the last 10 minutes
 
-
+$tmz = mysql_query ("SET time_zone = " . $timezone) or die("mysql error: " . mysql_error());
 $rs = mysql_query ($query) or die("mysql error: " . mysql_error()); 
 
 

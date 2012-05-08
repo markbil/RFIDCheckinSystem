@@ -8,7 +8,7 @@ $arr = array();
 
 $query = "SELECT edge_user_id, firstname, lastname, thismonth_name, distinct_checkindays FROM view_highscorelist_distinctusercheckinsperday_thismonth";
 
-
+$tmz = mysql_query ("SET time_zone = " . $timezone) or die("mysql error: " . mysql_error());
 $rs = mysql_query ($query) or die("mysql error: " . mysql_error()); 
 
 

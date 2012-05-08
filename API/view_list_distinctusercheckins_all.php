@@ -18,7 +18,7 @@ $query = "SELECT edge_user_id, firstname, lastname, occupation, statusmessage, M
 // hours_since_checkin < 3		//checkins in the last 2 hours
 // minutes_since_checkin < 11	//checkins in the last 10 minutes
 
-
+$tmz = mysql_query ("SET time_zone = " . $timezone) or die("mysql error: " . mysql_error());
 $rs = mysql_query ($query) or die("mysql error: " . mysql_error()); 
 
 
