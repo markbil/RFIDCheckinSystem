@@ -2,7 +2,7 @@
 
 
 require_once ('../userprofile/include/mysql_connection.php');
-
+require_once ('timezone.php');
  
 $arr = array();
 ////VIEW: "view_list_distinctusercheckins_all" = all check-ins and user details, but only the most recent checkin per edge_user is returned

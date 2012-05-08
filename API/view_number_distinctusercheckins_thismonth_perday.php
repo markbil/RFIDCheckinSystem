@@ -2,7 +2,7 @@
 
 
 require_once ('../userprofile/include/mysql_connection.php');
-
+require_once ('timezone.php');
  
 $arr = array();
 //VIEW: "view_number_distinctusercheckins_perhour" = returns hours of a day and number of checkins that distinct users have checkin at at that our
