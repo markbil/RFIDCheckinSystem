@@ -13,6 +13,8 @@
      - Martijn The - http://www.martijnthe.nl/
 - Arduino Ethernet Client sketch by bildr.org: http://bildr.org/2011/06/arduino-ethernet-client/
 - buzz() function by Rob Faludi: http://www.faludi.com/2007/04/23/buzzer-arduino-example-code/
+- random MAC address generator by Joel Chia as used in: https://github.com/j-c/snarc/blob/master/Firmware/snarc/snarc.ino
+
 
 Hardware Wiring:
 - Buzzer according to http://www.budurl.com/buzzer
@@ -40,7 +42,10 @@ Hardware Wiring:
 //CONFIGURE ETHERNET
 ////////////////////////////////////////////////////////////////////////
     byte server[] = { 192, 168, 0, 20 }; //ip Address of the server you will connect to
-    byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+    
+  //byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };    //uncomment if hard-coded MAC address is wanted
+    byte mac[] = { 0, 0, 0, 0, 0, 0};                        //MAC address will be randomly generated at setup
+    
     
     EthernetClient client;
     char inString[32]; // string for incoming serial data
@@ -70,6 +75,8 @@ boolean writingToDB = false;
 
 void setup(){
   
+  randomSeed(analogRead(A1));
+  
   pinMode(yellowpin, OUTPUT); //define led pin as output
   pinMode(greenpin, OUTPUT); //define led pin as output
   pinMode(redpin, OUTPUT); //define led pin as output
@@ -77,6 +84,9 @@ void setup(){
   
   Serial.begin(9600);
   mySerial.begin(9600);
+  
+  generate_random_mac_address();
+  print_mac_address();
   
   Serial.println("Serial...");  
   Serial.println("Ethernet...");
@@ -270,3 +280,63 @@ void buzz(int targetPin, long frequency, long length) {
     delayMicroseconds(delayValue); // wait againf or the calculated delay value
   }
 }
+
+
+//Methods for generating a random MAC-address
+
+  void generate_random_mac_address()
+  {
+  	set_mac_address(random(0, 255), random(0, 255), random(0, 255), random(0, 255), random(0, 255), random(0, 255));
+  }
+  
+  void set_mac_address(byte octet0, byte octet1, byte octet2, byte octet3, byte octet4, byte octet5)
+  {
+  	mac[0] = octet0;
+  	mac[1] = octet1;
+  	mac[2] = octet2;
+  	mac[3] = octet3;
+  	mac[4] = octet4;
+  	mac[5] = octet5;
+      
+  }
+  
+  void print_mac_address()
+  {
+  	if (mac[0] < 16)
+  	{
+  		Serial.print('0');
+  	}
+  	Serial.print(mac[0], HEX);
+  	Serial.print(':');
+  	if (mac[1] < 16)
+  	{
+  		Serial.print('0');
+  	}
+  	Serial.print(mac[1], HEX);
+  	Serial.print(':');
+  	if (mac[2] < 16)
+  	{
+  		Serial.print('0');
+  	}
+  	Serial.print(mac[2], HEX);
+  	Serial.print(':');
+  	if (mac[3] < 16)
+  	{
+  		Serial.print('0');
+  	}
+  	Serial.print(mac[3], HEX);
+  	Serial.print(':');
+  	if (mac[4] < 16)
+  	{
+  		Serial.print('0');
+  	}
+  	Serial.print(mac[4], HEX);
+  	Serial.print(':');
+  	if (mac[5] < 16)
+  	{
+  		Serial.print('0');
+  	}
+  	Serial.println(mac[5], HEX);
+  }
+
+
