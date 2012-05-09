@@ -2,45 +2,55 @@ TODO Checkin System:
 
 ---HIGH PRIORITY---
 
-1) change login.php: users should be using their username/pw to login, not swipe-id/pw.
+Done >> 1) change login.php: users should be using their username/pw to
+login, not swipe-id/pw.
 
-2) error handling at signup.php: what happens ifâ
- - user selects a username that already exists?
- - Edge staff enters an RFID card number that was already assigned to another Edge visitor?
-- signup.php: add "repeat password field", only accept signup if both passwords match
+2) error handling at signup.php: what happens if?
+Done >> - user selects a username that already exists?
+ Need to create Form >> - Edge staff enters an RFID card number that was
+already assigned to another Edge visitor?
+Done >> - signup.php: add "repeat password field", only accept signup if
+both passwords match
 
-3) include two checkboxes (mutually exclusive, i.e. you can select one OR the other OR none of them (default is none)):
-- I am happy to be approached by other users
-- Don't talk to me, I busy doing my own stuff
+3) include two checkboxes (mutually exclusive, i.e. you can select one
+OR the other OR none of them (default is none)):
+Need to do >> - I am happy to be approached by other users
+Don't Disturb implemented >> - Don't talk to me, I busy doing my own stuff
 
 the checkboxes connect to the "dontdisturb" field in the "edge_users" table (as of meetmee_checkin6.sql):
 happy to talk to others = 0
 don't talk to me = 1
 no box checked (default) = NULL (default value in the DB, so nothing needs to be passed)
 
-4) for each skill/expertise text field: create a drop down list that enables the user to select his expertise level (1 beginner - 5 expert) for each skill,
+Done >> 4) for each skill/expertise text field: create a drop down list
+that enables the user to select his expertise level (1 beginner - 5
+expert) for each skill,
 and connect to DB field: expertise_table->level
 
-5) add "terms and conditions" check-box at signup.php page. box must be ticked in order to signup. "terms and conditions" label is a link
-that opens a new browser window... I am working with the Edge on the content, e.g. users must admit that their content will be visible
+Need to do >> 5) add "terms and conditions" check-box at signup.php
+page. box must be ticked in order to signup. "terms and conditions"
+label is a link
+that opens a new browser window... I am working with the Edge on the
+content, e.g. users must admit that their content will be visible
 on public screens, projections, etc...
 
-6) add DB fields and checkboxes in profile page for "background". background can be "technology", "art", "music", "DIY",
+Need to do >> 6) add DB fields and checkboxes in profile page for
+"background". background can be "technology", "art", "music", "DIY",
 
-7) add Feedback form to profile page. "Let us know what you think about this system! Send us your Feedback" => Link to
+Need to do >> 7) add Feedback form to profile page. "Let us know what
+you think about this system! Send us your Feedback" => Link to
 pop up html page. writes feedback to DB field feedback!
 
-8) add google analytics to profile website
 
-
-mark:
+Mark B:
 - change slq views according to mark's new DB structure...
+- Need to do >> 8) add google analytics to profile website
+
 
 ---MEDIUM PRIORITY---
 
 6) JQuery mobile website version of the profile website?
 
-7) 3D print a case for the RFID reader
 
 
 ---LOW PRIORITY---
