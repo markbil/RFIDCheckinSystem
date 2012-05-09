@@ -32,6 +32,10 @@ pop up html page. writes feedback to DB field feedback!
 
 8) add google analytics to profile website
 
+
+mark:
+- change slq views according to mark's new DB structure...
+
 ---MEDIUM PRIORITY---
 
 6) JQuery mobile website version of the profile website?
