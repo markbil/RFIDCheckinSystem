@@ -71,6 +71,7 @@ SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, i
 
 
 //VIEW: "view_number_distinctusercheckins_all" = number of distinct users who have ever checked-in
+SET time_zone = '+10:00';
 SELECT COUNT(DISTINCT edge_user_id) as distinct_usercheckins FROM view_checkins
 
 //number of distinct users who have checked-in in the last x minutes/hours/days/months
