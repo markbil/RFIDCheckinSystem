@@ -27,7 +27,7 @@ while($obj = mysql_fetch_assoc($rs)) {
 	$edge_user_id = $obj['edge_user_id'];
 
 	//get expertise list for each user
-	$expertise_user_checkedin = "SELECT expertise, level FROM expertise_table et, edge_users_expertises eue WHERE eue.expertise_id = et.id AND eue.edge_users_id = " . $edge_user_id;
+	$expertise_user_checkedin = "SELECT expertise FROM expertise_table et, edge_users_expertises eue WHERE eue.expertise_id = et.id AND eue.edge_users_id = " . $edge_user_id;
 	$arr_expertise = array();
 	$rs_expertise = mysql_query ($expertise_user_checkedin) or die("mysql error: " . mysql_error());
 	while ($get_field = mysql_fetch_row($rs_expertise)){
