@@ -1,7 +1,7 @@
 <?php
 
 
-require_once ('../userprofile/include/mysql_connection.php');
+require_once ('mysql_connection.php');
 require_once ('timezone.php');
  
 $arr = array();
