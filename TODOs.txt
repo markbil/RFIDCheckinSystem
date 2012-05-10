@@ -47,6 +47,15 @@ Mark B:
 - Need to do >> 8) add google analytics to profile website
 
 
+Usability web interface:
+
+- what if a user forgot his password? => email password to his email address
+- Projects => name: Meetings, Collaborations, Projects
+	- should be listed within the user_edge website, similar to interests and expertise, rather than separate file... save a click! 
+- edge_user: why multiple update buttons? one update/cancel button should be at the very bottom.
+
+
+
 ---MEDIUM PRIORITY---
 
 6) JQuery mobile website version of the profile website?
