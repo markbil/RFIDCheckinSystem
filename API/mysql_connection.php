@@ -4,7 +4,7 @@
 DEFINE ('DB_USER', 'root');
 DEFINE ('DB_PASSWORD', '');
 DEFINE ('DB_HOST', 'localhost');
-DEFINE ('DB_NAME', 'meetmee_checkin6');
+DEFINE ('DB_NAME', 'hack_rfid_checkin_igniter');
 
 //connection to meetmee.javaprovider mysql database
 // DEFINE ('DB_USER', 'meetmee_mark');
