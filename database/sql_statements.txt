@@ -51,7 +51,7 @@ SELECT edge_user_id, firstname, lastname, occupation, statusmessage, imt_name, i
 
 	//REQUIRED VIEW for all subsequent highscorelists:
 		//VIEW: "view_list_distinctusercheckins_perdate" = list of checkins per user on distinct days
-		SELECT * FROM `view_checkins` GROUP BY edge_user_id, DATE(checkin_timestamp)
+		SELECT * FROM `view_checkins` GROUP BY edge_user_id, DATE(checkin_timestamp) ORDER BY checkin_timestamp DESC
 	
 	//VIEW: "view_highscorelist_distinctusercheckins_all"
 	SELECT edge_user_id, firstname, lastname, COUNT(*) AS distinct_checkindays FROM view_list_distinctusercheckins_perdate GROUP BY edge_user_id ORDER BY distinct_checkindays DESC
@@ -95,6 +95,9 @@ SELECT MONTH(checkin_timestamp) AS month_index, MONTHNAME(checkin_timestamp) AS 
 
 //VIEW: "view_number_distinctusercheckins_perhour" = returns hours of a day and number of checkins that distinct users have checkin at at that our.
 SELECT HOUR(checkin_timestamp) AS hour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour ORDER BY hour
+
+//VIEW: "view_number_distinctusercheckins_perquaterofhour" = returns hours of a day in 15min sections, and number of checkins that distinct users have checkin at each 15min slot during a particuar hour.
+SELECT HOUR(checkin_timestamp) AS hour, (CEILING(MINUTE(checkin_timestamp) / 14.99)) AS quaterofhour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour, quarterofhour ORDER BY hour
 
 //VIEW: "view_number_distinctusercheckins_thisweek_perday" = number of distinct users who have checked in on a particular day this week
 SET time_zone = '+10:00';
