@@ -87,6 +87,9 @@ SELECT COUNT(DISTINCT edge_user_id) as distinct_usercheckins FROM view_checkins 
 //VIEW: "view_number_distinctusercheckins_perdate" = number of distinct users who have checked in on a particular date
 SELECT DATE(checkin_timestamp) AS checkin_date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY checkin_date ORDER BY checkin_date DESC
 
+//VIEW: "view_number_distinctusercheckins_perdate_hour_quarter.php" = returns checkin_dates and the number of distinct users that have checked-in per hour and quarter of an hour on each date
+SELECT DATE(checkin_timestamp) AS checkin_date, HOUR(checkin_timestamp) AS hour, (CEILING(MINUTE(checkin_timestamp) / 14.99)) AS quarterofhour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY checkin_date, hour, quarterofhour ORDER BY checkin_date DESC, hour DESC, quarterofhour DESC
+
 //VIEW: "view_number_distinctusercheckins_perweekday" = number of distinct users who have checked in on a particular weekday
 SELECT WEEKDAY(checkin_timestamp) AS weekday_index, DAYNAME(checkin_timestamp) AS weekday_name, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY weekday_index ORDER BY weekday_index
 
