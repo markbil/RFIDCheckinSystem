@@ -96,8 +96,8 @@ SELECT MONTH(checkin_timestamp) AS month_index, MONTHNAME(checkin_timestamp) AS 
 //VIEW: "view_number_distinctusercheckins_perhour" = returns hours of a day and number of checkins that distinct users have checkin at at that our.
 SELECT HOUR(checkin_timestamp) AS hour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour ORDER BY hour
 
-//VIEW: "view_number_distinctusercheckins_perquaterofhour" = returns hours of a day in 15min sections, and number of checkins that distinct users have checkin at each 15min slot during a particuar hour.
-SELECT HOUR(checkin_timestamp) AS hour, (CEILING(MINUTE(checkin_timestamp) / 14.99)) AS quaterofhour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour, quarterofhour ORDER BY hour
+//VIEW: "view_number_distinctusercheckins_perhour_15minslots" = returns hours of a day in 15min sections, and number of checkins that distinct users have checked-in at each 15min slot during a particuar hour. E.g. at 8am, 6 people have checked in during the 1st quarter of the hour (i.e. 8:00-8:14am)
+SELECT HOUR(checkin_timestamp) AS hour, (CEILING(MINUTE(checkin_timestamp) / 14.99)) AS quarterofhour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins GROUP BY hour, quarterofhour ORDER BY hour
 
 //VIEW: "view_number_distinctusercheckins_thisweek_perday" = number of distinct users who have checked in on a particular day this week
 SET time_zone = '+10:00';
@@ -110,6 +110,11 @@ SELECT DAYOFMONTH(checkin_timestamp) AS dayofmonth_index, DAYNAME(checkin_timest
 //VIEW: "view_number_distinctusercheckins_today_perhour" = number of distinct users who have checked-in at a particular hour today
 SET time_zone = '+10:00';
 SELECT HOUR(checkin_timestamp) AS hour, DATE(checkin_timestamp) AS date, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins WHERE DATE(checkin_timestamp) = DATE((SELECT NOW())) GROUP BY hour ORDER BY hour;	
+
+//VIEW: "view_number_distinctusercheckins_today_perhour_15minslots" = returns hours of today in 15min sections, and number of checkins that distinct users have checked-in at each 15min slot during a particuar hour today. E.g. at 8am, 6 people have checked in during the 1st quarter of the hour (i.e. 8:00-8:14am)
+SET time_zone = '+10:00';
+SELECT HOUR(checkin_timestamp) AS hour, (CEILING(MINUTE(checkin_timestamp) / 14.99)) AS quarterofhour, COUNT(DISTINCT edge_user_id) AS distinct_usercheckins FROM view_checkins WHERE DATE(checkin_timestamp) = DATE((SELECT NOW())) GROUP BY hour, quarterofhour ORDER BY hour
+
 
 //VIEW: "view_number_totalusercheckins_peryearmonth" = number of total users who have checked-in per year and month
 SELECT (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) AS yearmonth_index, MONTHNAME(checkin_timestamp) AS month_name, YEAR(checkin_timestamp) as year, COUNT(edge_user_id) AS total_usercheckins FROM view_list_distinctusercheckins_perdate GROUP BY (EXTRACT(YEAR_MONTH FROM checkin_timestamp)) ORDER BY (EXTRACT(YEAR_MONTH FROM checkin_timestamp))
