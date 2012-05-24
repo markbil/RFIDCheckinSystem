@@ -1,0 +1,156 @@
+body {
+	background-color: #e3e3e3;
+	font-family: “Helvetica Neue”, Arial, Helvetica, sans-serif;
+}
+#wrapper {
+	width: 550px;
+	padding: 0 5px;
+}
+
+
+#logo {
+	display: block;
+	width: 100%;
+	height: 75px;
+	padding: 20pt 0;
+	background: url("../img/logo.png") left center no-repeat;
+}
+#logo h1 {
+	display: none;
+}
+#footer {
+	margin: 9pt 0;
+	font-size: 10pt;
+}
+
+
+#content {
+	width: 100%;
+	padding: 16pt 0;
+	background: #fbfbfb;
+	border: solid 3px #111111;
+	border-radius: 13px;
+}
+.content-inner {
+	width: 88%;
+}
+.logg-form h3 {
+	font-size: 16pt;
+}
+.logg-textbox {
+	display: inline-block;
+	width: 100%;
+	height: 26pt;
+	margin: 3pt 0 14pt;
+	background: #e3f2c9;
+	border: solid 1px #000000;
+	border-radius: 3px;
+	font-size: 16pt;
+	color: #333333;
+}
+.logg-button {
+	display: inline-block;
+	padding: 4pt 6pt;
+	background: #ffffff;
+	border: solid 2px #000000;
+	border-radius: 5px;
+	color: #000000;
+	text-decoration: none;
+	vertical-align: bottom;
+	cursor: pointer;
+}
+.logg-button:hover {
+	background: #bbbbbb;
+}
+.logg-form .login-register {
+	margin: 0 27pt 2px 0;
+	font-size: 13pt;
+	border: solid 2px #333333;
+	color: #111111;
+}
+.logg-submit {
+	font-size: 16pt;
+}
+.logg-checkbox {
+	height: 10pt;
+}
+.login-warning {
+	width: 100%;
+	margin: 0 0 7pt;
+	padding: 7pt 0;
+	background: #fbebeb;
+	border: solid 3px #991111;
+	border-radius: 13px;
+}
+.login-warning span {
+	display: block;
+	width: 88%;
+}
+.logg-success {
+	width: 100%;
+	margin: 0 0 7pt;
+	padding: 7pt 0;
+	background: #ebfbeb;
+	border: solid 3px #119911;
+	border-radius: 13px;
+}
+.logg-success div {
+	width: 88%;
+	margin: 0 auto;
+}
+
+h1 {
+	font-size: 24pt;
+	margin: 5pt 0 18pt;
+}
+h4 {
+	font-size: 14pt;
+}
+
+.subtitle {
+	display: inline-block;
+	margin: 2pt 0 0;
+	font-size: 10pt;
+}
+
+
+.center {
+	margin: 0 auto;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.clearfix {
+	clear: both;
+}
+.inline-block {
+	display: inline-block;
+}
+
+
+#interest-list {
+	margin: 5pt 0 0;
+	width: 100%;
+}
+.interest-item {
+	margin: 5pt;
+}
+.interest-name {
+	width: 100% !important;
+	padding: 4pt;
+	background: #eeeeee;
+}
+.interest-space {
+	height: 6pt;
+}
+
+.logg-textbox-interest {
+	width: auto;
+	display: inline-block;
+}
+.logg-select-interest {
+	display: inline-block;
+}
