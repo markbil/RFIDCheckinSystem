@@ -1,7 +1,7 @@
 <?php
 
 require_once ('mysql_connection.php');
-
+include 'tweet.php';
 
 $dateTime = new DateTime("now", new DateTimeZone('Australia/Brisbane'));
 
@@ -37,15 +37,46 @@ $sql_get_im_id = "SELECT id FROM identification_media im WHERE im.thirdpartyid =
 			//*** mysql error text between the three stars will be displayed to the user in the processing sketch ***
 			$result2 = @mysql_query ($query2) or die("***Checkin could not be found***  " . mysql_error());
 			
+			$firstName = "";
 			while($row = mysql_fetch_array($result2))
 			{
 				//data to be read by the processing script wrappen in +++ and +++
 				echo "+++" . $row['firstname'] . "+++";
 				echo "<br />";
+				$firstName = $row['firstname'];
 			}
 				
 			//echo "***Check-in successful!***";
-
+			
+			// Do coffee machine tweeting if applicable
+			if (($sublocation == 16) && (!firstName.equals("")))
+			{
+				// Mention the visitor by first name or twitter handle if they've provided it
+				$twitterHandle = "";	// *** REPLACE THIS WITH ACTUAL FROM DATABASE **
+				$nameToUse = $firstName;
+				if (!$twitterHandle.equals(""))
+					$nameToUse = "@" . $twitterHandle;
+					
+				// Randomly generate a tweet with a mention to The Edge at the end
+				$random = rand(1,5);
+				$tweet = "";
+				switch ($random)
+				{
+					case 1: $tweet = $nameToUse . "... prepare for death by coffee! @SLQedge";
+						break;
+					case 2: $tweet = "Enjoy your coffee " . $nameToUse . "! @SLQedge";
+						break;
+					case 3: $tweet = "Can't tweet, busy making awesome coffee for " . $nameToUse . " @SLQedge";
+						break;
+					case 4: $tweet = "Sweet delicious coffee coming " . $nameToUse . "'s way! @SLQedge";
+						break;
+					case 5: $tweet = "Brewing... brewing... brewing... @SLQedge";
+						break;
+				}
+				
+				// Sent the tweet from the coffee machine account
+				tweetFromCoffeeMachine($tweet);
+			}
 		
 	} else{
 		echo "one or more ID parameters not set! </br>
