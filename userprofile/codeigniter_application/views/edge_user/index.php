@@ -18,10 +18,11 @@
 	<input class="logg-textbox" type="password" name="password" />
 
 	<div class="login-submit-wrapper right">
-		<?php echo anchor('edge_user/signup','Register', array('title'=>'Register', 'class'=>'logg-button login-register'))?>
-
 		<input class="logg-button logg-submit" type="submit" value="Login" />
 	</div>
+
+	<?php echo anchor('edge_user/signup','Sign Up', array('title'=>'Register', 'class'=>'login-register'))?>
+
 	<div class="clearfix"></div>
 
 	</form>

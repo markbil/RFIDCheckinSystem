@@ -63,10 +63,11 @@ body {
 	background: #bbbbbb;
 }
 .logg-form .login-register {
-	margin: 0 27pt 2px 0;
+	display: block;
+	margin: 20pt 0 0;
 	font-size: 13pt;
-	border: solid 2px #333333;
-	color: #111111;
+	color: #1111dd;
+	text-decoration: none;
 }
 .logg-submit {
 	font-size: 16pt;
@@ -153,4 +154,11 @@ h4 {
 }
 .logg-select-interest {
 	display: inline-block;
+}
+
+.collapse-head {
+
+}
+.collapse-content {
+	
 }
