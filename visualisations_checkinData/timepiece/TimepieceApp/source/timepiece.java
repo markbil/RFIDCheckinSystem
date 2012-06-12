@@ -1,6 +1,27 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import org.json.*; 
+
+import java.applet.*; 
+import java.awt.Dimension; 
+import java.awt.Frame; 
+import java.awt.event.MouseEvent; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.FocusEvent; 
+import java.awt.Image; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class timepiece extends PApplet {
+
 // timepiece.pde
 
-import org.json.*;
+
 
 int WIN_W = 800;
 int WIN_H = 600;
@@ -11,8 +32,8 @@ int last_fetch;
 int fetch_refresh_time = 5; // seconds
 
 boolean mode = false;
-float unravel = 0.0;  
-float speed = 0.5;
+float unravel = 0.0f;  
+float speed = 0.5f;
 
 String url = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_number_distinctusercheckins_perhour_15minslots.php";
 
@@ -21,7 +42,7 @@ Timepiece t;
 
 int numsegs = 4*12;
 
-void setup() 
+public void setup() 
 { 
   size(800, 600);
   //size( screen.width, screen.height); 
@@ -30,10 +51,10 @@ void setup()
   last_fetch = millis();
 }
 
-void draw() 
+public void draw() 
 {
   int now = millis();
-  float dt = (now - last_update)/1000.0;
+  float dt = (now - last_update)/1000.0f;
   last_update = now;
   
   if (now - last_fetch > fetch_refresh_time*1000) 
@@ -43,19 +64,19 @@ void draw()
   }
   
   if (mode) 
-    if (unravel < 1.0)
+    if (unravel < 1.0f)
       unravel += speed*dt;
-    else unravel = 1.0;
+    else unravel = 1.0f;
   else 
-    if (unravel > 0.0)
+    if (unravel > 0.0f)
       unravel -= speed*dt;
-    else unravel = 0.0;
+    else unravel = 0.0f;
   
   background(0, 0, 0);
-  translate((1.0-unravel)*WIN_W/2.0 + unravel*t.spiral_factor/numsegs, (1+0.8*unravel)*WIN_H/2.0);
-  scale(1.0+0.5*unravel*WIN_W/t.spiral_factor, 1);
+  translate((1.0f-unravel)*WIN_W/2.0f + unravel*t.spiral_factor/numsegs, (1+0.8f*unravel)*WIN_H/2.0f);
+  scale(1.0f+0.5f*unravel*WIN_W/t.spiral_factor, 1);
   t.render(unravel);
-  float time = hour()%12 + minute()/60.0;
+  float time = hour()%12 + minute()/60.0f;
   t.render_line(unravel, time);
 }
 
@@ -73,31 +94,31 @@ class Timepiece
     set_data(data, description);
   }
   
-  void set_data(float data[], String description[]) 
+  public void set_data(float data[], String description[]) 
   {
     d = data;
     desc = description;
   }
     
-  void render_line(float unravelness, float pos)
+  public void render_line(float unravelness, float pos)
   {
     float r0 = 4*pos*unravelness*spiral_factor/d.length;
-    float a0 = 4*pos*TWO_PI*(1.0-unravelness)/d.length;
+    float a0 = 4*pos*TWO_PI*(1.0f-unravelness)/d.length;
     
     // ray
     stroke(255, 153, 255, 128);
     float sw = 1.0f+0.25f*unravelness*(spiral_factor/d.length)-2;
     if (sw < 1) sw = 1;
     strokeWeight(sw);
-    float val = 0.9*0.25*WIN_H;
+    float val = 0.9f*0.25f*WIN_H;
     line(r0*cos(a0), r0*sin(a0), r0*cos(a0)+val*sin(a0), r0*sin(a0)-val*cos(a0));
   }
   
   // draw this timepiece
-  void render(float unravelness)
+  public void render(float unravelness)
   {    
     float dr = unravelness*spiral_factor/d.length;
-    float da = TWO_PI*(1.0-unravelness)/d.length;
+    float da = TWO_PI*(1.0f-unravelness)/d.length;
     float maxval = 0;
     for (int i = 0; i < d.length; i++)
       maxval = max(maxval, d[i]);
@@ -130,20 +151,20 @@ class Timepiece
       // ray
       stroke(255, 153, 0);
       strokeWeight(sw);
-      float val = (unravel/2 + 1.0f)*0.9*0.5*WIN_H*d[i]/maxval;
+      float val = (unravel/2 + 1.0f)*0.9f*0.5f*WIN_H*d[i]/maxval;
       line(r0*cos(a0), r0*sin(a0), r0*cos(a0)+val*sin(a0), r0*sin(a0)-val*cos(a0));
       fill(255, 255, 0, unravelness*255);
-      text(int(d[i]), r0*cos(a0)+val*sin(a0), r0*sin(a0)-val*cos(a0)-1.5*sw);
+      text(PApplet.parseInt(d[i]), r0*cos(a0)+val*sin(a0), r0*sin(a0)-val*cos(a0)-1.5f*sw);
       pushMatrix();
-      translate(r0*cos(a0), r0*sin(a0)+1.5*sw);
+      translate(r0*cos(a0), r0*sin(a0)+1.5f*sw);
       rotate(-PI/2);
-      text(desc[i], 0, sw/4.0);
+      text(desc[i], 0, sw/4.0f);
       popMatrix();
     }
   }
 }
 
-void fetch_json(String url)
+public void fetch_json(String url)
 {
   println("fetching from " + url);
   
@@ -163,16 +184,16 @@ void fetch_json(String url)
       JSONObject checkin = checkins.getJSONObject(i);
       
       String shour = checkin.getString("hour");
-      int nhour = int(shour);
+      int nhour = PApplet.parseInt(shour);
 
       String squarter = checkin.getString("quarterofhour");
-      int nquarter = int(squarter);
+      int nquarter = PApplet.parseInt(squarter);
       
       int index =  4*(nhour-12)+nquarter;     
       if (index < 0) continue;   // only PM times
       
       
-      data[index] = float(checkin.getString("distinct_usercheckins"));
+      data[index] = PApplet.parseFloat(checkin.getString("distinct_usercheckins"));
     }
     
     for (int i = 0; i < numsegs; i++)
@@ -187,15 +208,19 @@ void fetch_json(String url)
   
 }
 
-void mouseClicked()
+public void mouseClicked()
 {}
 
-void mouseReleased()
+public void mouseReleased()
 {}
 
-void keyPressed() 
+public void keyPressed() 
 {
   if (key == 'm')
     mode = !mode;
 }
  
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--present", "--bgcolor=#666666", "--stop-color=#cccccc", "timepiece" });
+  }
+}

@@ -1,0 +1,3 @@
+ -Xms64m -Xmx256m
+springnode
+springnode.jar,core.jar,json.jar
