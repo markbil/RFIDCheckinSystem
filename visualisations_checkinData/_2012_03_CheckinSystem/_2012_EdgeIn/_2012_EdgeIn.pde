@@ -5,16 +5,17 @@ import processing.opengl.*;
 color systemBackgroundColor = color(214, 248, 112); 
 
 //PaperSketchApp paperSketch; 
-//ProjectExplorerApp projectExplorer; 
+ProjectExplorerApp projectExplorer; 
 //CheckinSystemApp checkinSystem;
-CheckinsOverviewApp checkinsOverview;
+//CheckinsOverviewApp checkinsOverview;
 RFIDReaderApp rfidReaderApp;
 
-String host_server = "localhost";
+//String host_server = "localhost";
+String host_server = "meetmee.javaprovider.net";
 
 void setup() { 
-//  size( screen.width, screen.height); 
-  size( screen.width/2, screen.height/2); 
+  size( screen.width, screen.height); 
+//  size( screen.width/2, screen.height/2); 
 //  size( 900, 700); 
   
   smooth(); 
@@ -24,8 +25,8 @@ void setup() {
 //paperSketch = new PaperSketchApp(this); 
 //  projectExplorer = new ProjectExplorerApp(this); 
 //checkinSystem = new CheckinSystemApp(this);
-  checkinsOverview = new CheckinsOverviewApp(this);
-//  rfidReaderApp = new RFIDReaderApp(this);
+//  checkinsOverview = new CheckinsOverviewApp(this);
+  rfidReaderApp = new RFIDReaderApp(this);
 } 
 
 
@@ -34,8 +35,8 @@ void draw() {
 //  paperSketch.draw(); 
 //  projectExplorer.draw(); 
 // checkinSystem.draw();
-  checkinsOverview.draw();
-//  rfidReaderApp.draw();
+//  checkinsOverview.draw();
+  rfidReaderApp.draw();
   
   cleanupCursors(); 
   drawTuioCursors();
