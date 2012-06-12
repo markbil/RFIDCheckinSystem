@@ -93,7 +93,7 @@ void serialEvent (Serial myPort) {
           rfidReaderApp.setWritingToDB(true);
    
           //PERFOM CHECKIN TO DB
-          String checkin_url = "http://" + host_server + "/TheEdge_VisitorProfiles/checkin_submit_manual.php?im_type=1&thirdpartyid=" + inString;
+          String checkin_url = "http://" + host_server + "/php/TheEdge_VisitorProfiles/checkin_submit_manual.php?im_type=1&thirdpartyid=" + inString;
           String checkin_result[] = loadStrings(checkin_url);
           
           
@@ -144,14 +144,14 @@ class FirstScreen extends GUI{
     PFont welcome2_font = loadFont("HelveticaNeue-24.vlw");
     
 
-    Label edgein_lg = new Label("EdgeIn!"); 
+    Label edgein_lg = new Label("The Edge Checkin-System"); 
     edgein_lg.setTranslation(0, -(height/4));
     edgein_lg.setFont(welcome1_font); 
     edgein_lg.textColor = color(0, 10, 20);  
     addWidget(edgein_lg);
     
     
-    Label msg1 = new Label("Please touch the red dot with your Edge card!"); 
+    Label msg1 = new Label("Please touch the bottom left corner with your Edge card!"); 
     msg1.setTranslation(0, 0);
     msg1.setFont(welcome2_font); 
     msg1.textColor = color(0, 10, 20);  

@@ -41,7 +41,9 @@ Hardware Wiring:
 ////////////////////////////////////////////////////////////////////////
 //CONFIGURE ETHERNET
 ////////////////////////////////////////////////////////////////////////
-    byte server[] = { 192, 168, 0, 20 }; //ip Address of the server you will connect to
+    //byte server[] = { 192, 168, 0, 20 }; //ip Address of the server you will connect to
+    byte server[] = { 88, 198, 156, 56 };  //fixed IP of the meetmee.javaprovider.net
+    
     
   //byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };    //uncomment if hard-coded MAC address is wanted
     byte mac[] = { 0, 0, 0, 0, 0, 0};                        //MAC address will be randomly generated at setup
@@ -166,8 +168,7 @@ void loop(){
               
               rfid.toUpperCase();
               Serial.println("RFID: " + rfid);
-              
-              String url_base = "/RFIDCheckinSystem/checkin_submit_manual.php?";
+              String url_base = "/php/RFIDCheckinSystem/checkin_submit_manual.php?";
               String url_param1 = "im_type=" + String(im_type);
               String url_param2 = "&thirdpartyid=" + rfid;
               String url_param3 = "&sublocation=" + String(sublocation);

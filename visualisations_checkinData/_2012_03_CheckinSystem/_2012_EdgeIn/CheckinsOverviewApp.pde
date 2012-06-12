@@ -6,6 +6,7 @@ class CheckinsOverviewApp {
 
     int threadwaittime = 1500; //ms before each DB-fetch    
     String baseURL = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all.php";
+//    String baseURL = "http://meetmee.javaprovider.net/php/RFIDCheckinSystem/API/view_list_distinctusercheckins_all.php";
 //    String baseURL = "http://localhost/TheEdge_VisitorProfiles/API/view_list_distinctusercheckins_all_2.php";
     	
     // name of the table that will be created

@@ -1,0 +1,3 @@
+ -Xms64m -Xmx256m
+timepiece
+timepiece.jar,core.jar,json.jar
