@@ -2,8 +2,6 @@ TODO Checkin System:
 
 ---HIGH PRIORITY---
 
-Done >> 1) change login.php: users should be using their username/pw to
-login, not swipe-id/pw.
 
 2) error handling at signup.php: what happens if?
 Done >> - user selects a username that already exists?
@@ -17,15 +15,11 @@ OR the other OR none of them (default is none)):
 Need to do >> - I am happy to be approached by other users
 Don't Disturb implemented >> - Don't talk to me, I busy doing my own stuff
 
-the checkboxes connect to the "dontdisturb" field in the "edge_users" table (as of meetmee_checkin6.sql):
-happy to talk to others = 0
-don't talk to me = 1
-no box checked (default) = NULL (default value in the DB, so nothing needs to be passed)
+	the checkboxes connect to the "dontdisturb" field in the "edge_users" table (as of meetmee_checkin6.sql):
+	happy to talk to others = 0
+	don't talk to me = 1
+	no box checked (default) = NULL (default value in the DB, so nothing needs to be passed)
 
-Done >> 4) for each skill/expertise text field: create a drop down list
-that enables the user to select his expertise level (1 beginner - 5
-expert) for each skill,
-and connect to DB field: expertise_table->level
 
 Need to do >> 5) add "terms and conditions" check-box at signup.php
 page. box must be ticked in order to signup. "terms and conditions"
@@ -43,21 +37,21 @@ pop up html page. writes feedback to DB field feedback!
 
 
 Mark B:
-- change slq views according to mark's new DB structure...
 - Need to do >> 8) add google analytics to profile website
 
+- signup.php >> how did you find out about the checkin system?
 
 Usability web interface:
 
 - what if a user forgot his password? => email password to his email address
 - Projects => name: Meetings, Collaborations, Projects
 	- should be listed within the user_edge website, similar to interests and expertise, rather than separate file... save a click! 
-- edge_user: why multiple update buttons? one update/cancel button should be at the very bottom.
 
 
 
 ---MEDIUM PRIORITY---
 
+forgot your RFID card?
 6) JQuery mobile website version of the profile website?
 
 
@@ -68,18 +62,105 @@ Usability web interface:
 - right now swipe-id cannot be changed (text field not editable), but what happens if user looses his RFID card. => my suggestion for the 1st rollout: write us an email and we change it in the DB.. later we might think about an administration userinterface for such purposesâ€¦
 
 
----LOG---
-DONE / - Mark 20 March, 2012 [4) create Processing/JAVA script for VSO's to read an RFID card number and assign it to a user, i.e.
-- VSO opens Processing/Java Program.
-- touches a new (unassigned) RFID card to the ID20 reader (connected to the PC's USB port)
-- Processing/Java Program spits out the RFID card number
-- VSO copy pastes this number into signup.php
-- user fills out username/password
-- VSO labels RFID-card and hands over to user]
 
+
+
+TODO: MARK
+
+***userprofile page:
+	*consists of different sections which might be designed to be collapsable?
+	- Profile Info
+		-É
+		-É
+	
+	- Status Info
+		- Status message: [textfield]
+		
+		- I am happy to be approached by other users. [checkbox] (=> linked to "dontdisturb" field in the "edge_users" table)
+		- Don't talk to me, I busy doing my own stuff today. [checkbox]	
+	
+	- What's your background / interests?
+		- predefined category 1 [checkbox] => (linked with MySQL category_table)
+		- predefined category 2 [checkbox]
+		- predefined category 3 [checkbox]
+		- É e.g. photography
+		- É e.g. design / music / coding etc..
+		- predefined category n [checkbox]
+	
+		- open textfield 1 => (linked with MySQL interest_table)
+		- open textfield 2
+		- open textfield 3
+		
+		[*don't delete, but hide expertise levels for background / interests*]
+	
+	- What skills and knowledge can you share with other Edge users?
+		- open textfield 1 [checkbox]
+		- É
+		[amend labelling in drop down listsÉ (1 beginner - 5
+	expert)]
+	
+	- What topics / issues do you need help with from other users? (140 characters)
+		- 
+	
+	- Projects
+		É
+	
+	- Which of your social media posts / content do you want to share with the Checkin System:
+		- Goodreads: textfield (=> linked with MySQL socialmedia_table)
+		- Twitter: textfield
+		- LinkedIn: textfield
+		- Facebook: textfield
+	
+	- Privacy settings:
+		- the Checkin system may share my checkin on twitter when I check-in [checkbox]
+		- the Checkin system may share my checkin on the Edge Facebook page when I check-in [checkbox]
+	
+***login page:
+	- turn register button into a basic link so it appears less obtrusive / more simple
+	
+***signup page:
+	- adjust look and feel 
+	- leave space for terms and conditions+++
+	- add checkbox to confirm that terms and conditions have been read
+		
+
+
+add tables:
+- background_table
+- edge_users_backgrounds
+
+- privacy_table
+- edge_users_privacy
+
+
+- life rss feed of who has checked in whenÉ.
+- twitter feeÉ.
+
+Privacy settings:
+- the checkin system may share on twitter when I check-in
+- the checkin system may share on the Edge Facebook page when I check-in
 
 
 IDEAS:
 - create pie-visualisation: what background (fixed categories) do people have who are in right now? => click on a graph sector and see what is behind.
 - what skills do the regulars at the Edge have (people who have checked in more than once per week on average)
 - after checkin: print out little sheet of who's doing what and where at The Edge.
+
+
+
+
+******---LOG--- DONE:
+- Done >> 1) change login.php: users should be using their username/pw to
+login, not swipe-id/pw.
+-Done >> 4) for each skill/expertise text field: create a drop down list
+that enables the user to select his expertise level (1 beginner - 5
+expert) for each skill,
+and connect to DB field: expertise_table->level
+- Mark 20 March, 2012 [4) create Processing/JAVA script for VSO's to read an RFID card number and assign it to a user, i.e.
+	- VSO opens Processing/Java Program.
+	- touches a new (unassigned) RFID card to the ID20 reader (connected to the PC's USB port)
+	- Processing/Java Program spits out the RFID card number
+	- VSO copy pastes this number into signup.php
+	- user fills out username/password
+	- VSO labels RFID-card and hands over to user]
+
