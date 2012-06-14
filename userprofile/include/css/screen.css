@@ -42,7 +42,7 @@ body {
 	width: 100%;
 	height: 26pt;
 	margin: 3pt 0 14pt;
-	background: #e3f2c9;
+	background: #ffffff;
 	border: solid 1px #000000;
 	border-radius: 3px;
 	font-size: 16pt;
@@ -131,6 +131,10 @@ h4 {
 	display: inline-block;
 }
 
+.udarrow {
+	float: right;
+}
+
 
 #interest-list {
 	margin: 5pt 0 0;
@@ -142,10 +146,12 @@ h4 {
 .interest-name {
 	width: 100% !important;
 	padding: 4pt;
-	background: #eeeeee;
 }
 .interest-space {
 	height: 6pt;
+}
+.logg-readonly {
+	background-color: #e3f2c9 !important;
 }
 
 .logg-textbox-interest {
@@ -157,8 +163,20 @@ h4 {
 }
 
 .collapse-head {
-
+    display: block;
+    position: relative;
+    margin: 1em 0 0;
+    padding: 1em;
+    background-color: #ddd;
+    border-radius: .5em;
+    border: solid 1px #777;
+    z-index: 10;
 }
 .collapse-content {
-	
+    margin: -1em 0 0;
+    padding: 2em 1em 1em;
+    background-color: #cacaca;
+    border-radius: .5em;
+    border: solid 1px #aaa;
+    z-index: 1;
 }

@@ -1,9 +1,9 @@
 <?php echo validation_errors('<div class="login-warning"><span class="center">', '</span></div>'); ?>
 <?php 
 	if ($message) {
-		echo '<div class="logg-success">';
+		echo '<div class="logg-success"><span class="center">';
 		echo $message;
-		echo '</div>';
+		echo '</span></div>';
 	}
 ?>
 
@@ -14,17 +14,29 @@
 		<?php echo anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); ?>
 			<h1>Checkin System Profile</h1>
 
+
+		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
+			<input type="checkbox" class="logg-checkbox" name="dontdisturb"
+			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
+				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
+			<h3 class="inline-block">I'm busy, don't disturb me</h3>
+		</div>
+		<br /><br />
+
+
 		<div class="collapse-head" id="collapse-profile">
-			<h3>Profile Info</h3>
+			<h3 class="inline-block">Profile Info</h3>
+			<div class="collapsed-arrow right" id="collapse-profile-arrow-collapsed">&darr;</div>
+			<div class="expanded-arrow right" id="collapse-profile-arrow-expanded">&uarr;</div>
 		</div>
 		<div class="collapse-content" id="collapse-profile-content">
-			<h3>Swipe Card ID:</h3>
+			<!--<h3>Swipe Card ID:</h3>
 			<input type="text" class="logg-textbox" name="swipe" readonly="readonly"
 				value="<?php if (empty($user_details['ThirdPartyID'])) echo "To Be Allocated";
-				else echo $user_details['ThirdPartyID']; ?>" />
+				else echo $user_details['ThirdPartyID']; ?>" />-->
 
 			<h3>Username:</h3>
-			<input type="text" class="logg-textbox" name="username" readonly="readonly"
+			<input type="text" class="logg-textbox logg-readonly" name="username" readonly="readonly"
 				value="<?php echo $user_details['username']; ?>" />
 
 			<h3>First name:</h3>
@@ -39,30 +51,21 @@
 			<input type="text" class="logg-textbox" name="email"
 				value="<?php echo $user_details['email'];?>" />
 
-			<h3>Occupation:</h3>
-			<input type="text" class="logg-textbox" name="occupation"
+			<!--<h3>Occupation:</h3>-->
+			<input type="hidden" name="occupation"
 				value="<?php echo $user_details['occupation'];?>" />
-		</div>
-
-
-
-			<h3 class="inline-block">Do Not Disturb:</h3>
-			<input type="checkbox" class="logg-checkbox" name="dontdisturb"
-			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
-				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
-			<br />
 
 			<div class="right">
-				<input type="submit" class="logg-button logg-submit" value="Update" />
+				<input class="logg-button" type="submit" value="Add/Update" />
 			</div>
-			<div class="clearfix"></div>
-
-			<br /><br /><br /><br />
-
+		</div>
+		<br /><br />
 
 
 		<div class="collapse-head" id="collapse-interest">
-			<h3>What are your interests?</h3>
+			<h3 class="inline-block">What are your interests?</h3>
+			<div class="collapsed-arrow right" id="collapse-interest-arrow-collapsed">&darr;</div>
+			<div class="expanded-arrow right" id="collapse-interest-arrow-expanded">&uarr;</div>
 		</div>
 		<div class="collapse-content" id="collapse-interest-content">
 			<?php
@@ -73,7 +76,7 @@
 						print '<tr class="interest-space"></tr>';
 
 						print '<tr>';
-						print '<td class="interest-name logg-textbox">' . $interest['interest'] . '</td>';
+						print '<td class="interest-name logg-textbox logg-readonly">' . $interest['interest'] . '</td>';
 						print '<td><select style="display:none" title="Interest level" name="interest_level_' . $interest['ID'] . '">';
 						for($i=1;$i<6;$i++) {
 								print '<option value="' . $i . '" ';
@@ -93,7 +96,7 @@
 				<tr class="interest-space"></tr>
 				<tr>
 					<td style="width: 100%">
-						<input type="text" style="background:#e3f2c9" class="interest-name logg-textbox" name="new_interest" value="" />
+						<input type="text" class="interest-name logg-textbox" name="new_interest" value="" />
 					</td>
 					<td>
 						<select name="new_interest_level" style="display:none" title="Level of interest">
@@ -107,18 +110,21 @@
 					<td><input type="checkbox" style="visibility:hidden"/></td>
 				</tr>
 			</table>
-		</div>
-
-
 
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />
 			</div>
-			<br /><br /><br /><br /><br />
+		</div>
+
+
+
+			<br /><br />
 
 
 
 		<div class="collapse-head" id="collapse-goodwith">
+			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&darr;</div>
+			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&uarr;</div>
 			<h3>What are you good with?</h3> <span class="subtitle">(tools / software / techniques / creative practices)</span>
 		</div>
 		<div class="collapse-content" id="collapse-goodwith-content">
@@ -130,7 +136,7 @@
 						print '<tr class="interest-space"></tr>';
 
 						print '<tr>';
-						print '<td class="interest-name logg-textbox">' . $expertise['expertise'] . '</td>';
+						print '<td class="interest-name logg-textbox  logg-readonly">' . $expertise['expertise'] . '</td>';
 						print '<td><select title="Expertise level" name="expertise_level_' . $expertise['ID'] . '">';
 						for($i=1;$i<6;$i++) {
 								print '<option value="' . $i . '" ';
@@ -150,7 +156,7 @@
 				<tr class="interest-space"></tr>
 				<tr>
 					<td style="width: 100%">
-						<input type="text" style="background:#e3f2c9" class="interest-name logg-textbox" name="new_expertise" value="" />
+						<input type="text" class="interest-name logg-textbox" name="new_expertise" value="" />
 					</td>
 					<td>
 						<select name="new_expertise_level" title="Level of expertise">
@@ -164,20 +170,21 @@
 					<td><input type="checkbox" style="visibility:hidden"/></td>
 				</tr>
 			</table>
-		</div>
-
-
-
 
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />
 			</div>
-			<br /><br /><br /><br /><br />
+		</div>
+
+			<br /><br />
 
 
 
 		<div class="collapse-head" id="collapse-question">
-			What's your question to the Edge community? What help/skills would you like to get from others?
+			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&darr;</div>
+			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&uarr;</div>
+			What's your question to the Edge community?<br />
+			What help/skills would you like to get from others?
 		</div>
 		<div class="collapse-content" id="collapse-question-content">
 							<?php
@@ -204,19 +211,22 @@
 								print '</div>';
 								print '</td>';
 								print '</tr>';
-								if (count($questions)) {
-									print '<tr>';
-									print '<td align="left">';
-									print '<input type="submit" value="Update" />';
-									print '</td>';
-									print '</tr>';
-								}
 							}
 							?>
+
+			<div class="right">
+				<input class="logg-button" type="submit" value="Add/Update" />
+			</div>
+
 		</div>
+			<br /><br />
 
 
 			<?php 
 				echo anchor('project','View Projects', array('title'=>'View List Of Projects'));
 			?> 
+			<div class="right">
+				<input type="submit" class="logg-button logg-submit" value="Update" />
+			</div>
+			<div class="clearfix"></div>
 </div>
