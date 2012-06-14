@@ -1,11 +1,13 @@
 $(document).ready(function() {
 
-	// hide all but .collapse-nohide
+
+
+	// hide all but .collapse-nohide on load, change arrows
 	$('.collapse-head').each(function(index) {
 		var content_name = '#' + $(this).attr('id') + '-content';
 		var content = $(content_name);
 
-		if (content.attr('class') != 'collapse-nohide') {
+		if (!$(this).is('.collapse-nohide')) {
 			content.hide();
 
 			var arrow_name = '#' + $(this).attr('id') + '-arrow-expanded';
@@ -14,19 +16,21 @@ $(document).ready(function() {
 			if (arrow.length) {
 				arrow.hide();
 			}
+		} else {
+			var arrow_name = '#' + $(this).attr('id') + '-arrow-collapsed';
+			var arrow = $(arrow_name);
+
+			if (arrow.length) {
+				arrow.hide();
+			}
 		}
-		// insert code here to import the v ^ divs into each header, except the ones with no-collapse
-		/*var arrow_name = '#' + $(this).attr('id') + '-arrow';
-		var arrow = $(arrow_name);
-
-
-			<div class="collapsed-arrow right" id="collapse-profile-arrow-collapsed">&darr;</div>
-			<div class="expanded-arrow right" id="collapse-profile-arrow-expanded">&uarr;</div>*/
 	});
+
+
 
 	// toggle content
 	$(document).on('click', '.collapse-head', function(event) {
-		if ('no-collapse' == $(this).attr('class')) {
+		if ($(this).is('.no-collapse')) {
 			return;
 		}
 		event.preventDefault();
@@ -51,4 +55,6 @@ $(document).ready(function() {
 
 	});
 	
+
+
 });

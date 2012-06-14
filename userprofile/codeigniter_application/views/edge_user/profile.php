@@ -24,10 +24,10 @@
 		<br /><br />
 
 
-		<div class="collapse-head" id="collapse-profile">
+		<div class="collapse-head collapse-nohide" id="collapse-profile">
 			<h3 class="inline-block">Profile Info</h3>
-			<div class="collapsed-arrow right" id="collapse-profile-arrow-collapsed">&darr;</div>
-			<div class="expanded-arrow right" id="collapse-profile-arrow-expanded">&uarr;</div>
+			<div class="collapsed-arrow right" id="collapse-profile-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-profile-arrow-expanded">&#9650;</div>
 		</div>
 		<div class="collapse-content" id="collapse-profile-content">
 			<!--<h3>Swipe Card ID:</h3>
@@ -63,9 +63,9 @@
 
 
 		<div class="collapse-head" id="collapse-interest">
-			<h3 class="inline-block">What are your interests?</h3>
-			<div class="collapsed-arrow right" id="collapse-interest-arrow-collapsed">&darr;</div>
-			<div class="expanded-arrow right" id="collapse-interest-arrow-expanded">&uarr;</div>
+			<h3 class="inline-block">My background / interests / hobbies</h3>
+			<div class="collapsed-arrow right" id="collapse-interest-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-interest-arrow-expanded">&#9650;</div>
 		</div>
 		<div class="collapse-content" id="collapse-interest-content">
 			<?php
@@ -123,8 +123,8 @@
 
 
 		<div class="collapse-head" id="collapse-goodwith">
-			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&darr;</div>
-			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&uarr;</div>
+			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&#9650;</div>
 			<h3>What are you good with?</h3> <span class="subtitle">(tools / software / techniques / creative practices)</span>
 		</div>
 		<div class="collapse-content" id="collapse-goodwith-content">
@@ -181,8 +181,8 @@
 
 
 		<div class="collapse-head" id="collapse-question">
-			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&darr;</div>
-			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&uarr;</div>
+			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&#9650;</div>
 			What's your question to the Edge community?<br />
 			What help/skills would you like to get from others?
 		</div>
