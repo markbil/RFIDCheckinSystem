@@ -67,7 +67,10 @@ Hardware Wiring:
 
 //FEEDBACK LEDs
 // SNARC has two on-board LEDs: green LED = DIGITAL PIN 5, red LED = DIGITAL PIN 6
-// alternatively use externally connected LEDs to PIN
+int onboard_greenPin = 6;
+int onboard_redPin = 5;
+
+// alternatively use externally connected LEDs to PIN, external LEDs: green LED = 18, red LED = 17, 
 int greenpin = 18;       //flash green LED to confirm successful connection
 int redpin = 17;         //flash red LED to indicate that connection failed
 int yellowpin = 16;     //no function in this sketch, but can be activated instead of buzzer to confirm that RFID card has been read
@@ -78,6 +81,9 @@ boolean writingToDB = false;
 void setup(){
   
   randomSeed(analogRead(A1));
+
+  pinMode(onboard_greenPin, OUTPUT); //define led pin as output
+  pinMode(onboard_redPin, OUTPUT); //define led pin as output
   
   pinMode(yellowpin, OUTPUT); //define led pin as output
   pinMode(greenpin, OUTPUT); //define led pin as output
@@ -87,13 +93,19 @@ void setup(){
   Serial.begin(9600);
   mySerial.begin(9600);
   
+  blinkPin(onboard_greenPin, 500);
+  blinkPin(onboard_redPin, 500);
+  
   generate_random_mac_address();
   print_mac_address();
   
   Serial.println("Serial...");  
   Serial.println("Ethernet...");
+  delay(100);
   Ethernet.begin(mac);
   Serial.println("Setup finished.");
+  
+  blinkPin(onboard_greenPin, 3000);
   
 }
 
@@ -168,7 +180,8 @@ void loop(){
               
               rfid.toUpperCase();
               Serial.println("RFID: " + rfid);
-              String url_base = "/php/RFIDCheckinSystem/checkin_submit_manual.php?";
+              //String url_base = "/php/RFIDCheckinSystem/checkin_submit_manual.php?";
+              String url_base = "/php/TheEdge_VisitorProfiles/checkin_submit_manual.php?";
               String url_param1 = "im_type=" + String(im_type);
               String url_param2 = "&thirdpartyid=" + rfid;
               String url_param3 = "&sublocation=" + String(sublocation);
