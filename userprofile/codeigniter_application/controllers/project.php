@@ -20,7 +20,7 @@ class Project extends CI_Controller {
 		$data['message']='';
 		$data['project_list'] = $this->project_model->get_project_listings();
 		$data['user_id'] = $this->input->post('user_id');
-		$data['link_back'] = anchor('edge_user','Return to User Profile', array('style'=>'float:right'));
+		$data['link_back'] = anchor('edge_user/profile','Return to User Profile', array('style'=>'float:right'));
 
 		$this->_render_page('project/index', $data);
 	}

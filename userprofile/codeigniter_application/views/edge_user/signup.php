@@ -4,7 +4,6 @@
 		<fieldset>
 			<legend>The Edge<br/>Signup for the Checkin System</legend>
 			<table>
-<!-- 				<form name="signup" method="post" action="singup_submit.php"> -->
 					<?php echo form_open('edge_user/signup') ?>
 					<tr>
 						<td>Choose a Username:</td>
@@ -19,10 +18,11 @@
 						<td><input type="password" name="password_confirm" /></td>
 					</tr>
 					<tr>
-						<td colspan="2" align="center"><input type="submit"
-							value="Sign Up" /></td>
+						<td colspan="2" align="center">
+								<?php echo form_submit('submit', 'Register Me');?>
+						</td>
 					</tr>
-				</form>
-			</table>
+    <?php echo form_close();?>
+					</table>
 		</fieldset>
 	</div>

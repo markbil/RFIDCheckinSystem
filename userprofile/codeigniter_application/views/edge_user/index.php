@@ -6,23 +6,34 @@
 	<!--<h2><?php echo $title; ?></h2>-->
 
 	<?php
-		$form_attributes = array('id' => 'login_form', 'class' => 'logg-form content-inner center');
+		$form_attributes = array('id' => 'edge_user/login', 'class' => 'logg-form content-inner center');
 		echo form_open('edge_user', $form_attributes);
 	?>
 
 
-	<h3>Username</h3>
-	<input class="logg-textbox" type="text" name="username" value="" />
-
+<!-- 	<input class="logg-textbox" type="text" name="username" value="" /> -->
+       	<label for="identity">Email/Username:</label>
+      	<?php echo form_input($identity);?>
+	
 	<h3>Password</h3>
-	<input class="logg-textbox" type="password" name="password" />
-
+<!-- 	<input class="logg-textbox" type="password" name="password" /> -->
+      	<?php echo form_input($password);?>
+	
 	<div class="login-submit-wrapper right">
 		<?php echo anchor('edge_user/signup','Register', array('title'=>'Register', 'class'=>'logg-button login-register'))?>
 
 		<input class="logg-button logg-submit" type="submit" value="Login" />
 	</div>
+      <div>
+	      <label for="remember">Remember Me Please:</label>
+	      <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
+	  </div>
+	
 	<div class="clearfix"></div>
 
-	</form>
-</div>
+    <?php echo form_close();?>
+
+    <div>
+    <?php echo anchor('edge_user/forgot_password','Forgot your password?', array('title'=>'Forgot your password?', 'class'=>'logg-button login-register'))?>
+    </div>
+	</div>

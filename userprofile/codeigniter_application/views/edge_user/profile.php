@@ -7,10 +7,13 @@
 	}
 ?>
 
-
+<div style="padding-bottom:55px;">
+<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'right','title'=>'Send Us Your Feedback', 'background-color'=>'lightgreen')); ?>
+</div>
 <div id="content">
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center')) ?>
 		<input type="hidden" name="id" value="<?php echo $user_details['ID']; ?>" />
+			<?php echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects')); ?>
 		<?php echo anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); ?>
 
 		<h1>Profile Info</h1>
@@ -137,9 +140,11 @@
 			<tr class="interest-space"></tr>
 			<tr>
 				<td style="width: 100%">
+					<label for="new_expertise"> </label>
 					<input type="text" style="background:#e3f2c9" class="interest-name logg-textbox" name="new_expertise" value="" />
 				</td>
 				<td>
+					<label for="new_expertise_level"></label>
 					<select name="new_expertise_level" title="Level of expertise">
 						<option value="1">1</option>
 						<option value="2">2</option>
@@ -158,7 +163,7 @@
 		<br /><br /><br /><br /><br />
 
 
-		What's your question to the Edge community? What help/skills would you like to get from others?
+		What's your question to the Edge community?<br>What help/skills would you like to get from others?
 						<?php
 						print '<tr>';
 						print '<td align="left">';
