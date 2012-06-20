@@ -42,10 +42,18 @@
 $route['news/(:any)'] = 'news/view/$1';
 $route['news'] = 'news';
  */
+
+//$route['edge_user/login'] = 'edge_user/login';
+$route['edge_user/feedback'] = 'edge_user/feedback';
+$route['edge_user/deactivate_user'] = 'edge_user/deactivate_user';
+$route['edge_user/change_password'] = 'edge_user/change_password';
+$route['edge_user/forgot_password'] = 'edge_user/forgot_password';
+$route['edge_user/reset_password'] = 'edge_user/reset_password';
 $route['edge_user/signup'] = 'edge_user/signup';
 $route['edge_user/update'] = 'edge_user/update';
-//$route['edge_user/profile'] = 'edge_user/profile';
+$route['edge_user/profile'] = 'edge_user/profile';
 $route['edge_user/logout'] = 'edge_user/logout';
+$route['edge_user/create_user'] = 'edge_user/create_user';
 $route['edge_user'] = 'edge_user';
 $route['project/create'] = 'project/create';
 $route['project/profile/(:any)'] = 'project/profile/$1';
