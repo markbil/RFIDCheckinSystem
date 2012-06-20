@@ -49,6 +49,10 @@ body {
 	font-size: 16pt;
 	color: #333333;
 }
+.logg-textarea {
+	width: 100%;
+	font-size: 13pt;
+}
 .logg-button {
 	display: inline-block;
 	padding: 4pt 6pt;
