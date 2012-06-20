@@ -12,19 +12,10 @@
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center')) ?>
 		<input type="hidden" name="id" value="<?php echo $user_details['ID']; ?>" />
 		<?php echo anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); ?>
-			<h1>Checkin System Profile</h1>
+		<h1>Profile Info</h1>
 
 
-		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
-			<input type="checkbox" class="logg-checkbox" name="dontdisturb"
-			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
-				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
-			<h3 class="inline-block">I'm busy, don't disturb me</h3>
-		</div>
-		<br /><br />
-
-
-		<div class="collapse-head collapse-nohide" id="collapse-profile">
+		<div class="collapse-head collapse-nohide collapse-floating" id="collapse-profile">
 			<h3 class="inline-block">Profile Info</h3>
 			<div class="collapsed-arrow right" id="collapse-profile-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-profile-arrow-expanded">&#9650;</div>
@@ -60,14 +51,30 @@
 			</div>
 		</div>
 		<br /><br />
+		<br /><br />
+		<br />
 
 
-		<div class="collapse-head" id="collapse-interest">
-			<h3 class="inline-block">My background / interests / hobbies</h3>
-			<div class="collapsed-arrow right" id="collapse-interest-arrow-collapsed">&#9660;</div>
-			<div class="expanded-arrow right" id="collapse-interest-arrow-expanded">&#9650;</div>
+		<h1>What are you up to at The Edge?</h1>
+
+
+		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
+			<input type="checkbox" class="logg-checkbox" name="dontdisturb"
+			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
+				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
+			<h3 class="inline-block">I'm busy, don't disturb me</h3>
 		</div>
-		<div class="collapse-content" id="collapse-interest-content">
+		<br /><br />
+
+
+		<div class="collapse-head" id="collapse-cometalk">
+			<input type="radio" class="logg-checkbox" name="status" checked />
+			<h3 class="inline-block">Just hanging out today, come talk to me!</h3>
+			<div class="collapsed-arrow right" id="collapse-cometalk-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-cometalk-arrow-expanded">&#9650;</div>
+		</div>
+		<div class="collapse-content" id="collapse-cometalk-content">
+			<h3>My background / interests / hobbies</h3>
 			<?php
 				if (isset($interests)) {
 					print '<table class="interest-list"';
@@ -116,18 +123,16 @@
 			</div>
 		</div>
 
-
-
-			<br /><br />
-
-
+		<br /><br />
 
 		<div class="collapse-head" id="collapse-goodwith">
 			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&#9650;</div>
-			<h3>What are you good with?</h3> <span class="subtitle">(tools / software / techniques / creative practices)</span>
+			<input type="radio" class="logg-checkbox" name="status" />
+			<h3 class="inline-block">I am happy to share my skills!</span>
 		</div>
 		<div class="collapse-content" id="collapse-goodwith-content">
+			<h3>Skills I can share with other Edge users</h3>
 			<?php
 				if (isset($expertises)) {
 					print '<table class="interest-list"';
@@ -183,36 +188,39 @@
 		<div class="collapse-head" id="collapse-question">
 			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&#9650;</div>
-			What's your question to the Edge community?<br />
-			What help/skills would you like to get from others?
+			<input type="radio" class="logg-checkbox" name="status" />
+			<h3 class="inline-block">I need your help…</h3>
 		</div>
 		<div class="collapse-content" id="collapse-question-content">
-							<?php
-							print '<tr>';
-							print '<td align="left">';
-							print '<input type="text" class="logg-textbox" name="new_question" value="" />';
-							print '<input type="submit" value="Add" />';
-							print '</td>';
-							print '</tr>';
+			<h3>I need someone's help with…</h3>
+			<span class="subtitle">(My project ideas / questions)</span>
 
-							if (isset($questions)) {
-								print '<tr>';
-								print '<td align="left">';
-								print '<div style="overflow-y: scroll; max-height: 80px;">';
-								print '<table>';
-								foreach($questions as $question) {
-									print '<tr>';
-									print '<td>';
-									print '<input type="checkbox" name="question_' . $question['ID'] . '" value="' . $question['ID'] . '" checked />'.$question['question'];
-									print '</td>';
-									print '</tr>';
-								}
-								print '</table>';
-								print '</div>';
-								print '</td>';
-								print '</tr>';
-							}
-							?>
+			<?php
+				if (isset($questions)) {
+					print '<table class="interest-list"';
+
+					foreach($questions as $question) {
+						print '<tr class="interest-space"></tr>';
+
+						print '<tr>';
+						print '<td class="interest-name logg-textbox  logg-readonly">' . $question['question'] . '</td>';
+						print '<td><input type="checkbox" title="Keep question" name="question_' . $question['ID'] . '" value="' . $question['ID'] . '" checked /></td>';
+						print '</tr>'; // interest-item
+					}
+					print '</table>'; // interest-list
+				}
+
+			?>
+
+			<table style="width: 100%">
+				<tr class="interest-space"></tr>
+				<tr>
+					<td style="width: 100%">
+						<input type="text" class="interest-name logg-textbox" name="new_question" value="" />
+					</td>
+					<td><input type="checkbox" style="visibility:hidden"/></td>
+				</tr>
+			</table>
 
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />
@@ -222,8 +230,91 @@
 			<br /><br />
 
 
+		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
+			<input type="radio" class="logg-checkbox" name="status" />
+			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet…</h3>
+		</div>
+		<br /><br />
+
+
+		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
+			<input type="radio" class="logg-checkbox" name="status" />
+			<h3 class="inline">Other status message:</h3>
+			<input type="text" style="margin-bottom: 0; margin-top: 3pt;" class="interest-name logg-textbox" name="status_message" value="" />
+
+		</div>
+		<br /><br />
+		<br /><br />
+
+
+		<h1>Social Media Settings</h1>
+		<div class="collapse-head collapse-nohide collapse-floating" id="collapse-socialmedia">
+			<h3 class="inline-block">Social Media Settings</h3>
+			<div class="collapsed-arrow right" id="collapse-socialmedia-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-socialmedia-arrow-expanded">&#9650;</div>
+		</div>
+		<div class="collapse-content" id="collapse-socialmedia-content">
+
+			<h3>Share my checkins via…</h3>
+			<table style="width: 100%; margin-top: 0.6em;">
+				<tr style="height: 1.5em;">
+					<td>
+						<input type="checkbox" class="logg-checkbox" name="socialmedia_twitter">
+						My Twitter
+					</td>
+					<td>
+						<input type="checkbox" class="logg-checkbox" name="socialmedia_edgetwitter">
+						The Edge Twitter account
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" class="logg-checkbox" name="socialmedia_facebook">
+						My Facebook
+					</td>
+					<td>
+						<input type="checkbox" class="logg-checkbox" name="socialmedia_edgefacebook">
+						The Edge Facebook account
+					</td>
+				</tr>
+			</table>
+
+			<br /><br />
+
+			<h3>Inform me about others' checkins</h3>
+			<table style="width: 100%; margin-top: 0.6em;">
+				<tr style="height: 3em;">
+					<td>
+						Email
+					</td>
+					<td>
+						<div>
+							<input type="checkbox" class="logg-checkbox" name="socialmedia_edgetwitter">
+							Digestive Email (once per day)
+						</div>
+						<div>
+							<input type="checkbox" class="logg-checkbox" name="socialmedia_edgetwitter">
+							Email for every checkin
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Twitter
+					</td>
+					<td>
+						Checkins and statistics are published<br />automatically, just follow <strong>@EdgeSLQ</strong>
+					</td>
+				</tr>
+			</table>
+
+		</div>
+		<br /><br />
+		<br /><br />
+
+
 			<?php 
-				echo anchor('project','View Projects', array('title'=>'View List Of Projects'));
+				echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 			?> 
 			<div class="right">
 				<input type="submit" class="logg-button logg-submit" value="Update" />

@@ -7,6 +7,12 @@ $(document).ready(function() {
 		var content_name = '#' + $(this).attr('id') + '-content';
 		var content = $(content_name);
 
+		if ($(this).is('.collapse-floating')) {
+			$(this).hide();
+			content.css('padding-top', '1em').css('margin-top', '1em');
+			return;
+		}
+
 		if (!$(this).is('.collapse-nohide')) {
 			content.hide();
 
@@ -33,7 +39,17 @@ $(document).ready(function() {
 		if ($(this).is('.no-collapse')) {
 			return;
 		}
-		event.preventDefault();
+		
+		// stops from toggling on radio button click
+		if ($(this).children('input').length) {
+			var target = event.target || event.srcElement || event.originalTarget; // cross-browser
+
+			if ($(target).is("input")) {
+				return; // is a button, don't toggle
+			}
+		}
+
+
 		var content_name = '#' + $(this).attr('id') + '-content';
 		var content = $(content_name);
 
