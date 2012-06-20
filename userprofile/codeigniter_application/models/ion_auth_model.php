@@ -1155,7 +1155,7 @@ class Ion_auth_model extends CI_Model
 		$id || $id = $this->session->userdata('user_id');
 
 		$this->limit(1);
-		$this->where($this->tables['users'].'.id', $id);
+		$this->where($this->tables['users'].'.ID', $id);
 
 		$this->users();
 
@@ -1323,7 +1323,7 @@ class Ion_auth_model extends CI_Model
 		}
 
 		$this->trigger_events('extra_where');
-		$this->db->update($this->tables['users'], $data, array('id' => $user->id));
+		$this->db->update($this->tables['users'], $data, array('ID' => $user->id));
 
 		if ($this->db->trans_status() === FALSE)
 		{
@@ -1353,7 +1353,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->db->trans_begin();
 
-		$this->db->delete($this->tables['users'], array('id' => $id));
+		$this->db->delete($this->tables['users'], array('ID' => $id));
 		$this->remove_from_group(NULL, $id);
 
 		if ($this->db->trans_status() === FALSE)
@@ -1385,7 +1385,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('extra_where');
 
-		$this->db->update($this->tables['users'], array('last_login' => time()), array('id' => $id));
+		$this->db->update($this->tables['users'], array('last_login' => time()), array('ID' => $id));
 
 		return $this->db->affected_rows() == 1;
 	}
@@ -1428,7 +1428,7 @@ class Ion_auth_model extends CI_Model
 
 		$salt = sha1($user->password);
 
-		$this->db->update($this->tables['users'], array('remember_code' => $salt), array('id' => $id));
+		$this->db->update($this->tables['users'], array('remember_code' => $salt), array('ID' => $id));
 
 		if ($this->db->affected_rows() > -1)
 		{
@@ -1471,7 +1471,7 @@ class Ion_auth_model extends CI_Model
 
 		//get the user
 		$this->trigger_events('extra_where');
-		$query = $this->db->select($this->identity_column.', id')
+		$query = $this->db->select($this->identity_column.', ID')
 		                  ->where($this->identity_column, get_cookie('identity'))
 		                  ->where('remember_code', get_cookie('remember_code'))
 		                  ->limit(1)
