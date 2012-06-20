@@ -1,14 +1,23 @@
-<h1>Forgot Password</h1>
-<p>Please enter your email address so we can send you an email to reset your password.</p>
+<div id="content" class="center"><div class="content-inner logg-form center">
 
-<div id="infoMessage"><?php echo $message;?></div>
+	<h1 style="margin-bottom:4pt;">Forgot Password</h1>
+	<p>Please enter your email address so we can send you an email to reset your password.</p>
 
-<?php echo form_open("auth/forgot_password");?>
+	<div id="infoMessage"><?php echo $message;?></div>
 
-      <p>Email Address:<br />
-      <?php echo form_input($email);?>
-      </p>
-      
-      <p><?php echo form_submit('submit', 'Submit');?></p>
-      
-<?php echo form_close();?>
+	<?php echo form_open("auth/forgot_password");?>
+
+	      <h3 style="margin-top:16pt; margin-bottom:6pt;">Email Address:</h3>
+	      <?php
+	            $email['class'] = 'logg-textbox';
+	            echo form_input($email);
+	      ?>
+	      
+	      <p><?php
+	            $submit_attributes = array( 'class' => 'logg-button logg-submit' );
+	            echo form_submit('submit', 'Submit', $submit_attributes);
+	      ?></p>
+	      
+	<?php echo form_close();?>
+
+</div></div>

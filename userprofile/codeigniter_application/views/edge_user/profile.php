@@ -7,15 +7,18 @@
 	}
 ?>
 
-<div style="padding-bottom:55px;">
-<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'right','title'=>'Send Us Your Feedback', 'background-color'=>'lightgreen')); ?>
+<div class="login-warning" style="border-color:#000; background:#f0f0f0;">
+	<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'center', 'style'=>'text-decoration:none; display:block; text-align:center;', 'title'=>'Send Us Your Feedback')); ?>
 </div>
 <div id="content">
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center')) ?>
 		<input type="hidden" name="id" value="<?php echo $user_details['ID']; ?>" />
-			<?php echo anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password')); ?>
+		<?php echo anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password')); ?>
 		<?php echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects')); ?>
 		<?php echo anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); ?>
+		
+		<br /><br /><br />
+
 		<h1>Profile Info</h1>
 
 
@@ -213,7 +216,6 @@
 					}
 					print '</table>'; // interest-list
 				}
-<<<<<<< HEAD
 
 			?>
 
@@ -230,42 +232,10 @@
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />
 			</div>
-
-=======
-				print '</table>'; // interest-list
-			}
-
-		?>
-
-		<table style="width: 100%">
-			<tr class="interest-space"></tr>
-			<tr>
-				<td style="width: 100%">
-					<label for="new_expertise"> </label>
-					<input type="text" style="background:#e3f2c9" class="interest-name logg-textbox" name="new_expertise" value="" />
-				</td>
-				<td>
-					<label for="new_expertise_level"></label>
-					<select name="new_expertise_level" title="Level of expertise">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-					</select>
-				</td>
-				<td><input type="checkbox" style="visibility:hidden"/></td>
-			</tr>
-		</table>
-
-		<div class="right">
-			<input class="logg-button" type="submit" value="Add/Update" />
->>>>>>> dcc18e94266add54ae452271af3aa5be151a247c
 		</div>
 			<br /><br />
 
 
-<<<<<<< HEAD
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
 			<input type="radio" class="logg-checkbox" name="status" />
 			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet…</h3>
@@ -356,45 +326,4 @@
 				<input type="submit" class="logg-button logg-submit" value="Update" />
 			</div>
 			<div class="clearfix"></div>
-=======
-		What's your question to the Edge community?<br>What help/skills would you like to get from others?
-						<?php
-						print '<tr>';
-						print '<td align="left">';
-						print '<input type="text" class="logg-textbox" name="new_question" value="" />';
-						print '<input type="submit" value="Add" />';
-						print '</td>';
-						print '</tr>';
-
-						if (isset($questions)) {
-							print '<tr>';
-							print '<td align="left">';
-							print '<div style="overflow-y: scroll; max-height: 80px;">';
-							print '<table>';
-							foreach($questions as $question) {
-								print '<tr>';
-								print '<td>';
-								print '<input type="checkbox" name="question_' . $question['ID'] . '" value="' . $question['ID'] . '" checked />'.$question['question'];
-								print '</td>';
-								print '</tr>';
-							}
-							print '</table>';
-							print '</div>';
-							print '</td>';
-							print '</tr>';
-							if (count($questions)) {
-								print '<tr>';
-								print '<td align="left">';
-								print '<input type="submit" value="Update" />';
-								print '</td>';
-								print '</tr>';
-							}
-						}
-						?>
-
-
-		<?php 
-			echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
-		?> 
->>>>>>> dcc18e94266add54ae452271af3aa5be151a247c
 </div>
