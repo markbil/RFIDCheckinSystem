@@ -13,7 +13,8 @@
 <div id="content">
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center')) ?>
 		<input type="hidden" name="id" value="<?php echo $user_details['ID']; ?>" />
-			<?php echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects')); ?>
+			<?php echo anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password')); ?>
+		<?php echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects')); ?>
 		<?php echo anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); ?>
 
 		<h1>Profile Info</h1>
@@ -200,6 +201,6 @@
 
 
 		<?php 
-			echo anchor('project','View Projects', array('title'=>'View List Of Projects'));
+			echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 		?> 
 </div>
