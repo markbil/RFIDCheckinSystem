@@ -26,8 +26,8 @@ boolean mouse_pressed = false, mouse_released = false;
 
 void setup() 
 { 
-  //size(WIN_W, WIN_H);
-  size( screen.width, screen.height); 
+  size(WIN_W, WIN_H);
+  //size( screen.width, screen.height); 
  // size(800, 600);
   
   // parse JSON
