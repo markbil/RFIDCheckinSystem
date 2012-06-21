@@ -50,6 +50,7 @@
 			print '<tr>';
 			print'<td valign="top" align="left">Collaborators:</td>';
 			print '<td>';
+		//	print anchor('submit','Add Collaborator', array('class'=>'logg-button','title'=>'Add Collaborator To Project'));
 			print  '<input type="submit" value="Add Collaborator" name="add_collaborator_btn"/>';
 			print '<div style="min-height:200px;overflow-y:scroll;" id="user_listing">';
 			$collaborators=$this->project_model->get_collaborators($project_details['ID']);
@@ -76,15 +77,23 @@
 	}
 	print '<hr />';
 	if ($form_mode == 'create' || $form_mode == 'update') {
-		echo $link_back;
-		//anchor('project', 'Return To List');
-		print '<input type="submit" value="';
-		if($form_mode=='create') echo  'Create'; else echo 'Update';
-		print '" />';
-		//print '<a href="project_profiles.php"><input type="button" name="cancel" value="Cancel" />';
-		//print '</a>';
+		//echo $link_back;
+		$submit_value='Update';
+		$submit_delete=null;
+		if($form_mode=='create') {
+			$submit_value = 'Create';
+		} else {
+			$submit_delete='<input type="submit" value="Delete" />';
+		}
+		print '<input type="submit" value="' . $submit_value . '" />';
+		if (!empty($submit_delete)) {
+			print $submit_delete;
+		}
+
 		print '</form>';
 	}
+	
+	print anchor('project','Return To Project List', array('class'=>'logg-button','title'=>'Return To List Of Projects', 'style'=>'float:right'));
 	print '</fieldset>';
 	?>
 </div>
