@@ -189,6 +189,7 @@ strong {
     border-radius: .5em;
     border: solid 1px #777;
     z-index: 10;
+    cursor: pointer;
 }
 .collapse-content {
     margin: -1em 0 0;
