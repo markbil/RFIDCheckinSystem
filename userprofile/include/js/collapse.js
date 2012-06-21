@@ -36,6 +36,15 @@ $(document).ready(function() {
 
 	// toggle content
 	$(document).on('click', '.collapse-head', function(event) {
+		if ($(this).is('[click-on-click]')) {
+			var clickelement = $('#' + $(this).attr('click-on-click'));
+			if (clickelement.is(':checked')) {
+				clickelement.attr('checked', false);
+			} else {
+				clickelement.attr('checked', true);
+			}
+		}
+
 		if ($(this).is('.no-collapse')) {
 			return;
 		}
