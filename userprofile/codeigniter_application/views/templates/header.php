@@ -22,6 +22,8 @@
         <script type="text/javascript" src="<?=base_url(); ?>include/js/collapse.js"></script>
 	</head>
 	<body>
-		<div id="wrapper" class="center">
+		<div id="logowrapper" class="center">
 			<a id="logo" href="http://edgeqld.org.au"><h1>The Edge RFID Checkin</h1></a>
+		</div>
+		<div id="wrapper" class="center">
 		
