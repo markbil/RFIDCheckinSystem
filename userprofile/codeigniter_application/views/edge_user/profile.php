@@ -69,16 +69,16 @@
 			<input type="checkbox" class="logg-checkbox" name="dontdisturb"
 			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
 				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
-			<h3 class="inline-block">I'm busy, don't disturb me</h3>
+			<h3 class="inline">I'm busy, don't disturb me</h3>
 		</div>
 		<br /><br />
 
 
 		<div class="collapse-head" id="collapse-cometalk">
-			<input type="radio" class="logg-checkbox" name="status" checked />
-			<h3 class="inline-block">Just hanging out today, come talk to me!</h3>
 			<div class="collapsed-arrow right" id="collapse-cometalk-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-cometalk-arrow-expanded">&#9650;</div>
+			<input type="radio" class="logg-checkbox" name="status" checked />
+			<h3 class="inline">Just hanging out today, come talk to me!</h3>
 		</div>
 		<div class="collapse-content" id="collapse-cometalk-content">
 			<h3>My background / interests / hobbies</h3>
@@ -136,7 +136,7 @@
 			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&#9650;</div>
 			<input type="radio" class="logg-checkbox" name="status" />
-			<h3 class="inline-block">I am happy to share my skills!</span>
+			<h3 class="inline">I am happy to share my skills!</span>
 		</div>
 		<div class="collapse-content" id="collapse-goodwith-content">
 			<h3>Skills I can share with other Edge users</h3>
