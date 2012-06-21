@@ -2,7 +2,10 @@
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open('auth/reset_password/' . $code);?>
+<?php
+      $form_attributes = array('class' => 'logg-form content-inner center');
+      echo form_open('auth/reset_password/' . $code, $form_attributes);
+?>
       
       <p>New Password (at least <?php echo $min_password_length;?> characters long):<br />
       <?php echo form_input($new_password);?>
