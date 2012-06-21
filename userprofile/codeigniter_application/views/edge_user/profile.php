@@ -65,8 +65,8 @@
 		<h1>What are you up to at The Edge?</h1>
 
 
-		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
-			<input type="checkbox" class="logg-checkbox" name="dontdisturb"
+		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="dontdisturb" >
+			<input id="dontdisturb" type="checkbox" class="logg-checkbox" name="dontdisturb"
 			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
 				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
 			<h3 class="inline">I'm busy, don't disturb me</h3>
