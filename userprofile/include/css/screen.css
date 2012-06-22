@@ -13,10 +13,10 @@ body {
 	display: block;
 	width: 560px;
 	height: 76px;
-	padding: 0 87px;
+	padding: 0 82px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	background: url("../img/newlogo.png") 35px center no-repeat;
+	background: url("../img/newlogo.png") 25px center no-repeat;
 }
 #logo h1 {
 	display: none;
