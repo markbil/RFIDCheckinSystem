@@ -1,9 +1,7 @@
 body {
 	background-color: #e3e3e3;
 	font-family: “Helvetica Neue”, Arial, Helvetica, sans-serif;
-}
-#logowrapper {
-	width: 550px;
+	overflow-x: hidden;
 }
 #wrapper {
 	width: 550px;
@@ -13,23 +11,26 @@ body {
 
 #logo {
 	display: block;
-	width: 100%;
-	height: 75px;
-	padding: 20pt 0;
-	margin-left: -57px;
-	background: url("../img/newlogo.png") left center no-repeat;
+	width: 560px;
+	height: 76px;
+	padding: 0 87px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: url("../img/newlogo.png") 35px center no-repeat;
 }
 #logo h1 {
 	display: none;
 }
 #footer {
-	margin: 9pt 0;
+	width: 560px;
+	margin-top: 9pt;
+	margin-bottom: 9pt;
 	font-size: 10pt;
 }
 
 
 #content {
-	width: 100%;
+	width: 554px;
 	padding: 16pt 0;
 	background: #fbfbfb;
 	border: solid 3px #111111;

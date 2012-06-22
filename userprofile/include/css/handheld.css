@@ -1,6 +1,9 @@
-#logowrapper {
-	width: 95%;
+#logo {
+	width: 92%;
+	padding-left: 0;
+	padding-right: 0;
+	background: url("../img/newlogo.png") left center no-repeat;
 }
-#wrapper {
-	width: 95%;
+#content, #footer {
+	width: 90%;
 }
