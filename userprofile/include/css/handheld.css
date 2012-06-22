@@ -7,3 +7,17 @@
 #content, #footer {
 	width: 90%;
 }
+
+
+.feedback-div {
+	width: 92%;
+	margin: 0 auto;
+	padding-left: 0;
+}
+.feedback-message {
+	text-decoration: none;
+	display: block;
+	text-align: right;
+	float: right;
+	font-size: 83%;
+}

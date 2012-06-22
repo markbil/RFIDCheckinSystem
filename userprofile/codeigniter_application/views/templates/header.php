@@ -22,5 +22,9 @@
         <script type="text/javascript" src="<?=base_url(); ?>include/js/collapse.js"></script>
 	</head>
 	<body>
+		<div class="feedback-div">
+			<?php echo anchor('edge_user/feedback', 'Let us know what you think!<br />Send us your Feedback', array('class'=>'feedback-message', 'title'=>'Send Us Your Feedback')); ?>
+		</div>
+
 		<a id="logo" class="center" href="http://edgeqld.org.au"><h1>The Edge RFID Checkin</h1></a>
 		
