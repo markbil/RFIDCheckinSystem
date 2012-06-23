@@ -2,7 +2,7 @@
 
 <?php
 	//print $link_back;
-	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
+	print anchor('edge_user','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
 	
 	print '<br/>';
 	print '<fieldset style="clear:both">';
