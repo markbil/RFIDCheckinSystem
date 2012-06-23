@@ -69,10 +69,7 @@ class Edge_user extends CI_Controller {
 			{ //if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				//redirect($this->config->item('base_url'), 'refresh');
 				redirect('edge_user/profile', 'refresh');
-
-				
 			} else	{ //if the login was un-successful
 				//redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
@@ -80,7 +77,12 @@ class Edge_user extends CI_Controller {
 			}
 		}
 		else
-		{  //the user is not logging in so display the login page
+		{  
+			// If logged in then go to profile page
+			if($this->ion_auth->logged_in()) {
+				redirect('edge_user/profile', 'refresh');
+			} else {
+			//the user is not logging in so display the login page
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -95,6 +97,7 @@ class Edge_user extends CI_Controller {
 			);
 
 			$this->_render_page('edge_user/index', $this->data);
+		}
 		}
 	}
 	
