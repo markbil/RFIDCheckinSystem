@@ -1,7 +1,8 @@
 <?php
 
 require_once ('mysql_connection.php');
-include 'tweet.php';
+include '../ThirdPartyServices/twitter/tweet.php';
+include '../ThirdPartyServices/facebook/checkin.php';
 
 $dateTime = new DateTime("now", new DateTimeZone('Australia/Brisbane'));
 
@@ -47,6 +48,22 @@ $sql_get_im_id = "SELECT id FROM identification_media im WHERE im.thirdpartyid =
 			}
 				
 			//echo "***Check-in successful!***";
+			
+			// // Do facebook checkin if applicable
+			// if ((user enabled fb checkins) && (main location) && (lastCheckin > 2 hours))
+			// {
+				// $userFBID = 591180375;	// *** REPLACE THIS WITH ACTUAL FROM DATABASE **
+				// $access_token = 'AAAFr3VOHe7ABAB9nU6ZBW08IBOWIMC3uzZCBrLUZCYZBpTQfqjNU4zX3eg000ik9C6tNy1KDtqT7OPG30ZClCyZAKtZCimu9w6lmfoQoeZCxngZDZD';
+				// $message = "I'm checked in at The Edge!";
+				// $appSecret = 'eee0ee4645517e0232ff9ea4a888cc62';
+				// postCheckinToFacebook($appSecret,$userFBID,$access_token,$message,true);
+			// }
+			
+			// // Do Twitter post about checkin if applicable
+			// if ((user enabled twitter checkins) && (main location) && (lastCheckin > 2 hours))
+			// {
+				
+			// }
 			
 			// Do coffee machine tweeting if applicable
 			if (($sublocation == 16) && (!firstName.equals("")))
