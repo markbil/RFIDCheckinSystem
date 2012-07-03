@@ -9,9 +9,9 @@
         <!-- Mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 
-        <!--<link rel="stylesheet" type="text/css" media="only screen and (max-width: 570px), only screen and (max-device-width: 570px)" href="<?=base_url(); ?>include/css/antiscreen.css" />
-        <link rel="stylesheet" type="text/css" media="handheld, only screen and (max-width: 570px), only screen and (max-device-width: 570px)" href="<?=base_url(); ?>include/css/clear.css" />-->
-        <link rel="stylesheet" type="text/css" media="handheld, only screen and (max-width: 570px), only screen and (max-device-width: 570px)" href="<?=base_url(); ?>include/css/handheld.css" />
+        <!--<link rel="stylesheet" type="text/css" media="only screen and (max-width: 620px), only screen and (max-device-width: 570px)" href="<?=base_url(); ?>include/css/antiscreen.css" />
+        <link rel="stylesheet" type="text/css" media="handheld, only screen and (max-width: 620px), only screen and (max-device-width: 570px)" href="<?=base_url(); ?>include/css/clear.css" />-->
+        <link rel="stylesheet" type="text/css" media="handheld, only screen and (max-width: 620px), only screen and (max-device-width: 570px)" href="<?=base_url(); ?>include/css/handheld.css" />
         <!--[if IEMobile]>
             <link rel="stylesheet" type="text/css" media="screen" href="<?=base_url(); ?>include/css/handheld.css" />
         <![endif]-->
@@ -22,6 +22,9 @@
         <script type="text/javascript" src="<?=base_url(); ?>include/js/collapse.js"></script>
 	</head>
 	<body>
-		<div id="wrapper" class="center">
-			<a id="logo" href="http://edgeqld.org.au"><h1>The Edge RFID Checkin</h1></a>
+		<div class="feedback-div">
+			<?php echo anchor('edge_user/feedback', 'Let us know what you think!<br />Send us your Feedback', array('class'=>'feedback-message', 'title'=>'Send Us Your Feedback')); ?>
+		</div>
+
+		<a id="logo" class="center" href="http://edgeqld.org.au"><h1>The Edge RFID Checkin</h1></a>
 		
