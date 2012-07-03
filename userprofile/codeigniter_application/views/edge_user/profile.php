@@ -193,10 +193,10 @@
 			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&#9650;</div>
 			<input type="radio" class="logg-checkbox" name="status" />
-			<h3 class="inline-block">I need your help…</h3>
+			<h3 class="inline-block">I need your help &#46;&#46;&#46;</h3>
 		</div>
 		<div class="collapse-content" id="collapse-question-content">
-			<h3>I need someone's help with…</h3>
+			<h3>I need someone's help with &#46;&#46;&#46;</h3>
 			<span class="subtitle">(My project ideas / questions)</span>
 
 			<?php
@@ -235,7 +235,7 @@
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
 			<input type="radio" class="logg-checkbox" name="status" />
-			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet…</h3>
+			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet &#46;&#46;&#46;</h3>
 		</div>
 		<br /><br />
 
@@ -258,7 +258,7 @@
 		</div>
 		<div class="collapse-content" id="collapse-socialmedia-content">
 
-			<h3>Share my checkins via…</h3>
+			<h3>Share my checkins via &#46;&#46;&#46;</h3>
 			<table style="width: 100%; margin-top: 0.6em;">
 				<tr style="height: 1.5em;">
 					<td>

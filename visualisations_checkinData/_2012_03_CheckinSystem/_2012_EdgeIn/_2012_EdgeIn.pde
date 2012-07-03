@@ -5,7 +5,7 @@ import processing.opengl.*;
 color systemBackgroundColor = color(214, 248, 112); 
 
 //PaperSketchApp paperSketch; 
-ProjectExplorerApp projectExplorer; 
+//ProjectExplorerApp projectExplorer; 
 //CheckinSystemApp checkinSystem;
 //CheckinsOverviewApp checkinsOverview;
 RFIDReaderApp rfidReaderApp;
