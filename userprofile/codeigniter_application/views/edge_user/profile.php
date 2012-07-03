@@ -1,16 +1,13 @@
-<?php echo validation_errors('<div class="login-warning"><span class="center">', '</span></div>'); ?>
+<?php echo validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); ?>
 <?php 
 	if ($message) {
-		echo '<div class="logg-success"><span class="center">';
+		echo '<div class="logg-success center"><span class="center">';
 		echo $message;
 		echo '</span></div>';
 	}
 ?>
 
-<div class="login-warning" style="border-color:#000; background:#f0f0f0;">
-	<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'center', 'style'=>'text-decoration:none; display:block; text-align:center;', 'title'=>'Send Us Your Feedback')); ?>
-</div>
-<div id="content">
+<div id="content" class="center">
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center')) ?>
 		<input type="hidden" name="id" value="<?php echo $user_details['ID']; ?>" />
 		<?php echo anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password')); ?>
