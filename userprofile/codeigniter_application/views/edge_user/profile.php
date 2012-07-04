@@ -11,11 +11,15 @@
 	<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'center', 'style'=>'text-decoration:none; display:block; text-align:center;', 'title'=>'Send Us Your Feedback')); ?>
 </div>
 <div id="content">
-	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center')) ?>
-		<input type="hidden" name="id" value="<?php echo $user_details['ID']; ?>" />
-		<?php echo anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password')); ?>
-		<?php echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects')); ?>
-		<?php echo anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); ?>
+	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));
+		print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
+		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
+		print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
+		if ($is_admin) {
+			print anchor('admin', 'Admin', array('class'=>'logg-button','title'=>'Admin'));
+		}
+		print anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); 
+		?>
 		
 		<br /><br /><br />
 
@@ -28,11 +32,25 @@
 			<div class="expanded-arrow right" id="collapse-profile-arrow-expanded">&#9650;</div>
 		</div>
 		<div class="collapse-content" id="collapse-profile-content">
-			<!--<h3>Swipe Card ID:</h3>
-			<input type="text" class="logg-textbox" name="swipe" readonly="readonly"
-				value="<?php if (empty($user_details['ThirdPartyID'])) echo "To Be Allocated";
-				else echo $user_details['ThirdPartyID']; ?>" />-->
+		<?php
+			if ($is_admin) {
+				print '<span>Is Active ? :</span>';
+				print '<input type="checkbox" title="Active" name="active" value="' . $user_details["active"] . '" checked />';
 
+				print '<h3>Swipe Card ID:</h3>';
+				print '<input type="text" class="logg-textbox" name="swipe" ';
+				if (empty($user_details['ThirdPartyID'])) {
+					print 'value="To Be Allocated" ';
+				}
+				else {
+					print 'value="' . $user_details['ThirdPartyID'] . '"';
+				}
+					
+				print '"/>';
+			}
+			?>
+
+			
 			<h3>Username:</h3>
 			<input type="text" class="logg-textbox logg-readonly" name="username" readonly="readonly"
 				value="<?php echo $user_details['username']; ?>" />
@@ -51,7 +69,7 @@
 
 			<!--<h3>Occupation:</h3>-->
 			<input type="hidden" name="occupation"
-				value="<?php echo $user_details['occupation'];?>" />
+				value="<?php //echo $user_details['occupation'];?>" />
 
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />

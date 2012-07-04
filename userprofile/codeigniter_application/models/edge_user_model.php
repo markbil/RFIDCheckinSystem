@@ -71,14 +71,14 @@ class Edge_user_model extends CI_Model {
 	public function get_user_details($user_id)
 	{	
 		// Try a query to see if a identification_media has been associated with edge_user
-		$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, occupation, dontdisturb, ThirdPartyID');
+		$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, active,dontdisturb, ThirdPartyID');
 		$this->db->join('people', 'edge_users.id=edge_users_id');
 		$this->db->join('identification_media', 'identification_media.id=identification_id');
 		$query = $this->db->get_where('edge_users', array('edge_users.ID' => $user_id));
 
 		 if ($query->num_rows() == 0) {
 		 	// Let's try just a SELECT from edge_users
-		 	$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, occupation, dontdisturb');
+		 	$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, active,dontdisturb');
 		 	$query = $this->db->get_where('edge_users', array('edge_users.ID' => $user_id));
 		 }
 		 
