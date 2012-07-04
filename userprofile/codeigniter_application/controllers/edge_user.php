@@ -16,41 +16,6 @@ class Edge_user extends CI_Controller {
 			$this->load->database();
 	}
 
-	//redirect if needed, otherwise display the user list
-/* 	function index()
-	{
-
-		if (!$this->ion_auth->logged_in())
-		{
-			//redirect them to the login page
-			redirect('edge_user/login', 'refresh');
-		}
-		elseif (!$this->ion_auth->is_admin())
-		{
-			//redirect them to the home page because they must be an administrator to view this
-		//	redirect($this->config->item('base_url'), 'refresh');
-			redirect('edge_user/forgotten_password', 'refresh');
-			//redirect('edge_user/profile', 'refresh');
-			//redirect('edge_user/update', 'refresh');
-			//$this->_render_page('edge_user/update', $this->data);
-		}
-		else
-		{
-			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-			//list the users
-			$this->data['users'] = $this->ion_auth->users()->result();
-			foreach ($this->data['users'] as $k => $user)
-			{
-				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-			}
-
-
-			$this->_render_page('edge_user/profile', $this->data);
-		}
-	}
- */
 	//log the user in
 	function index()
 	{
@@ -114,8 +79,9 @@ class Edge_user extends CI_Controller {
 			$data['title'] = "Your Profile Details";
 			$data['message']='';
 			$data['user_id'] = $user_id;
-			$data['user_details'] = $this->edge_user_model->get_user_details($user_id)->row_array();
 			$data['is_admin'] = 	$this->ion_auth->is_admin();
+			$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
+			//$data['user_details']['is_admin'] = 	$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id);
 			$data['interests'] = $this->_get_interests($user_id);
 			$data['expertises'] = $this->_get_expertise($user_id);
 			$data['questions'] = $this->_get_questions($user_id);
@@ -139,7 +105,7 @@ class Edge_user extends CI_Controller {
 				$data['message']='';
 				$data['form_action'] = site_url('edge_user/update');
 				$data['user_id'] = $user_id;
-				$data['user_details'] = $this->edge_user_model->get_user_details($user_id)->row_array();
+				$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 				$data['interests'] = $this->_get_interests($user_id);
 				$data['expertises'] = $this->_get_expertise($user_id);
 				$data['questions'] = $this->_get_questions($user_id);
@@ -438,7 +404,7 @@ class Edge_user extends CI_Controller {
 				
 				$data['title'] = "Your Profile Details";
 				$data['message']='';
-				$data['user_details'] = $this->edge_user_model->get_user_details($user_id)->row_array();
+				$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 				if (empty($data['user_details']))
 				{
 					show_404();
@@ -488,18 +454,21 @@ class Edge_user extends CI_Controller {
 			$this->form_validation->set_rules('new_expertise_level', 'Expertise Level', 'greater_than[0]|less_than[6]');
 		}
 		$all_post = $this->input->post();
-//error_log('all_post[' . var_export($all_post,true) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+		//error_log('UPDATE[' . var_export($all_post,true) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
 		
 		$user_id = $this->input->post('id');
 		$dontdisturb = ($this->input->post('dontdisturb')===FALSE) ? 0 : 1;
+		$active = ($this->input->post('active')===FALSE) ? null : 1;
+		$user_is_admin = ($this->input->post('is_admin')===FALSE) ? null : 1;
 		$data['user_details'] = array(
 				'ID' => $user_id,
 				'username' => $this->input->post('username'),
 				'firstname' => $this->input->post('firstname'),
 				'lastname' => $this->input->post('lastname'),
 				'email' => $this->input->post('email'),
-			//	'occupation' => $this->input->post('occupation'),
-				'active' => $this->input->post('active'),
+				'active' => $active,
+				'is_admin' => $user_is_admin,
+				//$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id),
 				'dontdisturb' => $dontdisturb,
 		);
 
@@ -625,7 +594,7 @@ class Edge_user extends CI_Controller {
 			}
 				
 			// save data
-			$data['user_details']=$this->edge_user_model->update($user_id,$data['user_details'])->row_array();
+			$data['user_details']=$this->edge_user_model->update($user_id,$data['user_details']);
 
 			// Set interest data
 			if (strlen($this->input->post('new_interest'))) {
@@ -654,7 +623,7 @@ class Edge_user extends CI_Controller {
 				// set user message
 				$data['message'] = '<div class="fail">Profile Update FAILED!</div>';
 			} else {
-				$data['message'] = '<div class="success">Profile Update succeeded! </div>';
+				$data['message'] = '<div class="success">Profile Updated! </div>';
 			}
 		}
 		// load view

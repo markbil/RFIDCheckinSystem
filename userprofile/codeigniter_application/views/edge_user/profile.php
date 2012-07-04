@@ -11,8 +11,8 @@
 	<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'center', 'style'=>'text-decoration:none; display:block; text-align:center;', 'title'=>'Send Us Your Feedback')); ?>
 </div>
 <div id="content">
-	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));
-		print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
+	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));	
+	print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
 		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
 		print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 		if ($is_admin) {
@@ -34,15 +34,20 @@
 		<div class="collapse-content" id="collapse-profile-content">
 		<?php
 			if ($is_admin) {
-				print '<span>Is Active ? :</span>';
-				print '<input type="checkbox" title="Active" name="active" value="' . $user_details["active"] . '" checked />';
+				$active_checked=empty($user_details['active']) ? null:'checked';
+				print '<input type="checkbox" title="Active" name="active" value="' . $user_details["active"] . '" ' . $active_checked . ' />';
+				print '<span>&nbsp;Is Active ?</span>';
 
+				print '<span>&nbsp;&nbsp;</span>';
+				$admin_checked=empty($user_details['is_admin']) ? null:'checked';
+				print '<input type="checkbox" title="Administration Access" name="is_admin" value="' . $user_details['is_admin'] . '" ' . $admin_checked . ' />';
+				print '<span>&nbsp;Allow Administration Access ?</span>';
+				
 				print '<h3>Swipe Card ID:</h3>';
 				print '<input type="text" class="logg-textbox" name="swipe" ';
 				if (empty($user_details['ThirdPartyID'])) {
 					print 'value="To Be Allocated" ';
-				}
-				else {
+				} else {
 					print 'value="' . $user_details['ThirdPartyID'] . '"';
 				}
 					
