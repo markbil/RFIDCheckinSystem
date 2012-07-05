@@ -1,8 +1,12 @@
 <?php
+//require_once 'ion_auth_model.php';
+
 class Edge_user_model extends CI_Model {
 
 	public function __construct()
 	{
+		$this->load->library('ion_auth');
+		$this->load->model('ion_auth_model');
 		$this->load->database();
 	}
 	
@@ -71,25 +75,51 @@ class Edge_user_model extends CI_Model {
 	public function get_user_details($user_id)
 	{	
 		// Try a query to see if a identification_media has been associated with edge_user
-		$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, occupation, dontdisturb, ThirdPartyID');
+		$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, active,dontdisturb, ThirdPartyID');
 		$this->db->join('people', 'edge_users.id=edge_users_id');
 		$this->db->join('identification_media', 'identification_media.id=identification_id');
 		$query = $this->db->get_where('edge_users', array('edge_users.ID' => $user_id));
 
 		 if ($query->num_rows() == 0) {
 		 	// Let's try just a SELECT from edge_users
-		 	$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, occupation, dontdisturb');
+		 	$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, active,dontdisturb');
 		 	$query = $this->db->get_where('edge_users', array('edge_users.ID' => $user_id));
 		 }
 		 
-		 return $query;
+		 $user_details= $query->row_array();
+		 
+		 $user_details['is_admin']=$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id);
+		 return $user_details;
 	}
 	
 	// update edge_user details by id
 	public function update($user_id, $edge_user_details){
+		$is_admin=$edge_user_details['is_admin'];
+		
+		unset($edge_user_details['is_admin']);
+		
 		$this->db->where('ID', $user_id);
 		if($this->db->update('edge_users', $edge_user_details) === FALSE) return FALSE;
 		
+		if ($is_admin) {
+			if (!$this->ion_auth->in_group($this->ion_auth->config->item('admin_group', 'ion_auth'), $user_id)) {
+				$query = $this->db->get_where('groups', array('name' => $this->ion_auth->config->item('admin_group', 'ion_auth')), 1, 0);
+
+				$row=$query->row();
+				
+			$this->ion_auth_model->add_to_group($row->id,$user_id);
+			}
+				
+		} else {
+			if ($this->ion_auth->in_group($this->ion_auth->config->item('admin_group', 'ion_auth'), $user_id)) {
+				$query = $this->db->get_where('groups', array('name' => $this->ion_auth->config->item('admin_group', 'ion_auth')), 1, 0);
+			
+				$row=$query->row();
+			
+				$this->ion_auth_model->remove_from_group($row->id,$user_id);
+			}
+				
+		}
 		return $this->get_user_details($user_id);
 	}
 

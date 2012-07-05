@@ -1063,8 +1063,8 @@ class Ion_auth_model extends CI_Model
 		//default selects
 		$this->db->select(array(
 		    $this->tables['users'].'.*', 
-		    $this->tables['users'].'.id as id', 
-		    $this->tables['users'].'.id as user_id'
+		    $this->tables['users'].'.ID as id', 
+		    $this->tables['users'].'.ID as user_id'
 		));
 
 		if (isset($this->_ion_select))
@@ -1092,7 +1092,7 @@ class Ion_auth_model extends CI_Model
 				$this->db->distinct();
 				$this->db->join(
 				    $this->tables['users_groups'], 
-				    $this->tables['users_groups'].'.user_id = ' . $this->tables['users'].'.id', 
+				    $this->tables['users_groups'].'.user_id = ' . $this->tables['users'].'.ID', 
 				    'inner'
 				);
 

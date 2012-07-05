@@ -16,7 +16,8 @@
 	      <p><?php
 	            $submit_attributes = array( 'class' => 'logg-button logg-submit' );
 	            echo form_submit('submit', 'Submit', $submit_attributes);
-	      ?></p>
+		 		echo anchor('edge_user','Cancel', array('class'=>'logg-button','title'=>'Cancel'));
+	            ?></p>
 	      
 	<?php echo form_close();?>
 
