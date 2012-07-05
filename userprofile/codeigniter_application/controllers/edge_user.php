@@ -16,41 +16,6 @@ class Edge_user extends CI_Controller {
 			$this->load->database();
 	}
 
-	//redirect if needed, otherwise display the user list
-/* 	function index()
-	{
-
-		if (!$this->ion_auth->logged_in())
-		{
-			//redirect them to the login page
-			redirect('edge_user/login', 'refresh');
-		}
-		elseif (!$this->ion_auth->is_admin())
-		{
-			//redirect them to the home page because they must be an administrator to view this
-		//	redirect($this->config->item('base_url'), 'refresh');
-			redirect('edge_user/forgotten_password', 'refresh');
-			//redirect('edge_user/profile', 'refresh');
-			//redirect('edge_user/update', 'refresh');
-			//$this->_render_page('edge_user/update', $this->data);
-		}
-		else
-		{
-			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-			//list the users
-			$this->data['users'] = $this->ion_auth->users()->result();
-			foreach ($this->data['users'] as $k => $user)
-			{
-				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-			}
-
-
-			$this->_render_page('edge_user/profile', $this->data);
-		}
-	}
- */
 	//log the user in
 	function index()
 	{
@@ -69,10 +34,7 @@ class Edge_user extends CI_Controller {
 			{ //if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				//redirect($this->config->item('base_url'), 'refresh');
 				redirect('edge_user/profile', 'refresh');
-
-				
 			} else	{ //if the login was un-successful
 				//redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
@@ -80,7 +42,12 @@ class Edge_user extends CI_Controller {
 			}
 		}
 		else
-		{  //the user is not logging in so display the login page
+		{  
+			// If logged in then go to profile page
+			if($this->ion_auth->logged_in()) {
+				redirect('edge_user/profile', 'refresh');
+			} else {
+			//the user is not logging in so display the login page
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -96,16 +63,25 @@ class Edge_user extends CI_Controller {
 
 			$this->_render_page('edge_user/index', $this->data);
 		}
+		}
 	}
 	
-	function profile() {
-		if($user_id=$this->session->userdata('user_id')) {
+	function profile($user_id=null) {
+		$data['form_action'] = site_url('edge_user/update');
 		
+		if (empty($user_id) ) {
+			$user_id=$this->session->userdata('user_id');
+		} else {
+			$data['form_action'] .= '/' . 	$user_id;		
+		}
+		$data['allow_access'] = ($user_id != $this->session->userdata('user_id') && $this->ion_auth->is_admin()) || $user_id == $this->session->userdata('user_id');
+		if($data['allow_access']) {
 			$data['title'] = "Your Profile Details";
 			$data['message']='';
-			$data['form_action'] = site_url('edge_user/update');
 			$data['user_id'] = $user_id;
-			$data['user_details'] = $this->edge_user_model->get_user_details($user_id)->row_array();
+			$data['is_admin'] = 	$this->ion_auth->is_admin();
+			$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
+			//$data['user_details']['is_admin'] = 	$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id);
 			$data['interests'] = $this->_get_interests($user_id);
 			$data['expertises'] = $this->_get_expertise($user_id);
 			$data['questions'] = $this->_get_questions($user_id);
@@ -116,6 +92,8 @@ class Edge_user extends CI_Controller {
 			}
 		
 			$this->_render_page('edge_user/profile', $data);		
+		} else {
+			redirect('edge_user','refresh');
 		}
 	}
 
@@ -127,7 +105,7 @@ class Edge_user extends CI_Controller {
 				$data['message']='';
 				$data['form_action'] = site_url('edge_user/update');
 				$data['user_id'] = $user_id;
-				$data['user_details'] = $this->edge_user_model->get_user_details($user_id)->row_array();
+				$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 				$data['interests'] = $this->_get_interests($user_id);
 				$data['expertises'] = $this->_get_expertise($user_id);
 				$data['questions'] = $this->_get_questions($user_id);
@@ -426,7 +404,7 @@ class Edge_user extends CI_Controller {
 				
 				$data['title'] = "Your Profile Details";
 				$data['message']='';
-				$data['user_details'] = $this->edge_user_model->get_user_details($user_id)->row_array();
+				$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 				if (empty($data['user_details']))
 				{
 					show_404();
@@ -440,7 +418,7 @@ class Edge_user extends CI_Controller {
 		}
 	}
 
-	public function update(){
+	public function update($user_id=null){
 		if (!$this->ion_auth->logged_in()) {
 			$this->index();
 			return;
@@ -450,6 +428,8 @@ class Edge_user extends CI_Controller {
 			$this->index();
 			return;
 		}
+		
+		$data['is_admin'] =  $this->ion_auth->is_admin();
 
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -458,14 +438,13 @@ class Edge_user extends CI_Controller {
 		$data['title'] = 'Update Profile';
 		$data['form_action'] = site_url('edge_user/update');
 		$data['message']='';
-		//$data['link_back'] = anchor('person/index/','Back to list of persons',array('class'=>'back'));
 
 		// set validation properties
 		$this->form_validation->set_rules('username', 'User Name', 'required|min_length[5]|max_length[15]');
 		$this->form_validation->set_rules('firstname', 'First Name', 'required');
 		$this->form_validation->set_rules('lastname', 'Last Name', 'required');
 		$this->form_validation->set_rules('email', 'Email Address', 'required|min_length[9]');
-		$this->form_validation->set_rules('occupation', 'Occupation', 'required|max_length[25]');
+	//	$this->form_validation->set_rules('occupation', 'Occupation', 'required|max_length[25]');
 		if ( strlen($this->input->post('new_interest'))) {
 			$this->form_validation->set_rules('new_interest', 'Interest Term', 'min_length[3]');
 			$this->form_validation->set_rules('new_interest_level', 'Interest Level', 'greater_than[0]|less_than[6]');
@@ -475,17 +454,21 @@ class Edge_user extends CI_Controller {
 			$this->form_validation->set_rules('new_expertise_level', 'Expertise Level', 'greater_than[0]|less_than[6]');
 		}
 		$all_post = $this->input->post();
-//error_log('all_post[' . var_export($all_post,true) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
+		//error_log('UPDATE[' . var_export($all_post,true) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
 		
 		$user_id = $this->input->post('id');
 		$dontdisturb = ($this->input->post('dontdisturb')===FALSE) ? 0 : 1;
+		$active = ($this->input->post('active')===FALSE) ? null : 1;
+		$user_is_admin = ($this->input->post('is_admin')===FALSE) ? null : 1;
 		$data['user_details'] = array(
 				'ID' => $user_id,
 				'username' => $this->input->post('username'),
 				'firstname' => $this->input->post('firstname'),
 				'lastname' => $this->input->post('lastname'),
 				'email' => $this->input->post('email'),
-				'occupation' => $this->input->post('occupation'),
+				'active' => $active,
+				'is_admin' => $user_is_admin,
+				//$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id),
 				'dontdisturb' => $dontdisturb,
 		);
 
@@ -611,7 +594,7 @@ class Edge_user extends CI_Controller {
 			}
 				
 			// save data
-			$data['user_details']=$this->edge_user_model->update($user_id,$data['user_details'])->row_array();
+			$data['user_details']=$this->edge_user_model->update($user_id,$data['user_details']);
 
 			// Set interest data
 			if (strlen($this->input->post('new_interest'))) {
@@ -640,7 +623,7 @@ class Edge_user extends CI_Controller {
 				// set user message
 				$data['message'] = '<div class="fail">Profile Update FAILED!</div>';
 			} else {
-				$data['message'] = '<div class="success">Profile Update succeeded! </div>';
+				$data['message'] = '<div class="success">Profile Updated! </div>';
 			}
 		}
 		// load view
@@ -648,11 +631,11 @@ class Edge_user extends CI_Controller {
 	}
 	
 	//create a new user
-	function create_user()
+	function create()
 	{
 		$this->data['title'] = "Create User";
 
-		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin())
 		{
 			redirect('edge_user', 'refresh');
 		}
@@ -661,10 +644,6 @@ class Edge_user extends CI_Controller {
 		$this->form_validation->set_rules('first_name', 'First Name', 'required|xss_clean');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'required|xss_clean');
 		$this->form_validation->set_rules('email', 'Email Address', 'required|valid_email');
-		$this->form_validation->set_rules('phone1', 'First Part of Phone', 'required|xss_clean|min_length[3]|max_length[3]');
-		$this->form_validation->set_rules('phone2', 'Second Part of Phone', 'required|xss_clean|min_length[3]|max_length[3]');
-		$this->form_validation->set_rules('phone3', 'Third Part of Phone', 'required|xss_clean|min_length[4]|max_length[4]');
-		$this->form_validation->set_rules('company', 'Company Name', 'required|xss_clean');
 		$this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
 		$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required');
 
@@ -674,20 +653,21 @@ class Edge_user extends CI_Controller {
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
 
-			$additional_data = array('first_name' => $this->input->post('first_name'),
-				'last_name' => $this->input->post('last_name'),
-				'company' => $this->input->post('company'),
-				'phone' => $this->input->post('phone1') . '-' . $this->input->post('phone2') . '-' . $this->input->post('phone3'),
+			$additional_data = array('firstname' => $this->input->post('first_name'),
+				'lastname' => $this->input->post('last_name'),
 			);
 		}
 		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
 		{ //check to see if we are creating the user
 			//redirect them back to the admin page
 			$this->session->set_flashdata('message', "User Created");
+			//error_log('User Created['. $username . ']' . PHP_EOL,3,'/var/log/php_errors.log');
+				
 			redirect("edge_user", 'refresh');
 		}
 		else
 		{ //display the create user form
+			//error_log('User Creation FAIL!' . PHP_EOL,3,'/var/log/php_errors.log');
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
 
@@ -706,26 +686,6 @@ class Edge_user extends CI_Controller {
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('email'),
 			);
-			$this->data['company'] = array('name' => 'company',
-				'id' => 'company',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('company'),
-			);
-			$this->data['phone1'] = array('name' => 'phone1',
-				'id' => 'phone1',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('phone1'),
-			);
-			$this->data['phone2'] = array('name' => 'phone2',
-				'id' => 'phone2',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('phone2'),
-			);
-			$this->data['phone3'] = array('name' => 'phone3',
-				'id' => 'phone3',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('phone3'),
-			);
 			$this->data['password'] = array('name' => 'password',
 				'id' => 'password',
 				'type' => 'password',
@@ -738,6 +698,17 @@ class Edge_user extends CI_Controller {
 			);
 			$this->_render_page('edge_user/create_user', $this->data);
 		}
+	}
+	
+	function list_users() {
+		//list the users
+		$this->data['users'] = $this->ion_auth->users()->result();
+		foreach ($this->data['users'] as $k => $user)
+		{
+			$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
+		}
+		
+		$this->_render_page('edge_user/list', $this->data);		
 	}
 
 	function _get_csrf_nonce()
