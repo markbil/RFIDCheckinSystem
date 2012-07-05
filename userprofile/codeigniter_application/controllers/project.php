@@ -13,9 +13,6 @@ class Project extends CI_Controller {
 	*/
 	public function index()
 	{
-		//$this->load->helper('form');
-		//$this->load->library('form_validation');
-
 		$data['title'] = "Project Listings";
 		$data['message']='';
 		$data['project_list'] = $this->project_model->get_project_listings();
@@ -28,12 +25,22 @@ class Project extends CI_Controller {
 	/*
 	 * View & Update Details for a Project
 	*/
-	function profile($id){
+	public function profile($id){
+		$form_post=$this->input->post();
+		$submit_request=null;
+		if (!empty($form_post)) {
+			if (array_key_exists('update',$form_post)) {
+				$submit_request='update';
+			} else if (array_key_exists('delete',$form_post)) {
+				$submit_request='delete';
+			} else {
+				$submit_request='create';
+			}
+		}
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$data['title'] = 'Project Details';
 		// set validation properties
-		//$this->_set_fields();
 		$this->form_validation->set_rules('name', 'Project Name', 'required|min_length[5]|max_length[30]');
 		$this->form_validation->set_rules('description', 'Description', 'required|min_length[8]');
 
@@ -52,25 +59,34 @@ class Project extends CI_Controller {
 		$data['form_action'] = site_url('project/profile/'. $id);
 		$data['link_back'] = anchor('project','Return to Project List',array('class'=>'back'));
 
-		if ($this->form_validation->run() === FALSE)
+		if (($submit_request=='update' && ($this->form_validation->run() === FALSE)) || empty($submit_request))
 		{
 			$this->_render_page('project/profile', $data);
 		}
 		else
 		{
-			// load view
-			$data['project_details']=$this->project_model->update($id,$data['project_details'])->row_array();
-			if (!empty($data['project_details'])) {
-				// set user message
-				$data['message'] = '<div class="success">Project Updated! </div>';
-			} else {
-				$data['message'] = '<div class="fail">Project Update FAILED!</div>';
+			if($submit_request=='update') {
+				// load view
+				$data['project_details']=$this->project_model->update($id,$data['project_details'])->row_array();
+				if (!empty($data['project_details'])) {
+					// set user message
+					$data['message'] = '<div class="success">Project Updated! </div>';
+				} else {
+					$data['message'] = '<div class="fail">Project Update FAILED!</div>';
+				}
+				$this->_render_page('project/profile', $data);
+			} else if ($submit_request=='delete') {
+				if ($this->project_model->delete($id)) {
+					$data['message'] = '<div class="success">Project Deleted! </div>';
+				} else {
+					$data['message'] = '<div class="fail">Error in Project Deletion! </div>';
+				}
+				redirect('project', 'refresh');
 			}
-			$this->_render_page('project/profile', $data);
 		}
 	}
 
-	function create(){
+	public function create(){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$data['title'] = 'Project Details';
@@ -106,7 +122,7 @@ class Project extends CI_Controller {
 			$this->_render_page('project/profile', $data);
 		}
 	}
-	
+		
 	private function _sort_collaborators($collaborators_array) {
 		if ($collaborators_array) {
 			foreach($collaborators_array as $key=>$row) {
