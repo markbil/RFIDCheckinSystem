@@ -281,6 +281,26 @@
 		</div>
 		<div class="collapse-content" id="collapse-socialmedia-content">
 
+			<div class="collapse-head" id="collapse-facebook">
+				Activate Facebook
+			</div>
+			<div class="collapse-content" id="collapse-facebook-content">
+				Facebook settings
+			</div>
+
+		</div>
+		<br /><br />
+		<br /><br />
+
+
+		<h1>Social Media Settings - Old</h1>
+		<div class="collapse-head collapse-nohide collapse-floating" id="collapse-socialmediaold">
+			<h3 class="inline-block">Social Media Settings</h3>
+			<div class="collapsed-arrow right" id="collapse-socialmediaold-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-socialmediaold-arrow-expanded">&#9650;</div>
+		</div>
+		<div class="collapse-content" id="collapse-socialmediaold-content">
+
 			<h3>Share my checkins via &#46;&#46;&#46;</h3>
 			<table style="width: 100%; margin-top: 0.6em;">
 				<tr style="height: 1.5em;">
