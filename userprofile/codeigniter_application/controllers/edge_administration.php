@@ -1,13 +1,15 @@
 <?php
 class Edge_Administration extends CI_Controller {
 
+	protected $title='RFID Listings';
+	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('edge_administration_model');
 		$this->load->library('ion_auth');
 		$this->load->library('session');
-		$this->load->helper('url');
+		$this->load->helper('url');		
 	}
 
 	/*
@@ -38,6 +40,10 @@ class Edge_Administration extends CI_Controller {
 					redirect('project', 'refresh');
 					return;
 					
+				case 'list_rfids':
+						$this->list_rfids();
+						return;
+					
 				default:
 					$data['title'] = "Administration";
 					$this->_render_page('edge_administration/index', $data);
@@ -46,8 +52,40 @@ class Edge_Administration extends CI_Controller {
 			redirect('edge_user', 'refresh');
 		}
 	}
+	
+	function list_rfids() {		
+		$data['message']=null;
+		$data['form_action'] = site_url('admin/list_rfids');
+		
+		//validate form input
+		$this->form_validation->set_rules('new_rfid', 'RFID Card Unique ID', 'required');
+		if ($this->form_validation->run() == true) {
+			$new_rfid = $this->input->post('new_rfid');
+			
+			$result=$this->edge_administration_model->add_rfid($new_rfid);
+			if ($result === -1) {
+				$data['message']="RFID Card Unique ID All Ready Exists!<br>[$new_rfid]";
+			} else if($result === FALSE) {
+				$data['message']="Error Updating Database!";
+			} else {
+				$data['message']="New RFID [$new_rfid] Added!";
+			}
+				
+		}
+		
+		//list the users
+		$data['rfids'] = $this->edge_administration_model->get_rfid()->result();
+/* 		foreach ($this->data['rfids'] as $k => $user)
+		{
+			$this->data['rfids'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
+		}
+ */
+		$this->_render_page('edge_administration/rfid', $data);
+	}
+	
 		
 	private function _render_page($name, $data/*At least include Title*/) {
+		$data['title'] = $this->title;
 		$this->load->view('templates/header', $data);
 		$this->load->view($name, $data);
 		$this->load->view('templates/footer');

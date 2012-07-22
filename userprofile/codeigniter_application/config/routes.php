@@ -38,8 +38,11 @@
 |
 */
 
-$route['admin/(:any)'] = 'edge_administration/index';
+$route['json_access/rfid_list'] = 'json_access/rfid_list';
+$route['json_access'] = 'json_access';
+$route['admin/rfid'] = 'edge_administration/rfid';
 $route['admin'] = 'edge_administration';
+$route['admin/(:any)'] = 'edge_administration/index';
 $route['edge_user/feedback'] = 'edge_user/feedback';
 $route['edge_user/deactivate_user'] = 'edge_user/deactivate_user';
 $route['edge_user/change_password'] = 'edge_user/change_password';

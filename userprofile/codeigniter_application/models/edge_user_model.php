@@ -1,5 +1,6 @@
 <?php
-//require_once 'ion_auth_model.php';
+define("UPDATE_ERROR_RFID_ID_ALLOCATED", 1);
+define("UPDATE_ERROR_RFID_ID_MISSING", 2);
 
 class Edge_user_model extends CI_Model {
 
@@ -75,10 +76,11 @@ class Edge_user_model extends CI_Model {
 	public function get_user_details($user_id)
 	{	
 		// Try a query to see if a identification_media has been associated with edge_user
-		$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, active,dontdisturb, ThirdPartyID');
-		$this->db->join('people', 'edge_users.id=edge_users_id');
-		$this->db->join('identification_media', 'identification_media.id=identification_id');
+		$this->db->select('edge_users.ID AS ID, username, firstname,lastname, email, active,dontdisturb, ThirdPartyID,identification_id');
+		$this->db->join('people', 'edge_users.ID=edge_users_id');
+		$this->db->join('identification_media', 'identification_media.ID=identification_id');
 		$query = $this->db->get_where('edge_users', array('edge_users.ID' => $user_id));
+		//$query = $this->db->orderby('username');
 
 		 if ($query->num_rows() == 0) {
 		 	// Let's try just a SELECT from edge_users
@@ -95,11 +97,31 @@ class Edge_user_model extends CI_Model {
 	// update edge_user details by id
 	public function update($user_id, $edge_user_details){
 		$is_admin=$edge_user_details['is_admin'];
-		
+		$rfid_identification=$edge_user_details['user_profile_rfid'];
+		$identification_id=$edge_user_details['user_profile_rfid_ID'];
+		unset($edge_user_details['ID']);
 		unset($edge_user_details['is_admin']);
+		unset($edge_user_details['user_profile_rfid']);
+		unset($edge_user_details['user_profile_rfid_ID']);
 		
 		$this->db->where('ID', $user_id);
 		if($this->db->update('edge_users', $edge_user_details) === FALSE) return FALSE;
+		
+		if (empty($identification_id) && !empty($rfid_identification)) {
+			return UPDATE_ERROR_RFID_ID_MISSING;
+		}
+		
+		if(!empty($identification_id)) {
+			// check if the user is in people table
+			$query = $this->db->get_where('people', array('edge_users_id' => $user_id));
+			if ($query->num_rows()==1) {
+				$this->db->where('edge_users_id', $user_id);
+	 			if($this->db->update('people', array('identification_id'=>$identification_id)) === FALSE) return FALSE;
+			} else {
+				// Add new item
+				if($this->db->insert('people', array('edge_users_id'=> $user_id, 'identification_id'=>$identification_id))=== FALSE) return FALSE;
+			}
+		}
 		
 		if ($is_admin) {
 			if (!$this->ion_auth->in_group($this->ion_auth->config->item('admin_group', 'ion_auth'), $user_id)) {

@@ -1,8 +1,10 @@
 <div id="form" style="width: 600px; margin-left: auto; margin-right: auto;">
 
 <?php
+	if($is_admin) {
+		print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
+	}
 	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
-	
 	print '<br/>';
 	print '<fieldset style="clear:both">';
 	print '<legend>Project Listings</legend>';	

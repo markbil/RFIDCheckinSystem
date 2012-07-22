@@ -1,15 +1,18 @@
 <?php echo validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); ?>
 <?php 
 	if ($message) {
-		echo '<div class="logg-success center"><span class="center">';
+		echo '<div class="logg-success"><span class="center">';
 		echo $message;
 		echo '</span></div>';
 	}
 ?>
 
-<div id="content" class="center">
+<div class="login-warning" style="border-color:#000; background:#f0f0f0;">
+	<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'center', 'style'=>'text-decoration:none; display:block; text-align:center;', 'title'=>'Send Us Your Feedback')); ?>
+</div>
+<div id="content">
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));	
-		print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
+	print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
 		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
 		print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 		if ($is_admin) {
@@ -19,7 +22,7 @@
 		?>
 		
 		<br /><br /><br />
-
+		
 		<h1>Profile Info</h1>
 
 
@@ -30,6 +33,7 @@
 		</div>
 		<div class="collapse-content" id="collapse-profile-content">
 		<?php
+			log_message('debug', 'USER_DETAILS[' . var_export($user_details,true));
 			if ($is_admin) {
 				$active_checked=empty($user_details['active']) ? null:'checked';
 				print '<input type="checkbox" title="Active" name="active" value="' . $user_details["active"] . '" ' . $active_checked . ' />';
@@ -41,14 +45,16 @@
 				print '<span>&nbsp;Allow Administration Access ?</span>';
 				
 				print '<h3>Swipe Card ID:</h3>';
-				print '<input type="text" class="logg-textbox" name="swipe" ';
+				print '<input type="text" class="logg-textbox" id="user_profile_rfid" name="swipe" ';
 				if (empty($user_details['ThirdPartyID'])) {
 					print 'value="To Be Allocated" ';
 				} else {
-					print 'value="' . $user_details['ThirdPartyID'] . '"';
+					print 'value="' . $user_details['ThirdPartyID'] . '" disabled="disabled" ';
 				}
-					
-				print '"/>';
+				print ' />';
+				
+				$identification_id=empty($user_details['identification_id']) ? null:$user_details['identification_id'];
+				print '<input type="hidden" id="user_profile_rfid_ID" name="user_profile_rfid_ID" value="'.   $identification_id . '" />';
 			}
 			?>
 
@@ -156,7 +162,7 @@
 			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&#9650;</div>
 			<input type="radio" class="logg-checkbox" name="status" />
-			<h3 class="inline">I am happy to share my skills!</span>
+			<h3 class="inline">I am happy to share my skills!</h3>
 		</div>
 		<div class="collapse-content" id="collapse-goodwith-content">
 			<h3>Skills I can share with other Edge users</h3>
