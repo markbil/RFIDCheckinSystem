@@ -1,6 +1,7 @@
 <?php
 	print '<div id="content" class="center">';
 	print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
+	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
 	
 	print '<br/>';
 	print '<fieldset style="clear:both">';
@@ -12,8 +13,14 @@
 	print '<th></th>';
 	print '</thead>';	
 	print '<tbody style="max-height:200px;overflow:auto;">';
+	$count = 0;
 	foreach ($users as $key=>$value) {
-		print '<tr >';
+		$count++;
+		if(($count % 2) == 0) {
+		print '<tr class="even">';
+		} else {
+			print '<tr >';
+		}
 		print '<td valign="middle">';
 		print $value->firstname . ' ' . $value->lastname;		
 		print '</td>';
