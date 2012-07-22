@@ -1,4 +1,9 @@
 <?php	
+	if($is_admin) {
+		print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
+	}
+	print anchor('project','Return To Project List', array('class'=>'logg-button','title'=>'Return To List Of Projects', 'style'=>'float:right'));
+	print '<br><br>';
 	print form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));
 	
 	echo $message;
@@ -91,7 +96,6 @@
     		print form_close();
 	}
 	
-	print anchor('project','Return To Project List', array('class'=>'logg-button','title'=>'Return To List Of Projects', 'style'=>'float:right'));
 	print '</fieldset>';
 	print '</div>';
 	?>

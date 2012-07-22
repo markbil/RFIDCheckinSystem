@@ -428,7 +428,7 @@ class Edge_user extends CI_Controller {
 			$this->index();
 			return;
 		}
-		
+		$data['message']=null;
 		$data['is_admin'] =  $this->ion_auth->is_admin();
 
 		$this->load->helper('form');
@@ -462,6 +462,8 @@ class Edge_user extends CI_Controller {
 		$user_is_admin = ($this->input->post('is_admin')===FALSE) ? null : 1;
 		$data['user_details'] = array(
 				'ID' => $user_id,
+				'user_profile_rfid_ID'=>$this->input->post('user_profile_rfid_ID'),
+				'user_profile_rfid'=>$this->input->post('swipe'),
 				'username' => $this->input->post('username'),
 				'firstname' => $this->input->post('firstname'),
 				'lastname' => $this->input->post('lastname'),
@@ -592,6 +594,12 @@ class Edge_user extends CI_Controller {
 					$this->edge_user_model->delete_user_question($question_array['ID']);
 				}
 			}
+			
+			if($data['user_details']['user_profile_rfid'] == 'To Be Allocated') {
+				$data['user_details']['user_profile_rfid']=null;
+			}
+				
+			log_message('debug', "USER DETAILS[" . var_export($data['user_details'], true). "]");
 				
 			// save data
 			$data['user_details']=$this->edge_user_model->update($user_id,$data['user_details']);
@@ -619,9 +627,23 @@ class Edge_user extends CI_Controller {
 			} else {
 				$data['questions']=$this->_get_questions($user_id);
 			}
-			if ($data['user_details'] === FALSE || $data['interests'] === FALSE) {
+			if (!is_array($data['user_details'])) {
+				switch($data['user_details']) {
+					case UPDATE_ERROR_RFID_ID_ALLOCATED:
+						$data['message'] .= '<div class="fail">RFID ID is all ready allocated!</div>';
+						break;
+					case UPDATE_ERROR_RFID_ID_MISSING:
+						$data['message'] .= '<div class="fail">RFID ID does not exist!</div>';
+						break;
+						
+					default:
+						$data['message'] .= "Error in update has occurred!";
+				}
+			}
+			
+			if ($data['interests'] === FALSE) {
 				// set user message
-				$data['message'] = '<div class="fail">Profile Update FAILED!</div>';
+				$data['message'] .= '<div class="fail">Error in updating Interests!</div>';
 			} else {
 				$data['message'] = '<div class="success">Profile Updated! </div>';
 			}

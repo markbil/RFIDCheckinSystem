@@ -23,11 +23,11 @@
 	print '</div>';
 	print '<br>';
 	print '<div>';
-	print anchor('admin/rfid/allocate','Allocate RFID Card To User', array('class'=>'logg-button','title'=>'Allocate RFID To User'));
+	print anchor('admin/manage_user_rfids','Allocate RFID Card To User', array('class'=>'logg-button','title'=>'Allocate RFID To User'));
 	print '</div>';
 	print '<br>';
 	print '<div>';
-	print anchor('admin/rfid','Manage RFID Cards', array('class'=>'logg-button','title'=>'Manage RFID Cards'));
+	print anchor('admin/list_rfids','Manage RFID Cards', array('class'=>'logg-button','title'=>'Manage RFID Cards'));
 	print '</div>';
 	print '<br>';
 	print '</div>';	

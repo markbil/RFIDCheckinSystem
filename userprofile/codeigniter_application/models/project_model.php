@@ -45,11 +45,9 @@ class Project_model extends CI_Model {
 	
 	// delete Project by id
 	public function delete($id){
-		// Remove All Users associated with Project
 		$this->db->where('project_id', $id);
 		$this->db->delete('projects_edge_users');
 		
-		// Remove the Project
 		$this->db->where('id', $id);
 		return $this->db->delete('projects');
 	}
