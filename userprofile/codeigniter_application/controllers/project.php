@@ -5,6 +5,7 @@ class Project extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('project_model');
+		$this->load->library('ion_auth');
 		$this->load->helper('url');
 	}
 
@@ -18,7 +19,8 @@ class Project extends CI_Controller {
 		$data['project_list'] = $this->project_model->get_project_listings();
 		$data['user_id'] = $this->input->post('user_id');
 		$data['link_back'] = anchor('edge_user/profile','Return to User Profile', array('style'=>'float:right'));
-
+		$data['is_admin'] =  $this->ion_auth->is_admin();
+		
 		$this->_render_page('project/index', $data);
 	}
 
@@ -58,7 +60,8 @@ class Project extends CI_Controller {
 		$data['message'] = '';
 		$data['form_action'] = site_url('project/profile/'. $id);
 		$data['link_back'] = anchor('project','Return to Project List',array('class'=>'back'));
-
+		$data['is_admin'] =  $this->ion_auth->is_admin();
+		
 		if (($submit_request=='update' && ($this->form_validation->run() === FALSE)) || empty($submit_request))
 		{
 			$this->_render_page('project/profile', $data);
@@ -105,6 +108,7 @@ class Project extends CI_Controller {
 		$data['project_details']['ID'] = null;
 		$data['project_details']['Name'] = $this->input->post('name');
 		$data['project_details']['Description'] = $this->input->post('description');
+		$data['is_admin'] =  $this->ion_auth->is_admin();
 		
 		if ($this->form_validation->run() === FALSE)
 		{

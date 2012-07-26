@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 19, 2012 at 09:38 AM
+-- Generation Time: Jul 22, 2012 at 07:47 AM
 -- Server version: 5.5.25
 -- PHP Version: 5.3.14
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `hack_rfid_checkin_empty`
+-- Database: `checkin_db_v8`
 --
 
 -- --------------------------------------------------------
@@ -33,6 +33,17 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   PRIMARY KEY (`FB_ID`),
   UNIQUE KEY `acces token_UNIQUE` (`accesToken`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `backgrounds`
+--
+
+CREATE TABLE IF NOT EXISTS `backgrounds` (
+  `ID` int(5) NOT NULL,
+  `background` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='User background experiences';
 
 -- --------------------------------------------------------
 
@@ -98,6 +109,19 @@ CREATE TABLE IF NOT EXISTS `edge_users` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `edge_users_backgrounds`
+--
+
+CREATE TABLE IF NOT EXISTS `edge_users_backgrounds` (
+  `ID` int(5) NOT NULL AUTO_INCREMENT,
+  `edge_users_id` int(5) NOT NULL,
+  `background_id` int(5) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `edge_users_expertises`
 --
 
@@ -126,25 +150,6 @@ CREATE TABLE IF NOT EXISTS `edge_users_interests` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `edge_users_ORIG`
---
-
-CREATE TABLE IF NOT EXISTS `edge_users_ORIG` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `lastname` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `occupation` varchar(100) NOT NULL,
-  `statusmessage` varchar(140) NOT NULL,
-  `dontdisturb` int(4) NOT NULL DEFAULT '1' COMMENT '0=happytotalk, 1 = dont disturb ',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `edge_users_questions`
 --
 
@@ -168,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `edge_users_social_network_service` (
   `service_property` int(11) NOT NULL,
   `value` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -191,6 +196,21 @@ CREATE TABLE IF NOT EXISTS `expertise_table` (
 CREATE TABLE IF NOT EXISTS `feedback` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Feedback` text NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gatecounter`
+--
+
+CREATE TABLE IF NOT EXISTS `gatecounter` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `timestamp` datetime NOT NULL,
+  `population` int(10) NOT NULL,
+  `in` int(5) NOT NULL,
+  `out` int(5) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
