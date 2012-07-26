@@ -1,4 +1,4 @@
-<?php echo validation_errors('<div class="login-warning"><span class="center">', '</span></div>'); ?>
+<?php echo validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); ?>
 
 
 <div id="content" class="center">
