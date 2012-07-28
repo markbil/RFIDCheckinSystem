@@ -1,4 +1,4 @@
-<?php echo validation_errors('<div class="login-warning"><span class="center">', '</span></div>'); ?>
+<?php echo validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); ?>
 
 <div id="content" class="center">
 
@@ -19,7 +19,11 @@
             ?>
             <br /><br />
             
-            <p><?php echo form_submit('submit', 'Send My Feedback');?></p>
+            <p>
+            <?php echo form_submit('submit', 'Send My Feedback');
+            	print anchor('edge_user','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
+            ?>
+            </p>
 	      
 	<?php echo form_close();?>
 

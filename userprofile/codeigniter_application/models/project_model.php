@@ -35,14 +35,19 @@ class Project_model extends CI_Model {
 		$this->db->insert('projects', $project_details);
 		return $this->db->insert_id();
 	}
+	
 	// update Project by id
 	public function update($id, $project_details){
 		$this->db->where('id', $id);
 		$this->db->update('projects', $project_details);
 		return $this->get_project_details($id);
 	}
+	
 	// delete Project by id
 	public function delete($id){
+		$this->db->where('project_id', $id);
+		$this->db->delete('projects_edge_users');
+		
 		$this->db->where('id', $id);
 		return $this->db->delete('projects');
 	}
