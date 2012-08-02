@@ -35,7 +35,7 @@ Hardware Wiring:
 ////////////////////////////////////////////////////////////////////////
     
     // Configure the Library in UART Mode
-    SoftwareSerial mySerial(7, 8); // 7-Rx, 8=Tx
+    SoftwareSerial mySerial(8, 7); // 7-Rx, 8=Tx
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -93,8 +93,10 @@ void setup(){
   Serial.begin(9600);
   mySerial.begin(9600);
   
-  blinkPin(onboard_greenPin, 500);
-  blinkPin(onboard_redPin, 500);
+  //Feedback via buzzer and on-board LEDs that Ethernet setup is about to start
+    buzz(speakerPin, 1000, 300);
+    blinkPin(onboard_greenPin, 500);
+    blinkPin(onboard_redPin, 500);
   
   generate_random_mac_address();
   print_mac_address();
@@ -105,8 +107,12 @@ void setup(){
   Ethernet.begin(mac);
   Serial.println("Setup finished.");
   
-  blinkPin(onboard_greenPin, 3000);
-  
+  //Confirmation via buzzer and on-board LEDs that Ethernet setup is finished
+    blinkPin(onboard_greenPin, 3000);
+    buzz(speakerPin, 1000, 300);
+    delay(200);
+    buzz(speakerPin, 1000, 300);
+    
 }
 
 void loop(){
@@ -180,8 +186,8 @@ void loop(){
               
               rfid.toUpperCase();
               Serial.println("RFID: " + rfid);
-              //String url_base = "/php/RFIDCheckinSystem/checkin_submit_manual.php?";
-              String url_base = "/php/TheEdge_VisitorProfiles/checkin_submit_manual.php?";
+              String url_base = "/php/RFIDCheckinSystem/API/checkin_submit_manual.php?";
+              
               String url_param1 = "im_type=" + String(im_type);
               String url_param2 = "&thirdpartyid=" + rfid;
               String url_param3 = "&sublocation=" + String(sublocation);

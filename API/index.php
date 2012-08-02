@@ -29,7 +29,7 @@
 <?php
  
 $urlbase = "http://localhost/RFIDCheckinSystem/API/";
-$urlbase = "http://api.checkinsystem.net";
+//$urlbase = "http://theedge.checkinsystem.net/API/";
 //$urlbase = "http://meetmee.javaprovider.net/php/RFIDCheckinSystem/API/"
 //$urlbase = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/";
 ?>
