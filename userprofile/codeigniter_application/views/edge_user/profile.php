@@ -85,7 +85,7 @@
 		<br />
 
 
-		<h1>What are you up to at The Edge?</h1>
+		<h1>What are you up to at The Edge today?</h1>
 
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="dontdisturb" >
