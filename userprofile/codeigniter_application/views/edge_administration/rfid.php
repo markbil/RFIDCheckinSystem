@@ -7,6 +7,7 @@
 	}
 	
 	print '<div id="content" class="center">';
+	print '<div class="content-inner center">';
 	print '<br>';
 	print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
 	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
@@ -68,5 +69,6 @@
 
 	print '</fieldset>';
 	
+	print '</div>';
 	print '</div>';
 ?>
