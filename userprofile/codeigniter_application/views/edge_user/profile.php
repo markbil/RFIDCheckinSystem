@@ -1,18 +1,15 @@
 <?php echo validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); ?>
 <?php 
 	if ($message) {
-		echo '<div class="logg-success"><span class="center">';
+		echo '<div class="logg-success center"><span class="center">';
 		echo $message;
 		echo '</span></div>';
 	}
 ?>
 
-<div class="login-warning" style="border-color:#000; background:#f0f0f0;">
-	<?php echo anchor('edge_user/feedback', 'Let us know what you think about this system! Send us your Feedback', array('class'=>'center', 'style'=>'text-decoration:none; display:block; text-align:center;', 'title'=>'Send Us Your Feedback')); ?>
-</div>
-<div id="content">
+<div id="content" class="center">
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));	
-	print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
+		print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
 		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
 		print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 		if ($is_admin) {
@@ -22,7 +19,7 @@
 		?>
 		
 		<br /><br /><br />
-		
+
 		<h1>Profile Info</h1>
 
 
@@ -88,7 +85,7 @@
 		<br />
 
 
-		<h1>What are you up to at The Edge?</h1>
+		<h1>What are you up to at The Edge today?</h1>
 
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="dontdisturb" >
@@ -286,6 +283,26 @@
 			<div class="expanded-arrow right" id="collapse-socialmedia-arrow-expanded">&#9650;</div>
 		</div>
 		<div class="collapse-content" id="collapse-socialmedia-content">
+
+			<div class="collapse-head" id="collapse-facebook">
+				Activate Facebook
+			</div>
+			<div class="collapse-content" id="collapse-facebook-content">
+				Facebook settings
+			</div>
+
+		</div>
+		<br /><br />
+		<br /><br />
+
+
+		<h1>Social Media Settings - Old</h1>
+		<div class="collapse-head collapse-nohide collapse-floating" id="collapse-socialmediaold">
+			<h3 class="inline-block">Social Media Settings</h3>
+			<div class="collapsed-arrow right" id="collapse-socialmediaold-arrow-collapsed">&#9660;</div>
+			<div class="expanded-arrow right" id="collapse-socialmediaold-arrow-expanded">&#9650;</div>
+		</div>
+		<div class="collapse-content" id="collapse-socialmediaold-content">
 
 			<h3>Share my checkins via &#46;&#46;&#46;</h3>
 			<table style="width: 100%; margin-top: 0.6em;">
