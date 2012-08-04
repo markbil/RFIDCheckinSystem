@@ -13,6 +13,7 @@
 		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
 		//print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 		if ($is_admin) {
+			print anchor('a', 'A', array('style'=>'visibility:hidden;'));
 			print anchor('admin', 'Admin', array('class'=>'logg-button','title'=>'Admin'));
 		}
 		print anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); 

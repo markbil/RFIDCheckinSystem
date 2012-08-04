@@ -3,14 +3,13 @@
 <div id="content" class="center">
 
       <?php
-             print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
-			print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
+            $form_attributes = array('class' => 'logg-form content-inner center');
+		echo form_open('edge_user/create', $form_attributes);
 
-           $form_attributes = array('class' => 'logg-form content-inner center');
-			echo form_open('edge_user/create', $form_attributes);
-            
-            
+            print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:left'));
       ?>
+      <br /><br />
+      <br /><br />
 
 	<h1 style="margin-bottom:6pt;">Create User</h1>
 	<p>Please enter the users information below.<br /><br />

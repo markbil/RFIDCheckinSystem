@@ -3,7 +3,11 @@
 	print '<div id="content" class="center">';
 	print '<div class="content-inner center">';
 	
-	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right;display:block;'));
+	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:left;display:block;'));
+?>
+<br /><br />
+<br />
+<?php
 	print '<br/>';
 	print '<fieldset style="clear:both">';
 	print '<h1>RFID Checkin Administration</h1>';	
