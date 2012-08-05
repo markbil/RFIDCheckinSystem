@@ -1,8 +1,12 @@
 <?php
 	print '<div id="content" class="center">';
-	print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
-	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right'));
-	
+	print '<div class="content-inner center">';
+
+	print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:left'));
+?>
+<br /><br />
+<br />
+<?php
 	print '<br/>';
 	print '<fieldset style="clear:both">';
 	print '<legend>User Listings</legend>';	
@@ -39,5 +43,6 @@
 
 	print '</fieldset>';
 	
+	print '</div>';
 	print '</div>';
 ?>

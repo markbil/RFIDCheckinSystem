@@ -1,30 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-
-<style type="text/css">
-
-	.function_name{
-		font-weight:bold;
-
-	}
-	.function_description{
-		font-style:italic;
-	}
-	.footer{
-		padding-top:50px;
-		padding-bottom:50px:
-		font-size:10px;
-		font-family:"Courier New", Courier, monospace;
-	}
-</style>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>The Edge - Checkin System API</title>
-
-
-</head>
-<body>
 
 <?php
  
@@ -33,20 +6,52 @@ $urlbase = "http://localhost/RFIDCheckinSystem/";
 //$urlbase = "http://meetmee.javaprovider.net/php/RFIDCheckinSystem/API/"
 //$urlbase = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/";
 ?>
+<html>
+	<head>
+		<meta http -equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<h1>"CHECKIN SYSTEM LANDING PAGE"</h1>
-<p>
-this is the checkin system....
-</p>
-<br/>
+		<!-- Screen -->
+		<link rel="StyleSheet" href="<?php echo $urlbase ?>userprofile/include/css/clear.css" type="text/css" />
+		<link rel="StyleSheet" href="<?php echo $urlbase ?>userprofile/include/css/screen.css" type="text/css" />
 
-<p>
-<a href="<?php echo $urlbase ?>userprofile/index.php">login / userprofile</a> </p>
-<a href="<?php echo $urlbase ?>API/index.php">API</a>
-</p>
+		<!-- Mobile -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 
+		<!--<link rel="stylesheet" type="text/css" media="only screen and (max-width: 570px), only screen and (max-device-width: 570px)" href="<?php echo $urlbase ?>userprofile/include/css/antiscreen.css" />
+		<link rel="stylesheet" type="text/css" media="handheld, only screen and (max-width: 570px), only screen and (max-device-width: 570px)" href="<?php echo $urlbase ?>userprofile/include/css/clear.css" />-->
+		<link rel="stylesheet" type="text/css" media="handheld, only screen and (max-width: 570px), only screen and (max-device-width: 570px)" href="<?php echo $urlbase ?>userprofile/include/css/handheld.css" />
+		<!--[if IEMobile]>
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $urlbase ?>userprofile/include/css/handheld.css" />
+		<![endif]-->
+		
+	<!--  Jquery UI Style -->
+	<link rel="StyleSheet" href="<?php echo $urlbase ?>userprofile/include/css/ui-lightness/jquery-ui-1.8.21.custom.css" type="text/css" />
+		
+		
+		<title>The Edge RFID Checkin</title>
 
+		<script type="text/javascript" src="<?php echo $urlbase ?>userprofile/include/js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo $urlbase ?>userprofile/include/js/jquery-ui-1.8.21.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo $urlbase ?>userprofile/include/js/rfid_edge_common.js"></script>
+	</head>
+		<body>
+			<a id="logo" class="center" href="http://edgeqld.org.au"><h1>The Edge Checkin System</h1></a>
 
+			<div id="content" class="center">
+				<div class="content-inner center">
 
-</body>
+					<h1>Checkin System Landing Page</h1>
+					<p>This is The Edge's Checkin System homepage</p>
+					<br/>
+
+					<p><a href="<?php echo $urlbase ?>userprofile/index.php">Login Page</a></p><br />
+					<p><a href="<?php echo $urlbase ?>API/index.php">Backend API</a></p>
+
+				</div>
+			</div>
+
+		<div id="footer" class="center">
+			<strong>&copy; The Edge 2012</strong>
+		</div>
+	</body>
 </html>

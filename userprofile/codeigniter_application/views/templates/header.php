@@ -21,7 +21,13 @@
 	<link rel="StyleSheet" href="<?=base_url(); ?>include/css/ui-lightness/jquery-ui-1.8.21.custom.css" type="text/css" />
 		
 		
-		<title><?php echo $title ?> - The Edge RFID Checkin</title>
+		<title>
+			<?php if (!empty($title)){
+				echo $title;
+				echo " - ";
+			}?>
+			The Edge RFID Checkin
+		</title>
 
 		<script type="text/javascript" src="<?=base_url(); ?>include/js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="<?=base_url(); ?>include/js/jquery-ui-1.8.21.custom.min.js"></script>

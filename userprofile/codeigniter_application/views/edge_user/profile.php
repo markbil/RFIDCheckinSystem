@@ -11,8 +11,9 @@
 	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));	
 		print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
 		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
-		print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
+		//print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 		if ($is_admin) {
+			print anchor('a', 'A', array('style'=>'visibility:hidden;'));
 			print anchor('admin', 'Admin', array('class'=>'logg-button','title'=>'Admin'));
 		}
 		print anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); 
@@ -100,7 +101,7 @@
 		<div class="collapse-head" id="collapse-cometalk">
 			<div class="collapsed-arrow right" id="collapse-cometalk-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-cometalk-arrow-expanded">&#9650;</div>
-			<input type="radio" class="logg-checkbox" name="status" checked />
+			<input type="checkbox" class="logg-checkbox" name="status-cometalk" checked />
 			<h3 class="inline">Just hanging out today, come talk to me!</h3>
 		</div>
 		<div class="collapse-content" id="collapse-cometalk-content">
@@ -158,7 +159,7 @@
 		<div class="collapse-head" id="collapse-goodwith">
 			<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&#9650;</div>
-			<input type="radio" class="logg-checkbox" name="status" />
+			<input type="checkbox" class="logg-checkbox" name="status-shareskills" />
 			<h3 class="inline">I am happy to share my skills!</h3>
 		</div>
 		<div class="collapse-content" id="collapse-goodwith-content">
@@ -218,7 +219,7 @@
 		<div class="collapse-head" id="collapse-question">
 			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&#9650;</div>
-			<input type="radio" class="logg-checkbox" name="status" />
+			<input type="checkbox" class="logg-checkbox" name="status-needhelp" />
 			<h3 class="inline-block">I need your help &#46;&#46;&#46;</h3>
 		</div>
 		<div class="collapse-content" id="collapse-question-content">
@@ -260,20 +261,20 @@
 
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
-			<input type="radio" class="logg-checkbox" name="status" />
+			<input type="checkbox" class="logg-checkbox" name="status-new" />
 			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet &#46;&#46;&#46;</h3>
 		</div>
 		<br /><br />
 
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
-			<input type="radio" class="logg-checkbox" name="status" />
+			<input type="checkbox" class="logg-checkbox" name="status-message" />
 			<h3 class="inline">Other status message:</h3>
 			<input type="text" style="margin-bottom: 0; margin-top: 3pt;" class="interest-name logg-textbox" name="status_message" value="" />
 
 		</div>
 		<br /><br />
-		<br /><br />
+		<!--<br /><br />
 
 
 		<h1>Social Media Settings</h1>
@@ -363,7 +364,7 @@
 
 
 			<?php 
-				echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
+				//echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 			?> 
 			<div class="right">
 				<input type="submit" class="logg-button logg-submit" value="Update" />
