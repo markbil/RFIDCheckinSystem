@@ -6,6 +6,7 @@ class Edge_Administration extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('edge_base_model');
 		$this->load->model('edge_administration_model');
 		$this->load->library('ion_auth');
 		$this->load->library('session');
@@ -46,14 +47,15 @@ class Edge_Administration extends CI_Controller {
 					
 				default:
 					$data['title'] = "Administration";
-					$this->_render_page('edge_administration/index', $data);
+					$this->edge_base_model->render_page('edge_administration/index', $data);
 			}
 		} else {
 			redirect('edge_user', 'refresh');
 		}
 	}
 	
-	function list_rfids() {		
+	function list_rfids() {	
+		$data['title'] = $this->title;	
 		$data['message']=null;
 		$data['form_action'] = site_url('admin/list_rfids');
 		
@@ -80,15 +82,7 @@ class Edge_Administration extends CI_Controller {
 			$this->data['rfids'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 		}
  */
-		$this->_render_page('edge_administration/rfid', $data);
+		$this->edge_base_model->render_page('edge_administration/rfid', $data);
 	}
 	
-		
-	private function _render_page($name, $data/*At least include Title*/) {
-		$data['title'] = $this->title;
-		$this->load->view('templates/header', $data);
-		$this->load->view($name, $data);
-		$this->load->view('templates/footer');
-	}
-
 }

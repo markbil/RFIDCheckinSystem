@@ -3,7 +3,7 @@
 	print '<div id="content" class="center">';
 	print '<div class="content-inner center">';
 	
-	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:left;display:block;'));
+	print anchor('edge_user/profile','Return To Your Profile', array('class'=>'logg-button','title'=>'Return To Your Profile', 'style'=>'float:right;display:block;'));
 ?>
 <br /><br />
 <br />

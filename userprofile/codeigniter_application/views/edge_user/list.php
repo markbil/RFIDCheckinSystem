@@ -2,21 +2,23 @@
 	print '<div id="content" class="center">';
 	print '<div class="content-inner center">';
 
-	print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:left'));
-?>
-<br /><br />
-<br />
-<?php
+	print anchor('admin/create_user','Create New User', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:left'));
+	print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
+	print '<br /><br />';
+	print '<br />';
 	print '<br/>';
 	print '<fieldset style="clear:both">';
 	print '<legend>User Listings</legend>';	
-	print '<table cellspacing="3px" cellpadding="0" width="100%">';
-	print '<thead>';
+	print '<div id="tableContainer" class="tableContainer">';
+	print '<table class="scrollTable" cellspacing="0" cellpadding="0" border="0" width="100%">';
+	print '<thead class="fixedHeader">';
+	print '<tr>';
 	print'<th style="">Name</th>';
 	print'<th style="">Username</th>';
 	print '<th></th>';
+	print '</tr>';
 	print '</thead>';	
-	print '<tbody style="max-height:200px;overflow:auto;">';
+	print '<tbody class="scrollContent">';
 	$count = 0;
 	foreach ($users as $key=>$value) {
 		$count++;
@@ -40,6 +42,7 @@
 	print '</tbody>'	;
 	
 	print '</table>';
+	print '</div>';
 
 	print '</fieldset>';
 	

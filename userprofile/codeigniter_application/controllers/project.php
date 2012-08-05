@@ -4,6 +4,7 @@ class Project extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('edge_base_model');
 		$this->load->model('project_model');
 		$this->load->library('ion_auth');
 		$this->load->helper('url');
@@ -21,7 +22,7 @@ class Project extends CI_Controller {
 		$data['link_back'] = anchor('edge_user/profile','Return to User Profile', array('style'=>'float:right'));
 		$data['is_admin'] =  $this->ion_auth->is_admin();
 		
-		$this->_render_page('project/index', $data);
+		$this->edge_base_model->render_page('project/index', $data);
 	}
 
 	/*
@@ -64,7 +65,7 @@ class Project extends CI_Controller {
 		
 		if (($submit_request=='update' && ($this->form_validation->run() === FALSE)) || empty($submit_request))
 		{
-			$this->_render_page('project/profile', $data);
+			$this->edge_base_model->render_page('project/profile', $data);
 		}
 		else
 		{
@@ -77,7 +78,7 @@ class Project extends CI_Controller {
 				} else {
 					$data['message'] = '<div class="fail">Project Update FAILED!</div>';
 				}
-				$this->_render_page('project/profile', $data);
+				$this->edge_base_model->render_page('project/profile', $data);
 			} else if ($submit_request=='delete') {
 				if ($this->project_model->delete($id)) {
 					$data['message'] = '<div class="success">Project Deleted! </div>';
@@ -112,7 +113,7 @@ class Project extends CI_Controller {
 		
 		if ($this->form_validation->run() === FALSE)
 		{
-			$this->_render_page('project/profile', $data);
+			$this->edge_base_model->render_page('project/profile', $data);
 		}
 		else
 		{
@@ -123,7 +124,7 @@ class Project extends CI_Controller {
 			} else {
 				$data['message'] = '<div class="fail">Project Creation FAILED!</div>';
 			}
-			$this->_render_page('project/profile', $data);
+			$this->edge_base_model->render_page('project/profile', $data);
 		}
 	}
 		
@@ -148,11 +149,4 @@ class Project extends CI_Controller {
 		return $collaborators_array;
 	}
 	
-	
-	private function _render_page($name, $data/*At least include Title*/) {
-		$this->load->view('templates/header', $data);
-		$this->load->view($name, $data);
-		$this->load->view('templates/footer');
-	}
-
 }
