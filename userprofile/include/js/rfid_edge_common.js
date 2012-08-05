@@ -80,6 +80,20 @@ $(document).ready(function() {
 
 	});
 	
-
+	// Autocomplete for RFID
+	$("#user_profile_rfid").autocomplete({
+		source: document.getElementById("base_url").href + "/index.php/json_access/rfid_list",
+		select: function( event, ui ) {
+	       $("#user_profile_rfid").val(ui.item.label);
+	       $("#user_profile_rfid_ID").val(ui.item.id);
+	       return false;
+	    },
+	    focus: function(event, ui) {
+	        $("#user_profile_rfid").val(ui.item.label);
+		    $("#user_profile_rfid_ID").val(ui.item.id);
+	        return false;
+	    }
+	});
 
 });
+

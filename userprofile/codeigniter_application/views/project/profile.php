@@ -1,4 +1,7 @@
 <?php	
+	print '<div id="content" class="center">';
+	print '<div class="content-inner center">';
+
 	if($is_admin) {
 		print anchor('admin','Return To Admin', array('class'=>'logg-button','title'=>'Return To Admin', 'style'=>'float:right'));
 	}
@@ -21,8 +24,6 @@
 	} else {
 		print '<legend>Project Profile</legend>';
 	}
-	//if(empty($project_id)&& $form_mode == 'update') echo "<p>NO PROJECT SELECTED</p>";
-
 	if($form_mode=='update' || $form_mode=='create'|| $form_mode=='delete') {
 		print '<table cellspacing="0" cellpadding="0" width="100%">';
 		print '<thead>';
@@ -53,9 +54,7 @@
 			print '<tr>';
 			print'<td valign="top" align="left">Collaborators:</td>';
 			print '<td>';
-		//	print anchor('submit','Add Collaborator', array('class'=>'logg-button','title'=>'Add Collaborator To Project'));
-			print  '<input type="submit" value="Add Collaborator" name="add_collaborator_btn"/>';
-			print '<div style="min-height:200px;overflow-y:scroll;" id="user_listing">';
+			print  '<input type="submit" value="Add Collaborator" class="logg-button" name="add_collaborator_btn"/>';
 			$collaborators=$this->project_model->get_collaborators($project_details['ID']);
 			if (count($collaborators)) {
 				print '<table>';
@@ -72,13 +71,11 @@
 			} else {
 				print '<span>No Collaborators on this project!</span>';
 			}
-			print '</div>';
 		}
 		print '</table>';
 	}
 	print '<hr />';
 	if ($form_mode == 'create' || $form_mode == 'update'|| $form_mode == 'delete') {
-		//echo $link_back;
 		$submit_value='Update';
 		$submit_name = 'update';
 		$submit_delete=null;
@@ -86,9 +83,9 @@
 			$submit_value = 'Create';
 			$submit_name = 'create';
 		} else {
-			$submit_delete='<input type="submit" name="delete" value="Delete" onclick="javascript:return confirm(\'Are you sure you want to delete Project &quot;' . $project_details['Name'] . '&quot; ? \')" />';
+			$submit_delete='<input type="submit" name="delete" class="logg-button" value="Delete" onclick="javascript:return confirm(\'Are you sure you want to delete Project &quot;' . $project_details['Name'] . '&quot; ? \')" />';
 		}
-		print '<input type="submit" name="' .$submit_name . '" value="' . $submit_value . '" />';
+		print '<input type="submit" class="logg-button" name="' .$submit_name . '" value="' . $submit_value . '" />';
 		if (!empty($submit_delete)) {
 			print $submit_delete;
 		}
@@ -97,6 +94,9 @@
 	}
 	
 	print '</fieldset>';
+	
 	print '</div>';
+	print '</div>';
+	
 	?>
 
