@@ -26,20 +26,25 @@
 	print '<input type="text" class="logg-text" size="50" name="new_rfid" />';
 	print '<div class="right">';
 	print form_submit('add_rfid', 'Add RFID');
-	//print '<input class="logg-button" type="submit" value="Add" name="add_rfid" />';
 	print '</div>';
 	print form_close();
 	print '</div>';
 	
 	print '<br/>';
 	
-	print '<table cellspacing="3px" cellpadding="0" width="100%">';
-	print '<thead>';
+	print '<div id="tableContainer" class="tableContainer">';
+	print '<table class="scrollTable" cellspacing="0" cellpadding="0" border="0" width="100%">';
+	//print '<table cellspacing="3px" cellpadding="0" width="100%">';
+	//print '<thead>';
+	print '<thead class="fixedHeader">';
+	print '<tr>';
 	print'<th style="">Name</th>';
 	print'<th style="">Username</th>';
 	print '<th></th>';
+	print '</tr>';
 	print '</thead>';	
-	print '<tbody style="max-height:200px;">';
+	print '<tbody class="scrollContent">';
+	//print '<tbody style="max-height:200px;">';
 	$count=0;
 	foreach ($rfids as $value) {
 		$count++;
@@ -66,6 +71,7 @@
 	print '</tbody>'	;
 	
 	print '</table>';
+	print '</div>';
 
 	print '</fieldset>';
 	

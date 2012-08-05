@@ -23,7 +23,6 @@
 
 		<h1>Profile Info</h1>
 
-
 		<div class="collapse-head collapse-nohide collapse-floating" id="collapse-profile">
 			<h3 class="inline-block">Profile Info</h3>
 			<div class="collapsed-arrow right" id="collapse-profile-arrow-collapsed">&#9660;</div>
@@ -31,7 +30,6 @@
 		</div>
 		<div class="collapse-content" id="collapse-profile-content">
 		<?php
-			log_message('debug', 'USER_DETAILS[' . var_export($user_details,true));
 			if ($is_admin) {
 				$active_checked=empty($user_details['active']) ? null:'checked';
 				print '<input type="checkbox" title="Active" name="active" value="' . $user_details["active"] . '" ' . $active_checked . ' />';
