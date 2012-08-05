@@ -5,6 +5,7 @@ class Edge_user extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('edge_base_model');
 		$this->load->model('edge_user_model');
 		$this->load->library('ion_auth');
 		$this->load->library('session');
@@ -61,7 +62,7 @@ class Edge_user extends CI_Controller {
 				'type' => 'password',
 			);
 
-			$this->_render_page('edge_user/index', $this->data);
+			$this->edge_base_model->render_page('edge_user/index', $this->data);
 		}
 		}
 	}
@@ -77,7 +78,7 @@ class Edge_user extends CI_Controller {
 		$data['allow_access'] = ($user_id != $this->session->userdata('user_id') && $this->ion_auth->is_admin()) || $user_id == $this->session->userdata('user_id');
 		if($data['allow_access']) {
 			$data['title'] = "Your Profile Details";
-			$data['message']='';
+			$data['message']=$this->session->flashdata('message');
 			$data['user_id'] = $user_id;
 			$data['is_admin'] = 	$this->ion_auth->is_admin();
 			$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
@@ -91,7 +92,7 @@ class Edge_user extends CI_Controller {
 				show_404();
 			}
 		
-			$this->_render_page('edge_user/profile', $data);		
+			$this->edge_base_model->render_page('edge_user/profile', $data);		
 		} else {
 			redirect('edge_user','refresh');
 		}
@@ -115,10 +116,10 @@ class Edge_user extends CI_Controller {
 					show_404();
 				}
 			
-				$this->_render_page('edge_user/feedback', $data);		
+				$this->edge_base_model->render_page('edge_user/feedback', $data);		
 			}
 		} else {
-			$this->_render_page('edge_user/login', 'refresh');		
+			$this->edge_base_model->render_page('edge_user/login', 'refresh');		
 		}
 	}
 	
@@ -179,7 +180,7 @@ class Edge_user extends CI_Controller {
 			);
 
 			//render
-			$this->_render_page('edge_user/change_password', $this->data);
+			$this->edge_base_model->render_page('edge_user/change_password', $this->data);
 		}
 		else
 		{
@@ -212,7 +213,7 @@ class Edge_user extends CI_Controller {
 			);
 			//set any errors and display the form
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->_render_page('edge_user/forgot_password', $this->data);
+			$this->edge_base_model->render_page('edge_user/forgot_password', $this->data);
 		}
 		else
 		{
@@ -276,7 +277,7 @@ class Edge_user extends CI_Controller {
 				$this->data['code'] = $code;
 
 				//render
-				$this->_render_page('edge_user/reset_password', $this->data);
+				$this->edge_base_model->render_page('edge_user/reset_password', $this->data);
 			}
 			else
 			{
@@ -352,7 +353,7 @@ class Edge_user extends CI_Controller {
 			$this->data['csrf'] = $this->_get_csrf_nonce();
 			$this->data['user'] = $this->ion_auth->user($id)->row();
 
-			$this->_render_page('edge_user/deactivate_user', $this->data);
+			$this->edge_base_model->render_page('edge_user/deactivate_user', $this->data);
 		}
 		else
 		{
@@ -394,7 +395,7 @@ class Edge_user extends CI_Controller {
 
 		if ($this->form_validation->run() === FALSE)
 		{
-			$this->_render_page('edge_user/signup', $data);
+			$this->edge_base_model->render_page('edge_user/signup', $data);
 		}
 		else
 		{
@@ -410,11 +411,11 @@ class Edge_user extends CI_Controller {
 					show_404();
 				}
 
-				$this->_render_page('edge_user/profile', $data);
+				$this->edge_base_model->render_page('edge_user/profile', $data);
 
 				return;
 			}
-			$this->_render_page('edge_user/index', $data);
+			$this->edge_base_model->render_page('edge_user/index', $data);
 		}
 	}
 
@@ -454,7 +455,6 @@ class Edge_user extends CI_Controller {
 			$this->form_validation->set_rules('new_expertise_level', 'Expertise Level', 'greater_than[0]|less_than[6]');
 		}
 		$all_post = $this->input->post();
-		//error_log('UPDATE[' . var_export($all_post,true) . ']'.PHP_EOL,3,'/var/log/php_errors.log');
 		
 		$user_id = $this->input->post('id');
 		$dontdisturb = ($this->input->post('dontdisturb')===FALSE) ? 0 : 1;
@@ -649,7 +649,7 @@ class Edge_user extends CI_Controller {
 			}
 		}
 		// load view
-		$this->_render_page('edge_user/profile', $data);
+		$this->edge_base_model->render_page('edge_user/profile', $data);
 	}
 	
 	//create a new user
@@ -678,18 +678,17 @@ class Edge_user extends CI_Controller {
 			$additional_data = array('firstname' => $this->input->post('first_name'),
 				'lastname' => $this->input->post('last_name'),
 			);
-		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
-		{ //check to see if we are creating the user
-			//redirect them back to the admin page
-			$this->session->set_flashdata('message', "User Created");
-			//error_log('User Created['. $username . ']' . PHP_EOL,3,'/var/log/php_errors.log');
-				
-			redirect("edge_user", 'refresh');
+			
+			$new_userid=$this->ion_auth->register($username, $password, $email, $additional_data);
+			if($new_userid) {
+				//redirect them back to the admin page
+				$this->session->set_flashdata('message', 'New User Added!');
+				redirect('edge_user/profile/'.$new_userid, 'location');
+			}
+			
 		}
 		else
 		{ //display the create user form
-			//error_log('User Creation FAIL!' . PHP_EOL,3,'/var/log/php_errors.log');
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
 
@@ -718,11 +717,13 @@ class Edge_user extends CI_Controller {
 				'type' => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			);
-			$this->_render_page('edge_user/create_user', $this->data);
+			$this->edge_base_model->render_page('edge_user/create_user', $this->data);
 		}
 	}
 	
 	function list_users() {
+		$this->data['title'] = "User Listings";
+		
 		//list the users
 		$this->data['users'] = $this->ion_auth->users()->result();
 		foreach ($this->data['users'] as $k => $user)
@@ -730,7 +731,7 @@ class Edge_user extends CI_Controller {
 			$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 		}
 		
-		$this->_render_page('edge_user/list', $this->data);		
+		$this->edge_base_model->render_page('edge_user/list', $this->data);		
 	}
 
 	function _get_csrf_nonce()
@@ -765,13 +766,7 @@ class Edge_user extends CI_Controller {
 		$this->session->set_userdata($sessiondata);
 	
 	}
-	
-	private function _render_page($name, $data/*At least include Title*/) {
-		$this->load->view('templates/header', $data);
-		$this->load->view($name, $data);
-		$this->load->view('templates/footer');
-	}
-	
+		
 	private function _sort_interests($interests_array) {
 		if ($interests_array) {
 			foreach($interests_array as $key=>$row) {
