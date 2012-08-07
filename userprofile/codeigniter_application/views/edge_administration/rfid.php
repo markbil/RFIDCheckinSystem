@@ -1,11 +1,11 @@
 <?php
-	print validation_errors('<div class="login-warning center"><span class="center">', '</span></div>');
+ print validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); 
 	if ($message) {
-		echo '<div class="logg-success"><span class="center">';
-		echo $message;
-		echo '</span></div>';
+		print '<div class="logg-success center"><span class="center">';
+		print $message;
+		print '</span></div>';
 	}
-	
+
 	print '<div id="content" class="center">';
 	print '<div class="content-inner center">';
 	print '<br>';
