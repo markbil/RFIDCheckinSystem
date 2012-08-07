@@ -1,6 +1,7 @@
 <?php
 define("UPDATE_ERROR_RFID_ID_ALLOCATED", 1);
 define("UPDATE_ERROR_RFID_ID_MISSING", 2);
+define("FEEDBACK_EMAIL_ADDRESS",'info@checkinsystem.net');
 
 class Edge_user_model extends CI_Model {
 
@@ -108,21 +109,26 @@ class Edge_user_model extends CI_Model {
 		if($this->db->update('edge_users', $edge_user_details) === FALSE) return FALSE;
 		
 		if (empty($identification_id) && !empty($rfid_identification)) {
-			return UPDATE_ERROR_RFID_ID_MISSING;
+			//return UPDATE_ERROR_RFID_ID_MISSING;
 		}
-		
-		if(!empty($identification_id)) {
-			// check if the user is in people table
-			$query = $this->db->get_where('people', array('edge_users_id' => $user_id));
-			if ($query->num_rows()==1) {
-				$this->db->where('edge_users_id', $user_id);
+			
+		if(!empty($identification_id) && !empty($rfid_identification)) {
+			$query = $this->db->get_where('identification_media', array('ID' => $identification_id, 'ThirdPartyID'=>$rfid_identification));
+			if ($query->num_rows() ==1) {
+				// These Match
+
+				// check if the user is in people table
+				$query = $this->db->get_where('people', array('edge_users_id' => $user_id));
+				if ($query->num_rows()==1) {
+					$this->db->where('edge_users_id', $user_id);
 	 			if($this->db->update('people', array('identification_id'=>$identification_id)) === FALSE) return FALSE;
-			} else {
-				// Add new item
-				if($this->db->insert('people', array('edge_users_id'=> $user_id, 'identification_id'=>$identification_id))=== FALSE) return FALSE;
+				} else {
+					// Add new item
+					if($this->db->insert('people', array('edge_users_id'=> $user_id, 'identification_id'=>$identification_id))=== FALSE) return FALSE;
+				}
 			}
 		}
-		
+
 		if ($is_admin) {
 			if (!$this->ion_auth->in_group($this->ion_auth->config->item('admin_group', 'ion_auth'), $user_id)) {
 				$query = $this->db->get_where('groups', array('name' => $this->ion_auth->config->item('admin_group', 'ion_auth')), 1, 0);
