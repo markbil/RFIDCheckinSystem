@@ -1,23 +1,22 @@
-<?php echo validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); ?>
-<?php 
+<?php
+ 	print validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); 
 	if ($message) {
-		echo '<div class="logg-success center"><span class="center">';
-		echo $message;
-		echo '</span></div>';
+		print '<div class="logg-success center"><span class="center">';
+		print $message;
+		print '</span></div>';
 	}
-?>
 
-<div id="content" class="center">
-	<?php echo form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));	
-		print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
-		print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
+	print '<div id="content" class="center">';
+	print form_open($form_action, array('id'=>'profile-form', 'class' => 'logg-form content-inner center'));	
+	print '<input type="hidden" name="id" value="'. $user_details["ID"] . '" />';
+	print anchor('edge_user/change_password','Change Password', array('class'=>'logg-button','title'=>'Change Your Password'));
 		//print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
-		if ($is_admin) {
-			print anchor('a', 'A', array('style'=>'visibility:hidden;'));
-			print anchor('admin', 'Admin', array('class'=>'logg-button','title'=>'Admin'));
-		}
-		print anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); 
-		?>
+	if ($is_admin) {
+		print anchor('a', 'A', array('style'=>'visibility:hidden;'));
+		print anchor('admin', 'Admin', array('class'=>'logg-button','title'=>'Admin'));
+	}
+	print anchor('edge_user/logout', 'Logout', array('class'=>'logg-button right','title'=>'Logout')); 
+	?>
 		
 		<br /><br /><br />
 
@@ -53,27 +52,22 @@
 				print '<input type="hidden" id="user_profile_rfid_ID" name="user_profile_rfid_ID" value="'.   $identification_id . '" />';
 			}
 			?>
-
 			
 			<h3>Username:</h3>
 			<input type="text" class="logg-textbox logg-readonly" name="username" readonly="readonly"
-				value="<?php echo $user_details['username']; ?>" />
+				value="<?php print $user_details['username']; ?>" />
 
 			<h3>First name:</h3>
 			<input type="text" class="logg-textbox" name="firstname"
-				value="<?php echo $user_details['firstname'];?>" />
+				value="<?php print $user_details['firstname'];?>" />
 
 			<h3>Last name:</h3>
 			<input type="text" class="logg-textbox" name="lastname"
-				value="<?php echo $user_details['lastname'];?>" />
+				value="<?php print $user_details['lastname'];?>" />
 
 			<h3>Email:</h3>
 			<input type="text" class="logg-textbox" name="email"
-				value="<?php echo $user_details['email'];?>" />
-
-			<!--<h3>Occupation:</h3>-->
-			<input type="hidden" name="occupation"
-				value="<?php //echo $user_details['occupation'];?>" />
+				value="<?php print $user_details['email'];?>" />
 
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />
@@ -89,8 +83,8 @@
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="dontdisturb" >
 			<input id="dontdisturb" type="checkbox" class="logg-checkbox" name="dontdisturb"
-			<?php echo ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
-				value="<?php echo ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
+			<?php print ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
+				value="<?php print ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
 			<h3 class="inline">I'm busy, don't disturb me</h3>
 		</div>
 		<br /><br />
@@ -362,7 +356,7 @@
 
 
 			<?php 
-				//echo anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
+				//print anchor('project','View Projects', array('class'=>'logg-button','title'=>'View List Of Projects'));
 			?> 
 			<div class="right">
 				<input type="submit" class="logg-button logg-submit" value="Update" />

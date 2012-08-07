@@ -13,8 +13,8 @@ class Edge_user extends CI_Controller {
 		$this->load->helper('url');
 		// Load MongoDB library instead of native db driver if required
 		$this->config->item('use_mongodb', 'ion_auth') ?
-			$this->load->library('mongo_db') :
-			$this->load->database();
+		$this->load->library('mongo_db') :
+		$this->load->database();
 	}
 
 	//log the user in
@@ -98,25 +98,54 @@ class Edge_user extends CI_Controller {
 		}
 	}
 
-	function feedback() {
+	function feedback() {		
 		if($this->ion_auth->logged_in()) {
 			if($user_id=$this->session->userdata('user_id')) {
-			
-				$data['title'] = "Your Profile Details";
-				$data['message']='';
-				$data['form_action'] = site_url('edge_user/update');
-				$data['user_id'] = $user_id;
-				$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
-				$data['interests'] = $this->_get_interests($user_id);
-				$data['expertises'] = $this->_get_expertise($user_id);
-				$data['questions'] = $this->_get_questions($user_id);
+				$this->form_validation->set_rules('feedback_comment', 'Feedback', 'required');
+				$this->form_validation->set_message('feedback_comment', 'Your Feedback in the Field Below is Required!');
+				
+				if ($this->form_validation->run() === FALSE) {			
+					$data['title'] = "Send Feedback";
+					$data['message']='';
+					$data['form_action'] = site_url('edge_user/feedback');
+//					$data['user_id'] = $user_id;
+					$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
+					//$data['interests'] = $this->_get_interests($user_id);
+					//$data['expertises'] = $this->_get_expertise($user_id);
+					//$data['questions'] = $this->_get_questions($user_id);
+						
+				/* 	if (empty($data['user_details']))
+					{
+						show_404();
+					} */
+				
+				} else {
+					$feedback_comment=$this->input->post('feedback_comment');
+					$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 					
-				if (empty($data['user_details']))
-				{
-					show_404();
+					$this->load->library('email');
+					$this->email->from($data['user_details']['email'], $data['user_details']['firstname'].' ' .$data['user_details']['lastname']);
+					$this->email->to(FEEDBACK_EMAIL_ADDRESS);
+					//$this->email->cc('another@another-example.com');
+					//$this->email->bcc('them@their-example.com');
+					
+					$this->email->subject("Checkin System Feedback From User '" . $data['user_details']['username'] . "'");
+					$email_message = "Feedback From User '" . $data['user_details']['username'] . "' (" .  $data['user_details']['firstname'].' ' .$data['user_details']['lastname'] . ")" . PHP_EOL;
+					$email_message .= "===================================================================" .PHP_EOL;
+					$email_message .= $feedback_comment . PHP_EOL;
+					$email_message .= "===================================================================" .PHP_EOL;
+						
+					$this->email->message($email_message);
+					
+					$this->email->send();
+					
+				//	echo $this->email->print_debugger();
+					
+					$data['form_action']=null;
+					$data['title'] = "Thank You For Your Feedback";
+					$data['message']='Thank you very much for your feedback. It is much appreciated!!';						
 				}
-			
-				$this->edge_base_model->render_page('edge_user/feedback', $data);		
+				$this->edge_base_model->render_page('edge_user/feedback', $data);	
 			}
 		} else {
 			$this->edge_base_model->render_page('edge_user/login', 'refresh');		
@@ -441,6 +470,8 @@ class Edge_user extends CI_Controller {
 		$data['message']='';
 
 		// set validation properties
+		$this->form_validation->set_rules('user_profile_rfid_ID', 'Swipe Card ID', 'callback_validate_rfid');
+		$this->form_validation->set_rules('user_profile_rfid', 'Swipe Card ID', 'callback_validate_rfid');
 		$this->form_validation->set_rules('username', 'User Name', 'required|min_length[5]|max_length[15]');
 		$this->form_validation->set_rules('firstname', 'First Name', 'required');
 		$this->form_validation->set_rules('lastname', 'Last Name', 'required');
@@ -756,6 +787,10 @@ class Edge_user extends CI_Controller {
 		{
 			return FALSE;
 		}
+	}
+	
+	public function validate_rfid() {
+		
 	}
 	private function  _save_session_cookie($user_id) {
 		$sessiondata = array(
