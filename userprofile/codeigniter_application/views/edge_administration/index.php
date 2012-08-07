@@ -23,7 +23,7 @@
 	print '<br>';
 	*/
 	print '<div>';
-	print anchor('admin/create_user','Create User', array('class'=>'logg-button','title'=>'Create A New User'));
+	print anchor('admin/create_user','Add New User', array('class'=>'logg-button','title'=>'Create A New User'));
 	print '</div>';
 	print '<br>';
 	print '<div>';
