@@ -79,24 +79,19 @@ $(document).ready(function() {
 		content.slideToggle('fast');
 
 	});
-<<<<<<< HEAD
 
-
-=======
-	
 	
 	$('#user_profile_rfid').focus(function() {
-		 // alert('Handler for .focus() called.');
-		  if ($("#user_profile_rfid").val() == "To Be Allocated") {
-			  $("#user_profile_rfid").val("");
-		  }
-		});
+		// alert('Handler for .focus() called.');
+		if ($("#user_profile_rfid").val() == "To Be Allocated") {
+			$("#user_profile_rfid").val("");
+		}
+	});
 	
->>>>>>> Added in change of value for #user_profile_rfid when the focus is set
 	// Autocomplete for RFID
 	$("#user_profile_rfid").autocomplete({
 		source: document.getElementById("base_url").href + "/index.php/json_access/rfid_list",
-		select: function( event, ui ) {
+		select: function(event, ui) {
 			$("#user_profile_rfid").val(ui.item.label);
 			$("#user_profile_rfid_ID").val(ui.item.id);
 			return false;
