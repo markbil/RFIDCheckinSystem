@@ -83,9 +83,9 @@
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="dontdisturb" >
 			<input id="dontdisturb" type="checkbox" class="logg-checkbox" name="dontdisturb"
-			<?php print ($user_details['dontdisturb'] == 1) ? 'checked="true"' : null; ?>
-				value="<?php print ($user_details['dontdisturb'] == 1) ? "do_not" : "do"; ?>" />
-			<h3 class="inline">I'm busy, don't disturb me</h3>
+			<?php print ($user_details['dontdisturb'] == 0) ? 'checked="true"' : null; ?>
+				value="<?php print ($user_details['dontdisturb'] == 0) ? "do_not" : "do"; ?>" />
+			<h3 class="inline">Just hanging out today, come talk to me!</h3>
 		</div>
 		<br /><br />
 
@@ -93,8 +93,7 @@
 		<div class="collapse-head" id="collapse-cometalk">
 			<div class="collapsed-arrow right" id="collapse-cometalk-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-cometalk-arrow-expanded">&#9650;</div>
-			<input type="checkbox" class="logg-checkbox" name="status-cometalk" checked />
-			<h3 class="inline">Just hanging out today, come talk to me!</h3>
+			<h3 class="inline">My background / interests / hobbies</h3>
 		</div>
 		<div class="collapse-content" id="collapse-cometalk-content">
 			<h3>My background / interests / hobbies</h3>
@@ -211,7 +210,6 @@
 		<div class="collapse-head" id="collapse-question">
 			<div class="collapsed-arrow right" id="collapse-question-arrow-collapsed">&#9660;</div>
 			<div class="expanded-arrow right" id="collapse-question-arrow-expanded">&#9650;</div>
-			<input type="checkbox" class="logg-checkbox" name="status-needhelp" />
 			<h3 class="inline-block">I need your help &#46;&#46;&#46;</h3>
 		</div>
 		<div class="collapse-content" id="collapse-question-content">
@@ -252,7 +250,7 @@
 			<br /><br />
 
 
-		<div class="collapse-head no-collapse" id="collapse-donotdisturb">
+		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="status-new">
 			<input type="checkbox" class="logg-checkbox" name="status-new" />
 			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet &#46;&#46;&#46;</h3>
 		</div>
