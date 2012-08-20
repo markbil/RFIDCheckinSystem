@@ -92,6 +92,14 @@ class Edge_user_model extends CI_Model {
 		 $user_details= $query->row_array();
 		 
 		 $user_details['is_admin']=$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id);
+		 
+		 $group_list=$this->get_user_groups($user_id);
+	
+		foreach ($group_list->result_array() as $row)
+		{
+		   $user_details['groups'][$row['id']]=array('name'=>$row['name'], 'description'=>$row['description']);
+		}		 
+		 
 		 return $user_details;
 	}
 	
@@ -152,6 +160,64 @@ class Edge_user_model extends CI_Model {
 	}
 
 	/*
+	 * Handle the 'groups' related items
+	*/
+	public function get_user_groups($user_id=null) {
+		if (!empty($user_id)) {
+			// Get Groups for a single user
+			return $this->ion_auth_model->get_users_groups($user_id);
+		}
+		
+		//If user_id is empty get ALL groups
+		return $this->ion_auth_model->groups();
+	}
+	
+	public function add_user_to_group($user_id, $new_group_id) {	
+/* 		// First check if this user has been assigned to group
+		$this->db->select('id');
+		$query = $this->db->get_where('edge_users_interests',
+				array('edge_users_id'=>$user_id,'interest_id' => $interest_id));
+		
+		$query=$this->ion_auth_model->get_users_groups($user_id)
+		if ($query->num_rows() ==0) {
+			//Add in new interest
+			$data = array('interest'=>strtolower($new_interest),);
+				
+			// insert new interest item into edge_users_interests
+			$data=array(
+					'edge_users_id'=>$user_id,
+					'interest_id'=>$interest_id,
+					'level'=>$new_level
+			);
+			if($this->db->insert('edge_users_interests',$data)  === FALSE) return FALSE;
+		}
+	
+		return $this->get_user_interests($user_id); */
+	}
+	
+	/*
+	 * Add new user group to group listings
+	 */
+	public function add_group($new_group_name, $new_group_description) {
+		// First check if this group exists all ready
+		$this->db->select('id');
+		$query = $this->db->get_where('groups', array('name' => strtolower($new_group_name)));
+		if ($query->num_rows() ==0) {
+			//Add in new group
+			$data = array(	'name'=>strtolower($new_group_name),
+										'description'=>strtolower($new_group_description),
+									);
+			// insert new group into table
+			if($this->db->insert('groups',$data)  === FALSE) return FALSE;
+			$this->db->select_max('id');
+			return $this->db->get('groups')->row()->id;
+		}
+	
+		return $query->row()->id;
+	}
+	
+
+	/*
 	 * Handle the 'interests' related items
 	*/
 	
@@ -159,7 +225,8 @@ class Edge_user_model extends CI_Model {
 		 $this->db->select('edge_users_interests.ID AS ID,interest, level')
 		->from('edge_users_interests')
 		->join('interest_table', 'edge_users_interests.interest_id=interest_table.ID')
-		->where('edge_users_id',$user_id);
+		->where('edge_users_id',$user_id)
+		->order_by("interest", "asc");
 		//$query = $this->db->get_where('interest_table', array('edge_users_id' => $user_id));
 		
 		return $this->db->get();
@@ -230,7 +297,9 @@ class Edge_user_model extends CI_Model {
 		 $this->db->select('edge_users_expertises.ID AS ID,expertise, level')
 		->from('edge_users_expertises')
 		->join('expertise_table', 'edge_users_expertises.expertise_id=expertise_table.ID')
-		->where('edge_users_id',$user_id);
+		->where('edge_users_id',$user_id)
+		->order_by("expertise", "asc");
+		
 		//$query = $this->db->get_where('expertise_table', array('edge_users_id' => $user_id));
 		
 		return $this->db->get();
@@ -296,12 +365,12 @@ class Edge_user_model extends CI_Model {
 	/*
 	 * Handle the 'question' related items
 	*/
-	
 	public function get_user_questions($user_id) {
 		 $this->db->select('edge_users_questions.ID AS ID,question')
 		->from('edge_users_questions')
-		->where('edge_users_id',$user_id);
-		
+		->where('edge_users_id',$user_id)
+		 ->order_by("question", "asc");
+		 	
 		return $this->db->get();
 	}
 	
