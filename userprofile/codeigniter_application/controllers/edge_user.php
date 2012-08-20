@@ -38,7 +38,7 @@ class Edge_user extends CI_Controller {
 				redirect('edge_user/profile', 'refresh');
 			} else	{ //if the login was un-successful
 				//redirect them back to the login page
-				$this->session->set_flashdata('message', $this->ion_auth->errors());
+				$this->data['message']=$this->session->set_flashdata('message', $this->ion_auth->errors());
 				redirect('edge_user/index', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
@@ -51,7 +51,6 @@ class Edge_user extends CI_Controller {
 			//the user is not logging in so display the login page
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
 			$this->data['identity'] = array('name' => 'identity',
 				'id' => 'identity',
 				'type' => 'text',
@@ -83,14 +82,17 @@ class Edge_user extends CI_Controller {
 			$data['is_admin'] = 	$this->ion_auth->is_admin();
 			$data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 			//$data['user_details']['is_admin'] = 	$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id);
-			$data['interests'] = $this->_get_interests($user_id);
-			$data['expertises'] = $this->_get_expertise($user_id);
-			$data['questions'] = $this->_get_questions($user_id);
-				
+			$data['user_details']['interests'] = $this->_get_interests($user_id);
+			$data['user_details']['expertises'] = $this->_get_expertise($user_id);
+			$data['user_details']['questions'] = $this->_get_questions($user_id);
+			$data['groups'] = $this->_get_groups();
+							
 			if (empty($data['user_details']))
 			{
 				show_404();
 			}
+			
+			//log_message('debug', "USER DETAILS[" . var_export($data, true). "]");
 		
 			$this->edge_base_model->render_page('edge_user/profile', $data);		
 		} else {
@@ -472,10 +474,10 @@ class Edge_user extends CI_Controller {
 		// set validation properties
 		$this->form_validation->set_rules('user_profile_rfid_ID', 'Swipe Card ID', 'callback_validate_rfid');
 		$this->form_validation->set_rules('user_profile_rfid', 'Swipe Card ID', 'callback_validate_rfid');
-		$this->form_validation->set_rules('username', 'User Name', 'required|min_length[5]|max_length[15]');
+		$this->form_validation->set_rules('username', 'User Name', 'required|min_length[5]');
 		$this->form_validation->set_rules('firstname', 'First Name', 'required');
 		$this->form_validation->set_rules('lastname', 'Last Name', 'required');
-		$this->form_validation->set_rules('email', 'Email Address', 'required|min_length[9]');
+		$this->form_validation->set_rules('email', 'Email Address', 'required|valid_email|min_length[9]');
 	//	$this->form_validation->set_rules('occupation', 'Occupation', 'required|max_length[25]');
 		if ( strlen($this->input->post('new_interest'))) {
 			$this->form_validation->set_rules('new_interest', 'Interest Term', 'min_length[3]');
@@ -504,6 +506,8 @@ class Edge_user extends CI_Controller {
 				//$this->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id),
 				'dontdisturb' => $dontdisturb,
 		);
+		
+		$data['groups'] = $this->_get_groups();
 
 		$data['new_interest']=array(
 				'interest' => $this->input->post('new_interest'),
@@ -527,13 +531,43 @@ class Edge_user extends CI_Controller {
 			$data['message'] = 'Please Correct Values';
 		}else{
 			$all_post = $this->input->post();
+			
+			//log_message('debug', 'ALL_POST[' .var_export($all_post,true) .']');
+			/*
+			 * Handle the groups that  have been submitted
+			 */
+			$posted_groups_checkboxes=array();
+			// Make an array of all groups from checkboxes
+			foreach($all_post as $field=>$proposed_value) {
+				if (preg_match('/group_([0-9]+)/', $field, $match)) {
+					$posted_groups_checkboxes[$match[1]]=$match[1];
+				}
+			}
+			log_message('debug', 'POSTED GROUPS[' .var_export($posted_groups_checkboxes,true) .']');
+					
+			
+			$group_list=$this->_get_groups();
+			// Delete all the ids that don't match
+			$diff_arr=array_diff($group_list,$posted_groups_checkboxes);
+			foreach($diff_arr as $group_id=>$value) {
+			log_message('debug', 'REMOVE GROUPS[' .$group_id .'], USERID [' . $user_id .']');
+				$this->ion_auth->remove_from_group($group_id, $user_id);
+			}
+			log_message('debug', 'DIFF GROUPS[' .var_export($diff_arr,true) .']');
+				
+			// Make sure all groups are added to user
+			foreach($posted_groups_checkboxes as $group_id =>$value) {
+			log_message('debug', 'ADD GROUPS[' .$group_id .'], USERID [' . $user_id .']');
+				$this->ion_auth->add_to_group($group_id, $user_id);
+			}
+			
 			/*
 			 * Handle the interests that  have been submitted
 			 */
 			$posted_interest_checkboxes=array();
 			$posted_interest_selects=array();
 			$posted_interest_levels=array();
-
+				
 			// Make an array of all interests from checkboxes
 			foreach($all_post as $field=>$proposed_value) {
 				if (preg_match('/interest_([0-9]+)/', $field, $match)) {
@@ -630,7 +664,7 @@ class Edge_user extends CI_Controller {
 				$data['user_details']['user_profile_rfid']=null;
 			}
 				
-			log_message('debug', "USER DETAILS[" . var_export($data['user_details'], true). "]");
+			//log_message('debug', "USER DETAILS[" . var_export($data['user_details'], true). "]");
 				
 			// save data
 			$data['user_details']=$this->edge_user_model->update($user_id,$data['user_details']);
@@ -702,7 +736,8 @@ class Edge_user extends CI_Controller {
 
 		if ($this->form_validation->run() == true)
 		{
-			$username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
+			//$username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
+			$username  = $this->input->post('email');
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
 
@@ -813,13 +848,17 @@ class Edge_user extends CI_Controller {
 	}
 	
 	private function _get_interests($user_id) {
-		$interests_array = $this->edge_user_model->get_user_interests($user_id)->result_array();
-		if ($interests_array) {
-			foreach($interests_array as $key=>$row) {
-				$interest[$key]=$row['interest'];
+		$interests_array=array();
+		$db_interests_array = $this->edge_user_model->get_user_interests($user_id)->result_array();
+		//log_message('debug', "_get_interests[" . var_export($db_interests_array, true). "]");
+		
+		if ($db_interests_array) {
+			foreach($db_interests_array as $key=>$row) {
+				$interests_array[$row['ID']]=$row['interest'];
 			}
-			array_multisort($interest, SORT_STRING, $interests_array);
+			//array_multisort($interest, SORT_STRING, $interests_array);
 		}
+		//log_message('debug', "_get_interests interests_array[" . var_export($interests_array, true). "]");
 		return $interests_array;
 	}
 	
@@ -864,5 +903,17 @@ class Edge_user extends CI_Controller {
 			array_multisort($question, SORT_STRING, $question_array);
 		}
 		return $question_array;
+	}
+	
+	private function  _get_groups() {
+		$groups_result=$this->ion_auth->groups();
+		$groups = array();
+		
+		foreach ($groups_result->result() as $row) {
+			$groups[$row->id]=$row->description;
+		}
+		
+		return $groups;
+		
 	}
 }

@@ -1,6 +1,11 @@
-<?php echo validation_errors('<div class="login-warning"><span class="center">', '</span></div>'); ?>
-<!--<?php if (isset($message)) echo '<div class="login-warning"><span class="center">' . $message . '</span></div>'; ?>
-<?php if (isset($login_attempt)) echo '<div class="login-warning"><span class="center">' . $login_attempt . '</span></div>'; ?>-->
+<?php 
+ 	print validation_errors('<div class="login-warning center"><span class="center">', '</span></div>'); 
+	if ($message) {
+		print '<div class="logg-success center"><span class="center">';
+		print $message;
+		print '</span></div>';
+	}
+	?>
 
 <div id="content" class="center">
 
