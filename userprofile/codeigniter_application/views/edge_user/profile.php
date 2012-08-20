@@ -68,7 +68,47 @@
 			<h3>Email:</h3>
 			<input type="text" class="logg-textbox" name="email"
 				value="<?php print $user_details['email'];?>" />
+		
+		<!--  Group Listing For User -->
+				<br />
 
+	<?php
+	if ($is_admin) {
+		print '<div class="collapse-head" id="collapse-goodwith">';
+		print '<div class="collapsed-arrow right" id="collapse-goodwith-arrow-collapsed">&#9660;</div>';
+		print '<div class="expanded-arrow right" id="collapse-goodwith-arrow-expanded">&#9650;</div>';
+		//print '<input type="checkbox" class="logg-checkbox" name="status-shareskills" />';
+		print '<h3 class="inline">User Groups</h3>';
+		print '</div>';
+		print '<div class="collapse-content" id="collapse-goodwith-content">';
+		print '<h3>Groups that Edge User Belongs To</h3>';
+		//if (isset($user_details['groups']) && isset($groups)) {
+			$users_groups=empty($user_details['groups'])?array():$user_details['groups'];
+			
+			print '<table class="user-group-list">';
+
+			foreach($groups as $group_id=>$group_name) {
+				print '<tr class="interest-space"></tr>';
+
+				print '<tr>';
+				print '<td class="interest-name logg-textbox  logg-readonly">' . $group_name . '</td>';
+				print '<td>';
+				print '<input type="checkbox" title="Select Group" name="group_' . $group_id . '" value="' . $group_id . '" ';
+				print array_key_exists($group_id, $users_groups) ? 'checked ':null;
+				print '/>';
+				print '</td>';
+				print '</tr>'; // group-item
+			}
+			print '</table>'; // group-list
+		//}
+
+		print '</div>';
+	}
+	?>
+
+			<br /><br />
+		
+				
 			<div class="right">
 				<input class="logg-button" type="submit" value="Add/Update" />
 			</div>
@@ -98,22 +138,22 @@
 		<div class="collapse-content" id="collapse-cometalk-content">
 			<h3>My background / interests / hobbies</h3>
 			<?php
-				if (isset($interests)) {
+				if (isset($user_details['interests'])) {
 					print '<table class="interest-list"';
 
-					foreach($interests as $interest) {
+					foreach($user_details['interests'] as $interest_id=>$interest) {
 						print '<tr class="interest-space"></tr>';
 
 						print '<tr>';
-						print '<td class="interest-name logg-textbox logg-readonly">' . $interest['interest'] . '</td>';
-						print '<td><select style="display:none" title="Interest level" name="interest_level_' . $interest['ID'] . '">';
+						print '<td class="interest-name logg-textbox logg-readonly">' . $interest . '</td>';
+						print '<td><select style="display:none" title="Interest level" name="interest_level_' . $interest_id . '">';
 						for($i=1;$i<6;$i++) {
 								print '<option value="' . $i . '" ';
 								if ($i==$interest['level']) print "selected ";
 								print '>' . $i . '</option>';
 						}
 						print '</select></td>';
-						print '<td><input type="checkbox" title="Keep interest" name="interest_' . $interest['ID'] . '" value="' . $interest['ID'] . '" checked /></td>';
+						print '<td><input type="checkbox" title="Keep interest" name="interest_' . $interest_id . '" value="' . $interest_id . '" checked /></td>';
 						print '</tr>'; // interest-item
 					}
 					print '</table>'; // interest-list
@@ -156,10 +196,10 @@
 		<div class="collapse-content" id="collapse-goodwith-content">
 			<h3>Skills I can share with other Edge users</h3>
 			<?php
-				if (isset($expertises)) {
+				if (isset($user_details['expertises'])) {
 					print '<table class="interest-list"';
 
-					foreach($expertises as $expertise) {
+					foreach($user_details['expertises'] as $expertise) {
 						print '<tr class="interest-space"></tr>';
 
 						print '<tr>';
@@ -217,10 +257,10 @@
 			<span class="subtitle">(My project ideas / questions)</span>
 
 			<?php
-				if (isset($questions)) {
+				if (isset($user_details['questions'])) {
 					print '<table class="interest-list"';
 
-					foreach($questions as $question) {
+					foreach($user_details['questions'] as $question) {
 						print '<tr class="interest-space"></tr>';
 
 						print '<tr>';
