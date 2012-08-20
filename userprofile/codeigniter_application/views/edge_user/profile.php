@@ -251,7 +251,7 @@
 
 
 		<div class="collapse-head no-collapse" id="collapse-donotdisturb" click-on-click="status-new">
-			<input type="checkbox" class="logg-checkbox" name="status-new" />
+			<input id="status-new" type="checkbox" class="logg-checkbox" name="status-new" />
 			<h3 class="inline">I'm new here, and don't really know what The Edge is about yet &#46;&#46;&#46;</h3>
 		</div>
 		<br /><br />
