@@ -27,11 +27,8 @@
 <body>
 
 <?php
- 
-//$urlbase = "http://localhost/RFIDCheckinSystem/API/";
-$urlbase = "http://theedge.checkinsystem.net/API/";
-//$urlbase = "http://meetmee.javaprovider.net/php/RFIDCheckinSystem/API/"
-//$urlbase = "http://meetmee.javaprovider.net/php/TheEdge_VisitorProfiles/API/";
+ 	//$urlbase = "http://theedge.checkinsystem.net/API/";
+	$urlbase = "http://". $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'],0,strlen($_SERVER['PHP_SELF'])-strlen("index.php")) ;
 ?>
 
 <h1>The Edge - Checkin System API (beta)</h1>

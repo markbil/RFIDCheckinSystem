@@ -4,8 +4,14 @@
 require_once ('mysql_connection.php');
 require_once ('timezone.php');
 
-$result_limit=$_GET['limit'];
-$search_location_id=$_GET['location'];
+$result_limit=null;
+$search_location_id=null;
+if (isset($_GET['limit'])) {
+	$result_limit=$_GET['limit'];
+}
+if (isset($_GET['location'])) {
+	$search_location_id=$_GET['location'];
+}
 $arr = array();
 ////VIEW: "view_list_distinctusercheckins_all" = all check-ins and user details, but only the most recent checkin per edge_user is returned
  
