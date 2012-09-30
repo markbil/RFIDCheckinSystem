@@ -745,7 +745,7 @@ class Edge_user extends CI_Controller {
 				'lastname' => $this->input->post('last_name'),
 			);
 			
-			$new_userid=$this->ion_auth->register($username, $password, $email, $additional_data);
+			$new_userid=$this->ion_auth->register($username, $password, $email, $additional_data, array());
 			if($new_userid) {
 				//redirect them back to the admin page
 				$this->session->set_flashdata('message', 'New User Added!');
