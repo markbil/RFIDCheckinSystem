@@ -830,7 +830,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('extra_where');
 
-		$query = $this->db->select($this->identity_column . ', username, email, id, password, active, last_login')
+		$query = $this->db->select($this->identity_column . ', id, username, firstname, lastname, email, password, active, last_login')
 		                  ->where($this->identity_column, $this->db->escape_str($identity))
 		                  ->limit(1)
 		                  ->get($this->tables['users']);
@@ -871,7 +871,7 @@ class Ion_auth_model extends CI_Model
 				}
 
 				$this->trigger_events(array('post_login', 'post_login_successful'));
-				$this->set_message('Welcome to your Profile!');
+				$this->set_message('Welcome ' . ucwords($user->firstname. ' ' . $user->lastname) . '!');
 				
 				return TRUE;
 			}
