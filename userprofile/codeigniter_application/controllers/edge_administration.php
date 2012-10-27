@@ -6,11 +6,8 @@ class Edge_Administration extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('edge_base_model');
 		$this->load->model('edge_administration_model');
-		$this->load->library('ion_auth');
-		$this->load->library('session');
-		$this->load->helper('url');		
+		$this->load->driver('edge_common');
 	}
 
 	/*
@@ -18,21 +15,23 @@ class Edge_Administration extends CI_Controller {
 	*/
 	public function index()
 	{
-		if($this->ion_auth->logged_in()) {
+		if($this->edge_common->ion_auth->logged_in()) {
 			$action=null;
 			if(preg_match('/admin\/(.+)/', uri_string(),$matches)) {
 				$action=$matches[1];
 			}
 
 			switch ($action) {
-				case 'create_user':
-					redirect('edge_user/create', 'refresh');
+				/*case 'create_user':
+					$this->edge_common->render_page('edge_administration/index', $data);
+					//redirect('edge_user/create', 'refresh');
 					return;
 											
 				case 'list_users':
 					redirect('edge_user/list', 'refresh');
 					return;
-					
+					*/
+				
 				case 'create_project':
 					redirect('project/create', 'refresh');
 					return;
@@ -47,7 +46,7 @@ class Edge_Administration extends CI_Controller {
 					
 				default:
 					$data['title'] = "Administration";
-					$this->edge_base_model->render_page('edge_administration/index', $data);
+					$this->edge_common->render_page('edge_administration/index', $data);
 			}
 		} else {
 			redirect('edge_user', 'refresh');
@@ -82,7 +81,7 @@ class Edge_Administration extends CI_Controller {
 			$this->data['rfids'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 		}
  */
-		$this->edge_base_model->render_page('edge_administration/rfid', $data);
+		$this->edge_common->render_page('edge_administration/rfid', $data);
 	}
 	
 }
