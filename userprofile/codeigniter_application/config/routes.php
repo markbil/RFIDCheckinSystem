@@ -37,10 +37,9 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-
-$route['json_access/rfid_list'] = 'json_access/rfid_list';
-$route['json_access'] = 'json_access';
-$route['admin/rfid'] = 'edge_administration/rfid';
+$route['admin/create_user'] = 'edge_user/create';
+$route['admin/list_users'] = 'edge_user/list_users';
+$route['admin/list_rfids'] = 'edge_administration/list_rfids';
 $route['admin'] = 'edge_administration';
 $route['admin/(:any)'] = 'edge_administration/index';
 $route['edge_user/feedback'] = 'edge_user/feedback';
@@ -48,7 +47,6 @@ $route['edge_user/deactivate_user'] = 'edge_user/deactivate_user';
 $route['edge_user/change_password'] = 'edge_user/change_password';
 $route['edge_user/forgot_password'] = 'edge_user/forgot_password';
 $route['edge_user/reset_password'] = 'edge_user/reset_password';
-//$route['edge_user/signup'] = 'edge_user/signup';
 $route['edge_user/logout'] = 'edge_user/logout';
 $route['edge_user/update/(:num)'] = 'edge_user/update/$1';
 $route['edge_user/update'] = 'edge_user/update';
@@ -56,7 +54,8 @@ $route['edge_user/list'] = 'edge_user/list_users';
 $route['edge_user/create'] = 'edge_user/create';
 $route['edge_user/profile/(:num)'] = 'edge_user/profile/$1';
 $route['edge_user/profile'] = 'edge_user/profile';
-$route['edge_user'] = 'edge_user/index';
+$route['edge_user/logout'] = 'edge_user/logout';
+$route['edge_user'] = 'edge_user';
 $route['project/create'] = 'project/create';
 $route['project/profile/(:num)'] = 'project/profile/$1';
 $route['project/profile'] = 'project';
