@@ -1,6 +1,6 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class EDGE_Controller extends CI_Controller {
+class Edge_Common extends CI_Controller {
 	
 	public function __construct()
 	{
