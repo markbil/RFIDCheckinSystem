@@ -1,7 +1,11 @@
 $(document).ready(function() {
-
-
-
+	
+	//Get the clicked button
+	var submitButton = undefined;
+	$('#profile-form').find(':submit').live('mouseup keyup',function(){
+	    submitButton  = $(this);
+	});
+	
 	// hide all but .collapse-nohide on load, change arrows
 	$('.collapse-head').each(function(index) {
 		var content_name = '#' + $(this).attr('id') + '-content';
@@ -31,7 +35,6 @@ $(document).ready(function() {
 			}
 		}
 	});
-
 
 
 	// toggle content
@@ -102,6 +105,33 @@ $(document).ready(function() {
 	        return false;
 	    }
 	});
+	
+	/* Handle User Profile Updates */
+	
+	  /* attach a submit handler to the form */
+	  $("#profile-form").submit(function(event) {
+
+	    /* stop form from submitting normally */
+	    event.preventDefault(); 
+	        
+	    var submitButtonName=submitButton.attr('name');
+	    console.log(submitButtonName);
+	    /* get some values from elements on the page: */
+	    var $form = $( this ), url = $form.attr( 'action' );
+
+	    /* Send the data using post and put the results in a div */
+	    if (submitButtonName == "interest_update") {
+	    $.ajax({type:'POST',url:url, data:$("#profile-form").serialize(),
+	      success:function(response) {
+	    	    // log the response to the console
+	    	    console.log("Response: "+response);
+		        $( '#interest_list' ).html(response);
+		        $('#new_interest').val(null);
+		        $("select#new_interest_level option").each(function() { this.selected = (this.text == '1'); });
+	    	}
+	    }
+	    );
+	    }
+	  });
 
 });
-

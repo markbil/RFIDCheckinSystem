@@ -62,6 +62,7 @@ class Edge_user extends CI_Controller {
 	
 	function profile($user_id=null) {
 		$page_data['form_action'] = site_url('edge_user/update');
+		//log_message('debug', "Profile USER DETAILS[" . var_export($page_data['form_action'], true). "]");
 		
 		if (empty($user_id) ) {
 			$user_id=$this->edge_common->session->userdata('user_id');
@@ -76,7 +77,8 @@ class Edge_user extends CI_Controller {
 			$page_data['is_admin'] = 	$this->edge_common->ion_auth->is_admin();
 			$page_data['user_details'] = $this->edge_user_model->get_user_details($user_id);
 			//$page_data['user_details']['is_admin'] = 	$this->edge_common->ion_auth->in_group($this->config->item('admin_group', 'ion_auth'), $user_id);
-			$page_data['user_details']['interests'] = $this->_get_interests($user_id);
+			//$page_data['user_details']['interests'] = $this->_get_interests($user_id);
+			$page_data['profile']['interests'] = $this->_render_interests($this->_get_interests($user_id));
 			$page_data['user_details']['expertises'] = $this->_get_expertise($user_id);
 			$page_data['user_details']['questions'] = $this->_get_questions($user_id);
 			$page_data['groups'] = $this->_get_groups();
@@ -87,7 +89,8 @@ class Edge_user extends CI_Controller {
 			}
 			
 			//log_message('debug', "USER DETAILS[" . var_export($page_data, true). "]");
-		
+			//log_message('debug', "Profile USER DETAILS[" . var_export($page_data['interests'], true). "]");
+					
 			$this->edge_common->render_page('edge_user/profile', $page_data);		
 		} else {
 			redirect('edge_user','refresh');
@@ -449,6 +452,8 @@ class Edge_user extends CI_Controller {
 	}
 
 	public function update($user_id=null){
+		log_message('debug', "update POST[" . var_export($this->input->post(), true). "]");
+		
 		if (!$this->edge_common->ion_auth->logged_in()) {
 			$this->index();
 			return;
@@ -511,7 +516,7 @@ class Edge_user extends CI_Controller {
 				'interest' => $this->input->post('new_interest'),
 				'level' => $this->input->post('new_interest_level'),
 		);
-		$page_data['interests']=$this->edge_user_model->get_user_interests($user_id)->result_array();
+		$page_data['profile']['interests']=$this->edge_user_model->get_user_interests($user_id)->result_array();
 			
 		$page_data['new_expertise']=array(
 				'expertise' => $this->input->post('new_expertise'),
@@ -530,7 +535,7 @@ class Edge_user extends CI_Controller {
 		}else{
 			$all_post = $this->input->post();
 			
-			//log_message('debug', 'ALL_POST[' .var_export($all_post,true) .']');
+			//log_message('debug', 'update ALL_POST[' .var_export($all_post,true) .']');
 			/*
 			 * Handle the groups that  have been submitted
 			 */
@@ -541,21 +546,20 @@ class Edge_user extends CI_Controller {
 					$posted_groups_checkboxes[$match[1]]=$match[1];
 				}
 			}
-			log_message('debug', 'POSTED GROUPS[' .var_export($posted_groups_checkboxes,true) .']');
-					
+			//log_message('debug', 'POSTED GROUPS[' .var_export($posted_groups_checkboxes,true) .']');
 			
 			$group_list=$this->_get_groups();
 			// Delete all the ids that don't match
 			$diff_arr=array_diff($group_list,$posted_groups_checkboxes);
 			foreach($diff_arr as $group_id=>$value) {
-			log_message('debug', 'REMOVE GROUPS[' .$group_id .'], USERID [' . $user_id .']');
+			//log_message('debug', 'REMOVE GROUPS[' .$group_id .'], USERID [' . $user_id .']');
 				$this->edge_common->ion_auth->remove_from_group($group_id, $user_id);
 			}
-			log_message('debug', 'DIFF GROUPS[' .var_export($diff_arr,true) .']');
+			//log_message('debug', 'DIFF GROUPS[' .var_export($diff_arr,true) .']');
 				
 			// Make sure all groups are added to user
 			foreach($posted_groups_checkboxes as $group_id =>$value) {
-			log_message('debug', 'ADD GROUPS[' .$group_id .'], USERID [' . $user_id .']');
+			//log_message('debug', 'ADD GROUPS[' .$group_id .'], USERID [' . $user_id .']');
 				$this->edge_common->ion_auth->add_to_group($group_id, $user_id);
 			}
 			
@@ -580,15 +584,19 @@ class Edge_user extends CI_Controller {
 					$posted_interest_levels[$match[1]] = $proposed_value;
 				}
 			}
-				
+			//log_message('debug', 'update posted_interest_checkboxes[' .var_export($posted_interest_checkboxes,true) .']');
+			//log_message('debug', 'update posted_interest_selects[' .var_export($posted_interest_selects,true) .']');
+					
 			// Delete all the ids that don't match
 			foreach(array_diff($posted_interest_selects,$posted_interest_checkboxes) as $key=>$user_interest_id) {
 				$this->edge_user_model->delete_user_interest($user_interest_id);
 			}
 				
-			$page_data['interests']=$this->edge_user_model->get_user_interests($user_id)->result_array();
+			$interests=$this->edge_user_model->get_user_interests($user_id)->result_array();
+			//log_message('debug', 'update INTERESTS AFTER DIFF[' .var_export($interests,true) .']');
+					
 			// Update any levels that may have changed
-			foreach($page_data['interests'] as $record=>$interest_array) {
+			foreach($interests as $record=>$interest_array) {
 				if(array_key_exists($interest_array['ID'], $posted_interest_levels)){
 					if($posted_interest_levels[$interest_array['ID']]  != $interest_array['level']) {
 						if($this->edge_user_model->update_user_interest_level($interest_array['ID'],
@@ -653,7 +661,7 @@ class Edge_user extends CI_Controller {
 			// Update any levels that may have changed
 			foreach($page_data['questions'] as $record=>$question_array) {
 				if(!array_key_exists($question_array['ID'], $posted_question_checkboxes)){
-					// Deletethe question if it is not there
+					// Delete the question if it is not there
 					$this->edge_user_model->delete_user_question($question_array['ID']);
 				}
 			}
@@ -662,19 +670,29 @@ class Edge_user extends CI_Controller {
 				$page_data['user_details']['user_profile_rfid']=null;
 			}
 				
-			//log_message('debug', "USER DETAILS[" . var_export($page_data['user_details'], true). "]");
-				
 			// save data
 			$page_data['user_details']=$this->edge_user_model->update($user_id,$page_data['user_details']);
-
-			// Set interest data
-			if (strlen($this->input->post('new_interest'))) {
-				$page_data['interests']=$this->edge_user_model->add_user_interest($user_id,$page_data['new_interest']['interest'],$page_data['new_interest']['level'])->result_array();
-				$page_data['interests']=$this->_sort_interests($page_data['interests']);
-			} else {
-				$page_data['interests']=$this->_get_interests($user_id);
-			}
+			//log_message('debug', "update USER DETAILS[" . var_export($page_data['user_details'], true). "]");
 			
+				
+			// Set interest data
+			//$interests=null;
+			
+			log_message('debug', "update NEW INTERESTS[" . var_export($page_data['new_interest'], true). "]");
+			
+			if (!empty($page_data['new_interest']['interest'])) {
+				log_message('debug', "update NEW INTERESTS !EMPTY[" . empty($page_data['new_interest']['interest']) . "]");
+				$interests=$this->edge_user_model->add_user_interest($user_id,$page_data['new_interest']['interest'],$page_data['new_interest']['level'])->result_array();
+				$interests=$this->_sort_interests($interests);
+			} else {
+				log_message('debug', "update NEW INTERESTS EMPTY[" . empty($page_data['new_interest']['interest']) . "]");
+				$interests=$this->_get_interests($user_id);
+			}
+			log_message('debug', "INTERESTS[" . var_export($interests, true). "]");
+			$page_data['profile']['interests'] = $interests;
+			//log_message('debug', "INTERESTS[" . var_export($page_data['interests'], true). "]");
+			$this->load->view('edge_user/interest_list', $page_data);
+					
 			// Set expertise data
 			if (strlen($this->input->post('new_expertise'))) {
 				$page_data['expertises']=$this->edge_user_model->add_user_expertise($user_id,$page_data['new_expertise']['expertise'],$page_data['new_expertise']['level'])->result_array();
@@ -704,15 +722,18 @@ class Edge_user extends CI_Controller {
 				}
 			}
 			
-			if ($page_data['interests'] === FALSE) {
+			if ($page_data['profile']['interests'] === FALSE) {
 				// set user message
 				$page_data['message'] .= '<div class="fail">Error in updating Interests!</div>';
 			} else {
 				$page_data['message'] = '<div class="success">Profile Updated! </div>';
 			}
 		}
+		
+		//return $page_data;
+		//return "blah";
 		// load view
-		$this->edge_common->render_page('edge_user/profile', $page_data);
+		//$this->edge_common->render_page('edge_user/profile', $page_data);
 	}
 	
 	//create a new user
@@ -781,6 +802,7 @@ class Edge_user extends CI_Controller {
 				'type' => 'password',
 				'value' => $this->edge_common->form_validation->set_value('password_confirm'),
 			);
+
 			$this->edge_common->render_page('edge_user/create_user', $page_data);
 		}
 	}
@@ -846,18 +868,9 @@ class Edge_user extends CI_Controller {
 	}
 	
 	private function _get_interests($user_id) {
-		$interests_array=array();
 		$db_interests_array = $this->edge_user_model->get_user_interests($user_id)->result_array();
-		//log_message('debug', "_get_interests[" . var_export($db_interests_array, true). "]");
 		
-		if ($db_interests_array) {
-			foreach($db_interests_array as $key=>$row) {
-				$interests_array[$row['ID']]=$row['interest'];
-			}
-			//array_multisort($interest, SORT_STRING, $interests_array);
-		}
-		//log_message('debug', "_get_interests interests_array[" . var_export($interests_array, true). "]");
-		return $interests_array;
+		return $db_interests_array;
 	}
 	
 	private function _sort_expertise($expertises_array) {
@@ -913,5 +926,31 @@ class Edge_user extends CI_Controller {
 		
 		return $groups;
 		
+	}
+	
+	private function _render_interests($interests) {
+		$responseHtml=null;
+		if (isset($interests)) {
+			$responseHtml = '<table class="interest-list">';
+				
+			foreach($interests as $key=>$interest) {
+				$responseHtml .= '<tr class="interest-space"></tr>';
+					
+				$responseHtml .='<tr>';
+				$responseHtml .= '<td class="interest-name logg-textbox logg-readonly">' . $interest['interest'] . '</td>';
+				$responseHtml .= '<td>';
+				$responseHtml .= '<select style="display:inline" title="Interest level" name="interest_level_' . $interest['ID'] . '">';
+				for($i=1;$i<6;$i++) {
+					$responseHtml .= '<option value="' . $i . '" ';
+					if ($i==$interest['level']) $responseHtml .= "selected ";
+					$responseHtml .= '>' . $i . '</option>';
+				}
+				$responseHtml .= '</select></td>';
+				$responseHtml .=  '<td><input type="checkbox" title="Keep interest" name="interest_' . $interest['ID'] . '" value="' . $interest['ID'] . '" checked /></td>';
+				$responseHtml .= '</tr>'; // interest-item
+			}
+			$responseHtml .= '</table>'; // interest-list
+		}
+		return $responseHtml;
 	}
 }
