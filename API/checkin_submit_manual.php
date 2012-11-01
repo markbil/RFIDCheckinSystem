@@ -10,6 +10,8 @@ $mainlocation = 99; // 99 = The Edge;
 if (isset($_GET['mainlocation'])) {
 	$mainlocation = $_GET['mainlocation'];
 }
+
+//test
 $sublocation = $_GET["sublocation"];
 $checkintime = $dateTime->format("Y-m-d H:i:s");
 $im_type = $_GET["im_type"]; // 1 = RFID
